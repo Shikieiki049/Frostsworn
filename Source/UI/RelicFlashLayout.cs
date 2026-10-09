@@ -8,7 +8,8 @@ public static class FrostRelicFlashLayout
     {
         string path=texture?.ResourcePath??"";
         return path.StartsWith("res://Frostsworn/relics083/",StringComparison.Ordinal)
-            || path is "res://Frostsworn/art075/WinterCore.tres" or "res://Frostsworn/art075/WinterCrown.tres";
+            || path is "res://Frostsworn/art075/WinterCore.tres" or "res://Frostsworn/art075/WinterCrown.tres"
+                or "res://Frostsworn/art075/WinterCore_small.tres" or "res://Frostsworn/art075/WinterCrown_small.tres";
     }
     public static void Fit(TextureRect image)
     {

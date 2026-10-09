@@ -4,8 +4,8 @@ namespace Frostsworn;
 
 public abstract class FrostRelic : ModRelicTemplate
 {
-    public override string CustomIconPath => "res://Frostsworn/relics083/"+GetType().Name+".tres";
-    public override string CustomBigIconPath => CustomIconPath;
+    public override string CustomIconPath => "res://Frostsworn/relics083/"+GetType().Name+"_small.tres";
+    public override string CustomBigIconPath => "res://Frostsworn/relics083/"+GetType().Name+".tres";
     public override string CustomIconOutlinePath => CustomIconPath;
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {

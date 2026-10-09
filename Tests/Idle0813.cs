@@ -50,6 +50,9 @@ public static partial class Suite
         Assert(Math.Abs(body.Scale.X * idle.Scale.X - 0.275f) < 0.0001f && Math.Abs(body.Position.Y + idle.Position.Y * body.Scale.Y) < 0.001f, "character size and foot anchor match game scene");
         var merchant = ModWorldSceneVisualNodeFactory.TryInstantiateMerchantCharacter(character)!;
         Assert(merchant.GetNode<Sprite2D>("Visuals").HasNode("IdleLoop"), "ordinary and event shops receive idle at actual factory creation");
+        ModCreatureVisualPlayback.TryPlayOnVisualRoot(merchant,character,"idle",true,character.WorldProceduralVisuals.Merchant.CueSet);
+        var merchantBody = merchant.GetNode<Sprite2D>("Visuals");
+        Assert(Math.Abs(merchantBody.Scale.X - 0.465f) < 0.0001f && Math.Abs(merchantBody.Position.Y + 525 * merchantBody.Scale.Y) < 0.001f, "shop character is 1.5 times combat size with unchanged floor anchor");
         // Inspect the exact rest-site factory output without entering its UI lifecycle.
         var player = MegaCrit.Sts2.Core.Entities.Players.Player.CreateForNewRun<FrostswornCharacter>(MegaCrit.Sts2.Core.Unlocks.UnlockState.all, 1);
         // This standalone harness cannot bind the game's scripted selection-reticle scene.
@@ -59,6 +62,7 @@ public static partial class Suite
         typeof(FrostIdleVisuals).Assembly.GetType("Frostsworn.FrostIdleRestPatch")!.GetMethod("Postfix",BindingFlags.NonPublic|BindingFlags.Static)!.Invoke(null,new object[]{player,rest});
         Assert(restBody.HasNode("IdleLoop"), "rest-site factory postfix attaches idle to native rest-site hierarchy");
         Assert(ModCreatureVisualPlayback.TryPlayOnVisualRoot(rest,character,"relaxed",true,character.WorldProceduralVisuals.RestSite.CueSet), "rest-site relaxed cue preserves idle body");
+        Assert(Math.Abs(restBody.Scale.X - 0.465f) < 0.0001f && Math.Abs(restBody.Position.Y + 525 * restBody.Scale.Y) < 0.001f, "rest-site character is 1.5 times combat size with unchanged floor anchor");
         ModCreatureVisualPlayback.TryPlayCue(visuals,character,"dead");
         Assert(!idle.IsProcessing(), "dead character stops breathing");
         ModCreatureVisualPlayback.TryPlayCue(visuals,character,"idle");

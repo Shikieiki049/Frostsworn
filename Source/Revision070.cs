@@ -46,8 +46,8 @@ public sealed class PowerGainVar(bool armor):DynamicVar("EffectiveAmount",0)
 public sealed class WinterCrown:ModRelicTemplate
 {
     public override RelicRarity Rarity=>RelicRarity.Ancient;
-    public override string CustomIconPath=>"res://Frostsworn/art075/WinterCrown.tres";
-    public override string CustomBigIconPath=>CustomIconPath;
+    public override string CustomIconPath=>"res://Frostsworn/art075/WinterCrown_small.tres";
+    public override string CustomBigIconPath=>"res://Frostsworn/art075/WinterCrown.tres";
     public override string CustomIconOutlinePath=>CustomIconPath;
     private bool _opening;
     public override Task BeforeCombatStart(){_opening=true;return Task.CompletedTask;}

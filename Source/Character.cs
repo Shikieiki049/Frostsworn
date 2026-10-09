@@ -45,8 +45,8 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
     public override VisualCueSet VisualCues => StaticCues(0.31f, -162.75f);
     public override CharacterWorldProceduralVisualSet WorldProceduralVisuals =>
         ModCharacterWorldSceneVisuals.Procedural()
-            .Merchant(StaticCues(0.31f, -162.75f))
-            .RestSite(StaticCues(0.31f, -162.75f)).Build();
+            .Merchant(StaticCues(0.465f, -244.125f))
+            .RestSite(StaticCues(0.465f, -244.125f)).Build();
 
     protected override NCreatureVisuals TryCreateCreatureVisuals()
     {
@@ -125,8 +125,8 @@ public sealed class FrostEpoch : ModEpochTemplate
 public sealed class WinterCore : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
-    public override string CustomIconPath => "res://Frostsworn/art075/WinterCore.tres";
-    public override string CustomBigIconPath => CustomIconPath;
+    public override string CustomIconPath => "res://Frostsworn/art075/WinterCore_small.tres";
+    public override string CustomBigIconPath => "res://Frostsworn/art075/WinterCore.tres";
     public override string CustomIconOutlinePath => CustomIconPath;
     private bool _given;
     public override Task BeforeCombatStart()
