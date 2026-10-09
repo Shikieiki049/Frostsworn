@@ -1,0 +1,20 @@
+assets/full.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+full
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/full-blink.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+full-blink
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
