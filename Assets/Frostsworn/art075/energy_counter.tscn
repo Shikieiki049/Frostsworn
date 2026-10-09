@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/art075/energy.png" id="1"]
+
+[node name="EnergyCounter" type="Control"]
+offset_right = 128.0
+offset_bottom = 128.0
+pivot_offset = Vector2(64, 64)
+mouse_filter = 2
+
+[node name="EnergyVfxBack" type="Control" parent="."]
+unique_name_in_owner = true
+mouse_filter = 2
+
+[node name="Layers" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Art" type="TextureRect" parent="Layers"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RotationLayers" type="Control" parent="."]
+unique_name_in_owner = true
+mouse_filter = 2
+
+[node name="EnergyVfxFront" type="Control" parent="."]
+unique_name_in_owner = true
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.08, 0.16, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 36
+text = "3/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StarAnchor" type="Control" parent="."]
+unique_name_in_owner = true
+mouse_filter = 2

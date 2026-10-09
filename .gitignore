@@ -1,0 +1,24 @@
+# Generated engine/compiler output and local dependencies
+**/.godot/
+**/bin/
+**/obj/
+**/__pycache__/
+dist/
+.local/
+.venv/
+*.dll
+*.pdb
+*.pck
+*.log
+*.pyc
+*.tmp
+*.zip
+# Local machine/account settings
+build.local.ps1
+publish.local.ps1
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+Tests/Engine/test.globalconfig

@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/card_art/OverdrawWarmth.png" id="1"]
+
+[resource]
+atlas = ExtResource("1")
+region = Rect2(0.0000, 114.0200, 1296.0000, 984.9600)
+filter_clip = true

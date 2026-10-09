@@ -1,0 +1,596 @@
+[
+  {
+    "file": "耗尽.png",
+    "title": "耗尽",
+    "class": "Depleted",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰晶.png",
+    "title": "冰晶",
+    "class": "IceCrystal",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "命定的物语.png",
+    "title": "命定的物语",
+    "class": "FatedStory",
+    "size": [
+      1024,
+      1536
+    ]
+  },
+  {
+    "file": "极冻光束.png",
+    "title": "极冻光束",
+    "class": "AbsoluteBeam",
+    "size": [
+      1093,
+      1438
+    ]
+  },
+  {
+    "file": "永夜风暴.png",
+    "title": "永夜风暴",
+    "class": "EndlessStorm",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰川形态.png",
+    "title": "冰川形态",
+    "class": "GlacierBody",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "速释装置.png",
+    "title": "速释装置",
+    "class": "SlowRelease",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "热交换.png",
+    "title": "热交换",
+    "class": "HeatExchange",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "漫冬.png",
+    "title": "漫冬",
+    "class": "WinterArchive",
+    "size": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "流淌而出的强大力量.png",
+    "title": "流淌而出的强大力量",
+    "class": "FlowingPower",
+    "size": [
+      1436,
+      1096
+    ]
+  },
+  {
+    "file": "晶群共鸣.png",
+    "title": "晶群共鸣",
+    "class": "CrystalResonance",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰镜圣所.png",
+    "title": "冰镜圣所",
+    "class": "IceMirror",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "绝对零度.png",
+    "title": "绝对零度",
+    "class": "AbsoluteZero",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "霜债清算.png",
+    "title": "霜债清算",
+    "class": "DebtSettlement",
+    "size": [
+      1438,
+      1094
+    ]
+  },
+  {
+    "file": "霜华漫天.png",
+    "title": "霜华漫天",
+    "class": "SnowBloom",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "寒潮回流.png",
+    "title": "寒潮回流",
+    "class": "ColdReturn",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "春汛.png",
+    "title": "春汛",
+    "class": "SpringFlood",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "银色风霜.png",
+    "title": "银色风霜",
+    "class": "SilverFrost",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "晶莹.png",
+    "title": "晶莹",
+    "class": "Glitter",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冻结心愿.png",
+    "title": "冻结心愿",
+    "class": "FrozenWish",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰封时刻.png",
+    "title": "冰封时刻",
+    "class": "FrozenMoment",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "以血封冬.png",
+    "title": "以血封冬",
+    "class": "BloodWinter",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "消融.png",
+    "title": "消融",
+    "class": "Dissolve",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰释.png",
+    "title": "冰释",
+    "class": "IceRelease",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "白夜奔袭.png",
+    "title": "白夜奔袭",
+    "class": "WhiteNightRush",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "雪崩.png",
+    "title": "雪崩",
+    "class": "Avalanche",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "踏雪破阵.png",
+    "title": "踏雪破阵",
+    "class": "SnowCharge",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "万棱齐射.png",
+    "title": "万棱齐射",
+    "class": "CrystalVolley",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰断.png",
+    "title": "冰断",
+    "class": "IceBreak",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "雪蚀终章.png",
+    "title": "雪蚀终章",
+    "class": "SnowFinale",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "贯穿.png",
+    "title": "贯穿",
+    "class": "Pierce",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "祝福之风.png",
+    "title": "祝福之风",
+    "class": "BlessingWind",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "雪眼.png",
+    "title": "雪眼",
+    "class": "SnowEye",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "铭刻于心.png",
+    "title": "铭刻于心",
+    "class": "HeartInscription",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冷库扩张.png",
+    "title": "冷库扩张",
+    "class": "ExpandColdStore",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "晶锋.png",
+    "title": "晶锋",
+    "class": "CrystalEdge",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "极寒晶核.png",
+    "title": "极寒晶核",
+    "class": "GlacialCore",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "积雪.png",
+    "title": "积雪",
+    "class": "SixfoldSnow",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "寒血回响.png",
+    "title": "寒血回响",
+    "class": "ColdBloodEcho",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "风暴核心.png",
+    "title": "风暴核心",
+    "class": "StormCore",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "藏锋秘术.png",
+    "title": "藏锋秘术",
+    "class": "HiddenBlade",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰晶护符.png",
+    "title": "冰晶护符",
+    "class": "CrystalAmulet",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "冰窖.png",
+    "title": "冰窖",
+    "class": "IceCellar",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "相变.png",
+    "title": "相变",
+    "class": "PhaseShift",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "冻土结界.png",
+    "title": "冻土结界",
+    "class": "PermafrostWard",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰缚.png",
+    "title": "冰缚",
+    "class": "IceBind",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "暴雪将至.png",
+    "title": "暴雪将至",
+    "class": "BlizzardComing",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "蔓延.png",
+    "title": "蔓延",
+    "class": "SpreadFrost",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "检索急冻.png",
+    "title": "检索急冻",
+    "class": "ColdSearch",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰晶簇.png",
+    "title": "冰晶簇",
+    "class": "CrystalCluster",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "“冻”能.png",
+    "title": "“冻”能",
+    "class": "ThawEnergy",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "霜刻.png",
+    "title": "霜刻",
+    "class": "FrostCarving",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "守护、前行.png",
+    "title": "守护、前行",
+    "class": "GuardAdvance",
+    "size": [
+      1456,
+      1080
+    ]
+  },
+  {
+    "file": "破冰唤醒.png",
+    "title": "破冰唤醒",
+    "class": "WakeIce",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "急速演算.png",
+    "title": "急速演算",
+    "class": "RapidCalculation",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "冰壳.png",
+    "title": "冰壳",
+    "class": "ShellRecycle",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰晶回收.png",
+    "title": "冰晶回收",
+    "class": "CrystalFurnace",
+    "size": [
+      1366,
+      1152
+    ]
+  },
+  {
+    "file": "棱镜裂斩.png",
+    "title": "棱镜裂斩",
+    "class": "Crystallize",
+    "size": [
+      1464,
+      1075
+    ]
+  },
+  {
+    "file": "棱光熔铸.png",
+    "title": "棱光熔铸",
+    "class": "PrismBlast",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "雪线推进.png",
+    "title": "雪线推进",
+    "class": "Snowline",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "霜裂.png",
+    "title": "霜裂",
+    "class": "FrostShatter",
+    "size": [
+      1366,
+      1152
+    ]
+  },
+  {
+    "file": "冰库重锤.png",
+    "title": "冰库重锤",
+    "class": "ColdHammer",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "雪、出鞘.png",
+    "title": "雪、出鞘",
+    "class": "SnowUnsheathed",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "霜噬.png",
+    "title": "霜噬",
+    "class": "FrostBite",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "融冰斩.png",
+    "title": "融冰斩",
+    "class": "MeltSlash",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "迟来的寒意.png",
+    "title": "迟来的寒意",
+    "class": "DelayedChill",
+    "size": [
+      1438,
+      1093
+    ]
+  }
+]

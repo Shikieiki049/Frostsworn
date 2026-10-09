@@ -1,0 +1,227 @@
+[
+  {
+    "file": "冰雾刀.png",
+    "title": "冰雾刃",
+    "class": "WhiteMist",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "融霜.png",
+    "title": "融霜",
+    "class": "ThawFrost",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "静雪冥想.png",
+    "title": "静雪冥想",
+    "class": "QuietMeditation",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "回温.png",
+    "title": "回温",
+    "class": "Rewarm",
+    "size": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "覆霜.png",
+    "title": "覆霜",
+    "class": "RimeCoat",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "封存咒.png",
+    "title": "封存咒",
+    "class": "SealSpell",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "冰尘.png",
+    "title": "冰尘",
+    "class": "IceDust",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "余热回收.png",
+    "title": "余热回收",
+    "class": "WarmthRecovery",
+    "size": [
+      1447,
+      1087
+    ]
+  },
+  {
+    "file": "雪藏.png",
+    "title": "雪藏",
+    "class": "SnowCache",
+    "size": [
+      1292,
+      1218
+    ]
+  },
+  {
+    "file": "温度循环.png",
+    "title": "温度循环",
+    "class": "OverdrawWarmth",
+    "size": [
+      1296,
+      1213
+    ]
+  },
+  {
+    "file": "融封.png",
+    "title": "融封",
+    "class": "MeltSeal",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "透骨寒芒.png",
+    "title": "透骨寒芒",
+    "class": "PiercingCold",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "踏雪追击.png",
+    "title": "踏雪追击",
+    "class": "StepSnow",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "霜火反冲.png",
+    "title": "霜火反冲",
+    "class": "Frostfire",
+    "size": [
+      1460,
+      1078
+    ]
+  },
+  {
+    "file": "失温打击.png",
+    "title": "失温打击",
+    "class": "HypothermiaStrike",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "卷雪.png",
+    "title": "卷雪",
+    "class": "SnowRoll",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "扫雪.png",
+    "title": "扫雪",
+    "class": "SnowSweep",
+    "size": [
+      1438,
+      1093
+    ]
+  },
+  {
+    "file": "采冰.png",
+    "title": "采冰",
+    "class": "IceHarvest",
+    "size": [
+      1447,
+      1087
+    ]
+  },
+  {
+    "file": "冻结射线.png",
+    "title": "冻结射线",
+    "class": "FreezeRay",
+    "size": [
+      1672,
+      941
+    ]
+  },
+  {
+    "file": "深埋.png",
+    "title": "深埋",
+    "class": "CrystalRite",
+    "size": [
+      1672,
+      941
+    ]
+  },
+  {
+    "file": "薄冰突刺.png",
+    "title": "薄冰突刺",
+    "class": "ThinIce",
+    "size": [
+      1672,
+      941
+    ]
+  },
+  {
+    "file": "冰盾反击.png",
+    "title": "冰盾反击",
+    "class": "ShieldCounter",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "藏刀.png",
+    "title": "藏刃",
+    "class": "DeepCache",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "file": "冰刃连斩.png",
+    "title": "冰刃连斩",
+    "class": "TwinBlades",
+    "size": [
+      1449,
+      1086
+    ]
+  },
+  {
+    "file": "冰凿.png",
+    "title": "冰凿",
+    "class": "IceChisel",
+    "size": [
+      1448,
+      1086
+    ]
+  }
+]

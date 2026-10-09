@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/card_art/GuardAdvance.png" id="1"]
+
+[resource]
+atlas = ExtResource("1")
+region = Rect2(17.4737, 0.0000, 1421.0526, 1080.0000)
+filter_clip = true

@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/card_art/FlowingPower.png" id="1"]
+
+[resource]
+atlas = ExtResource("1")
+region = Rect2(0.0000, 2.3200, 1436.0000, 1091.3600)
+filter_clip = true

@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/card_art/SnowCache.png" id="1"]
+
+[resource]
+atlas = ExtResource("1")
+region = Rect2(0.0000, 118.0400, 1292.0000, 981.9200)
+filter_clip = true

@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Frostsworn/card_art/FrostShatter.png" id="1"]
+
+[resource]
+atlas = ExtResource("1")
+region = Rect2(0.0000, 56.9200, 1366.0000, 1038.1600)
+filter_clip = true

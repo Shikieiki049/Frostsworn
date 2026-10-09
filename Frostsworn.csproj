@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>Frostsworn</AssemblyName>
+    <RootNamespace>Frostsworn</RootNamespace>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <RitsuLibAutoCopy>false</RitsuLibAutoCopy>
+    <GamePath Condition="'$(GamePath)' == ''">$(STS2_GAME_PATH)</GamePath>
+    <RitsuPath Condition="'$(RitsuPath)' == ''">$(STS2_RITSU_PATH)</RitsuPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Source/**/*.cs" />
+    <PackageReference Include="STS2.RitsuLib" Version="0.6.7" Condition="'$(RitsuPath)' == ''" />
+    <Reference Include="$(RitsuPath)/*.dll" Condition="'$(RitsuPath)' != ''"><Private>false</Private></Reference>
+    <Reference Include="sts2"><HintPath>$(GamePath)/data_sts2_windows_x86_64/sts2.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="GodotSharp"><HintPath>$(GamePath)/data_sts2_windows_x86_64/GodotSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(GamePath)/data_sts2_windows_x86_64/0Harmony.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="CheckGameFiles" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(GamePath)/data_sts2_windows_x86_64/sts2.dll')" Text="Set GamePath to your Slay the Spire 2 install directory." />
+  </Target>
+</Project>
