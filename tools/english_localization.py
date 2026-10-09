@@ -235,6 +235,7 @@ STATIC_EN = {
     'FROSTSWORN_ARMOR_STATUS.description':'Current Ice Armor: {Amount}\n{Description}',
     'FROSTSWORN_ECLIPSE.title':'Eclipse {Level}',
     'FROSTSWORN_ECLIPSE_REST.description':'Heal {Heal} HP.{ExtraText}',
+    'FROSTSWORN_ECLIPSE_MEND.description':'Heal {HasTarget:{Name}|someone else} for {Percent}% of their Max HP{HasTarget: ({Heal})|}.',
     'FROSTSWORN_FATED.cardDescription':'[gold][Story] Replay {FatedReplays} the next time this card is played.[/gold]',
     'FROSTSWORN_CARDPILE_COLD_STORAGE.title':'Cold Storage',
     'FROSTSWORN_CARDPILE_COLD_STORAGE.description':'Base capacity: 4, expandable to 10. After your normal draw each turn, choose 1 card to Thaw. Thawed cards cost 1 less the next time they are played.',

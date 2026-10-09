@@ -5,6 +5,25 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 namespace Frostsworn;
 
+[HarmonyPatch(typeof(MendRestSiteOption),nameof(MendRestSiteOption.Description),MethodType.Getter)]
+public static class EclipseMendPreviewPatch
+{
+    public static void Postfix(MendRestSiteOption __instance,HealVar ____healVar,ref LocString? ____description,ref LocString __result)
+    {
+        var player=(Player)AccessTools.Property(typeof(RestSiteOption),"Owner").GetValue(__instance)!;
+        // Mend mutates its cached description while targeting. Keep that same
+        // object so HasTarget/Name survive, and leave the gameplay HealVar intact.
+        if(__result.LocEntryKey!="FROSTSWORN_ECLIPSE_MEND.description")
+        {
+            var description=new LocString("static_hover_tips","FROSTSWORN_ECLIPSE_MEND.description");
+            description.AddVariablesFrom(__result);
+            ____description=__result=description;
+        }
+        __result.Add("Percent",Eclipse.Level(player.RunState)>=5?20:30);
+        __result.Add(new HealVar(____healVar.Name,Eclipse.Healing(player.Creature,____healVar.PreviewValue)));
+    }
+}
+
 [HarmonyPatch(typeof(HealRestSiteOption),nameof(HealRestSiteOption.Description),MethodType.Getter)]
 public static class EclipseRestPreviewPatch
 {

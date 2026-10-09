@@ -55,6 +55,7 @@ tables['epochs']['frostsworn_character_frostsworn_character.title']='霜誓'
 tables['static_hover_tips']={
     'FROSTSWORN_ECLIPSE.title':'日食 {Level}',
     'FROSTSWORN_ECLIPSE_REST.description':'恢复{Heal}点生命。{ExtraText}',
+    'FROSTSWORN_ECLIPSE_MEND.description':'恢复{HasTarget:{Name}|其他角色}最大生命值的{Percent}%{HasTarget:（{Heal}）|}。',
     'FROSTSWORN_FATED.cardDescription':'[gold]【物语】下次打出重放{FatedReplays}。[/gold]',
     'FROSTSWORN_CARDPILE_COLD_STORAGE.title':'冷藏区',
     'FROSTSWORN_CARDPILE_COLD_STORAGE.description':'基础容量4，可扩至10。每回合正常抽牌后选择解冻1张。解冻的牌下次打出费用-1。',
