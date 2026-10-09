@@ -20,6 +20,25 @@ public static class EclipseNetwork
     private static int? receivedHostLevel;
     private static string? activeRunKey;
     private static int? activeRunLevel;
+    private static int? activeScarAct;
+    private static Dictionary<ulong,(int MaxHp,int Lost)>? activeScars;
+    public static void RememberScars(RunState run)
+    {
+        if(activeRunKey!=RunKey(run) || !Eclipse.Data.TryGet(run,out var data))return;
+        activeScarAct=run.CurrentActIndex;
+        activeScars=run.Players.ToDictionary(p=>p.NetId,p=>(p.Creature.MaxHp,data.MaxHpLost.GetValueOrDefault(p.NetId)));
+    }
+    private static void RecoverScars(RunState run,EclipseRunData data)
+    {
+        // The native save restores each player's reduced MaxHp even if a replay
+        // tool dropped Ritsu's attached payload. Restore the corresponding debt
+        // only for the same act and matching player MaxHp; never carry debt into
+        // another act, another party, or a differently rewound native state.
+        if(activeScarAct!=run.CurrentActIndex || activeScars==null)return;
+        foreach(var player in run.Players)
+            if(activeScars.TryGetValue(player.NetId,out var scar) && scar.MaxHp==player.Creature.MaxHp && scar.Lost>0)
+                data.MaxHpLost[player.NetId]=scar.Lost;
+    }
     private static string RunKey(RunState run)=>run.Rng.StringSeed+"|"+string.Join(",",run.Players.Select(p=>p.NetId).OrderBy(id=>id));
     private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<StartRunLobby,HostChoice> HostChoices=new();
     private sealed class HostChoice {public int Level;}
@@ -54,7 +73,7 @@ public static class EclipseNetwork
     public static void Poll(StartRunLobby lobby)
     {
         if(current==null || !current.TryGetTarget(out var previous) || previous!=lobby)
-        {current=new(lobby);nextRequest=0;pendingStart=null;receivedHostLevel=null;activeRunKey=null;activeRunLevel=null;}
+        {current=new(lobby);nextRequest=0;pendingStart=null;receivedHostLevel=null;activeRunKey=null;activeRunLevel=null;activeScarAct=null;activeScars=null;}
         if(lobby.NetService.Type!=NetGameType.Client || lobby.IsAboutToBeginGame())return;
         long now=System.Environment.TickCount64;if(now<nextRequest)return;nextRequest=now+2000;
         RitsuLibSidecarTypedMessageRegistry.SendToHost(lobby.NetService,Descriptor,new EclipseLobbyMessage(true,0));
@@ -70,13 +89,14 @@ public static class EclipseNetwork
         int? level=loaded?null:pendingStart;if(!loaded)pendingStart=null;
         // Some replay/rebuild tools recreate RunState through ordinary JSON.
         // Ritsu's attached run payload is then absent, although the native gold
-        // and seed are already restored. Retain only the committed difficulty
-        // for this session and exact seed/party; never reapply starting gold.
+        // and seed are already restored. Recover the committed difficulty and
+        // matching scar debts for this exact seed/party; never repeat gold loss.
         if(level==null && activeRunLevel.HasValue && activeRunKey==RunKey(run)
             && (!Eclipse.Data.TryGet(run,out var saved) || !saved.GoldApplied))
         {
-            Eclipse.Data.Modify(run,d=>{d.Level=activeRunLevel.Value;d.GoldApplied=true;});
-            GD.Print("[Frostsworn] Restored committed Eclipse level after run reconstruction: "+activeRunLevel.Value);
+            Eclipse.Data.Modify(run,d=>{d.Level=activeRunLevel.Value;d.GoldApplied=true;RecoverScars(run,d);});
+            GD.Print("[Frostsworn] Restored committed Eclipse state after run reconstruction: level="+activeRunLevel.Value+", scarPlayers="+Eclipse.Data.Get(run).MaxHpLost.Count);
+            RememberScars(run);
             return;
         }
         bool hasSavedRun=Eclipse.Data.TryGet(run,out var existing) && existing.GoldApplied;
@@ -86,7 +106,7 @@ public static class EclipseNetwork
         // default/unlock limit, when the optional begin-run extension is lost.
         if(!loaded && level==null && !hasSavedRun)level=receivedHostLevel;
         if(level.HasValue)Eclipse.Data.Modify(run,d=>d.Level=level.Value);
-        activeRunKey=RunKey(run);activeRunLevel=Eclipse.Level(run);
+        activeRunKey=RunKey(run);activeRunLevel=Eclipse.Level(run);RememberScars(run);
     }
 }
 

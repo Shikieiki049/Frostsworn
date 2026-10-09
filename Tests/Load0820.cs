@@ -51,7 +51,7 @@ public static partial class Suite
                 await CheckLoadedCombat(restored);
             }
             // Simulate restarting the process: no in-memory recovery cache.
-            foreach(string field in new[]{"activeRunKey","activeRunLevel","receivedHostLevel","current","pendingStart"})
+            foreach(string field in new[]{"activeRunKey","activeRunLevel","activeScarAct","activeScars","receivedHostLevel","current","pendingStart"})
                 typeof(EclipseNetwork).GetField(field,BindingFlags.Static|BindingFlags.NonPublic)!.SetValue(null,null);
             registry.GetMethod("AttachDocumentFromJson")!.Invoke(null,new object[]{save,payload});
             var full=RunState.FromSerializable(save);

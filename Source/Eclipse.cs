@@ -141,10 +141,11 @@ public static class Eclipse
         if(lost>=full/2 || creature.MaxHp<=1)return;
         creature.SetMaxHpInternal(creature.MaxHp-1);
         Data.Modify(run,d=>d.MaxHpLost[p.NetId]=lost+1);
+        EclipseNetwork.RememberScars(run);
     }
     public static void Restore(RunState run,int nextAct)
     {
-        if(nextAct==run.CurrentActIndex || !Data.TryGet(run,out var data))return;
+        if(nextAct<=run.CurrentActIndex || !Data.TryGet(run,out var data))return;
         foreach(var p in run.Players)
         {
             int lost=data.MaxHpLost.GetValueOrDefault(p.NetId);
@@ -188,8 +189,25 @@ public static class EclipseDamagePatch
     public static void Prefix(Creature __instance,ref decimal amount)=>amount=Eclipse.EventDamage(__instance,amount);
     public static void Postfix(Creature __instance,DamageResult __result)=>Eclipse.Scar(__instance,__result.UnblockedDamage);
 }
+// Genuine max HP rewards/costs may occur after damage and before saving.
+// Keep the native HP fingerprint current without treating those changes as scars.
+[HarmonyPatch(typeof(Creature),nameof(Creature.SetMaxHpInternal))]
+public static class EclipseMaxHpCachePatch
+{
+    public static void Postfix(Creature __instance)
+    {
+        if(__instance.Player?.RunState is RunState run)EclipseNetwork.RememberScars(run);
+    }
+}
 [HarmonyPatch(typeof(RunState),nameof(RunState.CurrentActIndex),MethodType.Setter)]
-public static class EclipseActPatch {public static void Prefix(RunState __instance,int value)=>Eclipse.Restore(__instance,value);}
+public static class EclipseActPatch
+{
+    public static void Prefix(RunState __instance,int value)=>Eclipse.Restore(__instance,value);
+    public static void Postfix(RunState __instance)
+    {
+        if(Eclipse.Data.TryGet(__instance,out _))EclipseNetwork.RememberScars(__instance);
+    }
+}
 [HarmonyPatch(typeof(RunManager),nameof(RunManager.OnEnded))]
 public static class EclipseWinPatch
 {public static void Prefix(RunManager __instance,bool isVictory){if(isVictory)Eclipse.Victory(__instance.DebugOnlyGetState());}}
