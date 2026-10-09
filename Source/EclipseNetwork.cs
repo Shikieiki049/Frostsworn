@@ -65,9 +65,9 @@ public static class EclipseNetwork
         if(lobby.NetService.Type==NetGameType.Host)
             RitsuLibSidecarTypedMessageRegistry.Broadcast(lobby.NetService,Descriptor,new EclipseLobbyMessage(false,Eclipse.LobbyLevel(lobby)));
     }
-    public static void ApplyStartLevel(RunState run)
+    public static void ApplyStartLevel(RunState run,bool loaded=false)
     {
-        int? level=pendingStart;pendingStart=null;
+        int? level=loaded?null:pendingStart;if(!loaded)pendingStart=null;
         // Some replay/rebuild tools recreate RunState through ordinary JSON.
         // Ritsu's attached run payload is then absent, although the native gold
         // and seed are already restored. Retain only the committed difficulty
@@ -80,11 +80,11 @@ public static class EclipseNetwork
             return;
         }
         bool hasSavedRun=Eclipse.Data.TryGet(run,out var existing) && existing.GoldApplied;
-        if(level==null && !hasSavedRun && current!=null && current.TryGetTarget(out var lobby) && lobby.NetService.Type!=NetGameType.Client)
+        if(!loaded && level==null && !hasSavedRun && current!=null && current.TryGetTarget(out var lobby) && lobby.NetService.Type!=NetGameType.Client)
             level=Eclipse.LobbyLevel(lobby);
         // Use only a setting actually received from the host, never a guest's
         // default/unlock limit, when the optional begin-run extension is lost.
-        if(level==null && !hasSavedRun)level=receivedHostLevel;
+        if(!loaded && level==null && !hasSavedRun)level=receivedHostLevel;
         if(level.HasValue)Eclipse.Data.Modify(run,d=>d.Level=level.Value);
         activeRunKey=RunKey(run);activeRunLevel=Eclipse.Level(run);
     }

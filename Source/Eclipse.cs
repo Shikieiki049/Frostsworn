@@ -43,6 +43,7 @@ public static class Eclipse
         }
         EclipseNetwork.Initialize();
         RitsuLibFramework.SubscribeLifecycle<RunStartedEvent>(e=>InitializeRun(e.RunState));
+        RitsuLibFramework.SubscribeLifecycle<RunLoadedEvent>(e=>InitializeLoadedRun(e.RunState));
         RitsuLibFramework.SubscribeLifecycle<RunSavedDataLobbyStagingEvent>(e=>
         {
             if(e.IsHost && e.Reason==RunSavedDataLobbyStagingReason.Committing && e.Lobby.Players.Count>0)
@@ -103,6 +104,15 @@ public static class Eclipse
         if(d.GoldApplied)return;
         if(Level(run)>=3)foreach(var p in run.Players)p.Gold=Math.Max(0,p.Gold-20);
         Data.Modify(run,d=>d.GoldApplied=true);
+    }
+    public static void InitializeLoadedRun(RunState run)
+    {
+        if(!Available(run))return;
+        EclipseNetwork.ApplyStartLevel(run,loaded:true);
+        // Native saved gold is already restored. Loading must never run the
+        // new-run penalty, even when the attached mod payload was missing.
+        Data.Modify(run,d=>d.GoldApplied=true);
+        GD.Print("[Frostsworn] Eclipse saved run loaded: level="+Level(run));
     }
     public static void Victory(IRunState? run)
     {
