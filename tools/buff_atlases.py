@@ -18,7 +18,13 @@ by_name = {v[0]: k for k, v in powers.items()}
 for sheet, row in enumerate(names, 1):
     with Image.open(folder / f'sheet{sheet}.png') as image:
         assert image.mode == 'RGBA' and image.getextrema()[3][0] == 0
-        width, height = image.size
+        assert image.width == image.height * 2
+        # Godot imports the full sheet at 512x256: each icon is native 128x128.
+        # Keep source cutouts unchanged; avoid oversized native particle textures.
+        width, height = 512, 256
+    importer = folder / f'sheet{sheet}.png.import'
+    if importer.exists():
+        importer.write_text(importer.read_text('utf-8').replace('process/size_limit=0', 'process/size_limit=512'), encoding='utf-8')
     for index, name in enumerate(row.split('，')):
         cls = by_name[name]
         x0, x1 = round(index % 4 * width / 4), round((index % 4 + 1) * width / 4)

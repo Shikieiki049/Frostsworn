@@ -24,12 +24,14 @@ public static partial class Suite
             var power = (FrostPowerBase)getter.MakeGenericMethod(type).Invoke(null, null)!;
             Assert(power.CustomIconPath == FrostPowerArt.PathFor(name) && power.CustomBigIconPath == power.CustomIconPath, name + " uses new art for both icon sizes");
             var texture = ResourceLoader.Load<AtlasTexture>(power.CustomIconPath);
+            Assert(power.Icon is AtlasTexture && power.BigIcon is AtlasTexture, name + " native game icon getters accept atlas textures");
             Assert(texture != null && texture.Atlas != null && texture.Region.End.X <= texture.Atlas.GetWidth() && texture.Region.End.Y <= texture.Atlas.GetHeight(), name + " atlas region within bounds");
             var image = texture!.GetImage();
+            Assert(texture.GetWidth() == 128 && texture.GetHeight() == 128, name + " native 128px texture prevents oversized activation particles");
             Assert(image.DetectAlpha() != Image.AlphaMode.None && image.GetPixel(0,0).A < 0.01f, name + " transparent background imported");
             var position = new Vector2(12 + slot % 8 * 124, 12 + slot / 8 * 156);
-            background.AddChild(new TextureRect { Texture = texture, Position = position, Size = new Vector2(90,90), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered });
-            background.AddChild(new TextureRect { Texture = texture, Position = position + new Vector2(88,66), Size = new Vector2(32,32), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered });
+            background.AddChild(new TextureRect { ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, Texture = texture, Position = position, Size = new Vector2(90,90) });
+            background.AddChild(new TextureRect { ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, Texture = texture, Position = position + new Vector2(88,66), Size = new Vector2(32,32) });
             var label = new Label { Text = row.GetProperty("name").GetString(), Position = position + new Vector2(0,102) };
             label.AddThemeFontSizeOverride("font_size", 13); background.AddChild(label);
             slot++;
