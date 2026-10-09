@@ -69,25 +69,27 @@ part('shin-right','full','shin_right',[(747,893),(791,890),(802,1033),(751,1040)
 part('thigh-right','full','thigh_right',[(716,764),(781,782),(805,880),(789,928),(741,920),(689,837)])
 part('shoe-left','shoe-left','foot_left',transform=affine(.20,(680,100),(490,1015)))
 part('shoe-right','shoe-right','foot_right',transform=affine(.225,(560,100),(777,970)))
-bodymap=affine(.70,(675,150),(681,341))
+bodymap=affine(.70,(650,100),(681,341))
 # One continuous attachment from collar to hem. A waist cut on a separately
 # rotating cape exposed two moving edges across the belt and chest.
-part('torso','torso-complete','torso',[(530,90),(780,90),(845,255),(862,400),(845,555),(930,720),(1254,1110),(1254,1254),(0,1254),(0,920),(365,640),(440,530),(440,410),(465,255)],bodymap)
-rightmap=affine(.31,(300,250),(778,430),degrees=-20)
-leftmap=affine(.28,(300,200),(590,405),mirror=True)
-upperpoly=[(0,0),(550,0),(550,480),(490,650),(425,870),(0,870)]
-forepoly=[(485,470),(944,470),(1130,1220),(460,1220),(395,880),(410,550)]
-part('upper-free','arm-free','upper_free',upperpoly,leftmap)
-part('forearm-free','arm-free','forearm_free',forepoly,leftmap)
-part('upper-staff','arm-staff','upper_staff',upperpoly,rightmap)
-part('forearm-staff','arm-staff','forearm_staff',forepoly,rightmap)
+part('torso','torso-clean-v2','torso',transform=bodymap)
+rightmap=affine(.31,(240,200),(778,430),degrees=-7)
+rightfore=affine(.235,(470,510),(862,515),degrees=-33)
+leftmap=affine(.34,(300,200),(590,405),degrees=-3,mirror=True)
+leftfore=affine(.26,(450,520),(545,517),degrees=21,mirror=True)
+upperpoly=[(0,0),(620,0),(660,460),(610,590),(410,650),(200,600),(0,600)]
+forepoly=[(350,450),(1254,450),(1254,1254),(350,1254)]
+part('upper-free','sleeve-free-v2','upper_free',upperpoly,leftmap)
+part('forearm-free','sleeve-free-v2','forearm_free',forepoly,leftfore)
+part('upper-staff','sleeve-staff-v2','upper_staff',upperpoly,rightmap)
+part('forearm-staff','sleeve-staff-v2','forearm_staff',forepoly,rightfore)
 # The fixed shoulder mantle is in front of both sleeve roots, so the rotating
 # sleeve cut edges stay underneath the same continuous chest artwork.
-part('shoulder-mantle','torso-complete','torso',[(530,90),(780,90),(845,255),(900,345),(875,381),(806,368),(790,425),(736,363),(690,325),(638,397),(579,445),(582,381),(450,371),(415,342),(465,255)],bodymap)
+part('shoulder-mantle','torso-clean-v2','torso',[(400,0),(920,0),(920,310),(870,360),(800,325),(790,409),(705,313),(640,364),(570,414),(565,331),(430,347),(405,310)],bodymap)
 # Shaft is in front of the clothing, with the gripping fingers above it.
 part('staff','staff','staff',transform=affine(.65,(662,740),(1030,492),degrees=5))
-part('hand-free','arm-free','wrist_free',[(935,650),(1254,650),(1254,970),(935,970)],affine(.31,(980,770),(429,531),mirror=True))
-part('hand-staff','arm-staff','wrist_staff',[(955,495),(1254,495),(1254,800),(955,800)],affine(.34,(1118,594),(1030,492)))
+part('hand-free','arm-free','wrist_free',[(935,650),(1254,650),(1254,970),(935,970)],affine(.43,(980,770),(429,531),mirror=True))
+part('hand-staff','arm-staff','wrist_staff',[(955,495),(1254,495),(1254,800),(955,800)],affine(.50,(1118,594),(1030,492)))
 part('head','full','head',[(375,0),(1000,0),(1000,305),(874,320),(899,447),(818,495),(743,453),(717,370),(660,372),(626,330),(570,290),(380,318)])
 part('eyes','full-blink','head',[(665,247),(755,247),(755,299),(665,299)]);slots[-1].pop('attachment')
 

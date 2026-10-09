@@ -6,6 +6,14 @@ const atlas=new spine.TextureAtlas(fs.readFileSync(path.join(root,'frostsworn-at
 for(const page of atlas.pages)page.setTexture({getImage:()=>({width:page.width,height:page.height}),setFilters(){},setWraps(){}});
 const data=new spine.SkeletonJson(new spine.AtlasAttachmentLoader(atlas)).readSkeletonData(json);
 assert.equal(data.ikConstraints.length,2);
+const parts=json.skins[0].attachments;
+for(const side of ['free','staff'])for(const limb of ['upper','forearm']){
+ const name=limb+'-'+side;
+ assert.equal(parts[name][name].path,'sleeve-'+side+'-v2','Arm clothing must use the sleeve-only texture, never the source containing a detached hand.');
+}
+assert.equal(parts.torso.torso.path,'torso-clean-v2');
+assert.equal(parts.torso.torso.vertices.length,8,'Continuous body texture must not be split into cropped garment fragments.');
+
 const order=json.slots.map(s=>s.name);
 assert.ok(!order.includes('robe'),'Chest, belt and robe must be one uninterrupted attachment.');
 assert.ok(order.indexOf('staff')>order.indexOf('forearm-staff'));

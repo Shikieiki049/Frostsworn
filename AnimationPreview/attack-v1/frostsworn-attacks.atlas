@@ -28,15 +28,45 @@ shoe-right
   bounds: 0,0,1254,1254
   offsets: 0,0,1254,1254
 
-assets/torso-complete.png
+assets/torso-clean-v2.png
 size: 1254,1254
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 pma: false
-torso-complete
+torso-clean-v2
   bounds: 0,0,1254,1254
   offsets: 0,0,1254,1254
+
+assets/sleeve-free-v2.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+sleeve-free-v2
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/sleeve-staff-v2.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+sleeve-staff-v2
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/staff.png
+size: 1024,1536
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+staff
+  bounds: 0,0,1024,1536
+  offsets: 0,0,1024,1536
 
 assets/arm-free.png
 size: 1254,1254
@@ -57,16 +87,6 @@ pma: false
 arm-staff
   bounds: 0,0,1254,1254
   offsets: 0,0,1254,1254
-
-assets/staff.png
-size: 1024,1536
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-pma: false
-staff
-  bounds: 0,0,1024,1536
-  offsets: 0,0,1024,1536
 
 assets/full-blink.png
 size: 1254,1254

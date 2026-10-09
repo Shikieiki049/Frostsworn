@@ -22,3 +22,6 @@ Spine 官方 runtime 为 `@esotericsoftware/spine-webgl@4.2.120`，GIF 编码为
 
 
 Revision: the neck alignment matches the original head; a shoulder mantle covers both rotating sleeve roots. The shaft is in front of clothing and behind gripping fingers. Chest, belt and hem share a continuous rigid attachment. Validation also checks draw order and the hand/staff grip at all 239 sampled frames.
+
+
+V2 asset repair: sleeve-free-v2.png and sleeve-staff-v2.png remove detached hands and the duplicated shoulder mantle; torso-clean-v2.png removes residual sleeves from the central garment. Original hand textures remain independent and have fixed scales of 0.43 (open hand) and 0.50 (grip), increased from 0.31 and 0.34. The shoulder and elbow attachment maps were recalibrated to the new sleeve textures. Prompts are saved in image-edit-repair-prompts.txt. Browser checks include casting extension, raised staff and recovery.
