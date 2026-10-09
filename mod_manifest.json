@@ -4,7 +4,7 @@
   "name": "Frostsworn / 霜誓者",
   "author": "Shikieiki",
   "description": "An ice mage with Frost, Cold Storage, Ice Armor, Ice Crystals, Snowfall and Self-Frost. 93 cards, 9 relics, 3 exclusive potions; Eclipse 0-8 for all characters with host-controlled multiplayer difficulty. English and Chinese localization.",
-  "version": "0.8.18",
+  "version": "0.8.19",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,

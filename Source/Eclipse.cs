@@ -99,6 +99,7 @@ public static class Eclipse
         if(!Available(run))return;
         var d=Data.Get(run);
         EclipseNetwork.ApplyStartLevel(run);
+        GD.Print("[Frostsworn] Eclipse run initialized: level="+Level(run)+", goldApplied="+d.GoldApplied);
         if(d.GoldApplied)return;
         if(Level(run)>=3)foreach(var p in run.Players)p.Gold=Math.Max(0,p.Gold-20);
         Data.Modify(run,d=>d.GoldApplied=true);
