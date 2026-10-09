@@ -1,0 +1,6 @@
+Tool: built-in GPT image generation/editing, transparent background.
+Reference: original full-body illustration.
+Saved asset: assets/torso-complete.png
+Original generated file: exec-715918e7-e7c5-4d11-8a21-a073c5e2f75f.png
+
+Use case: precise-object-edit / animation cutout. Edit the attached full-body character into a SINGLE isolated torso-and-robe animation component. Preserve EXACT original canvas 1254x1254, placement, scale, navy/white ice-triangle fabric patterns, chest crystal brooch, belt, cross lacing, leather pouch, dangling waist crystals, and all robe tails. Keep the torso from neck base (approximately x655,y335) through the entire robe tails down to y1090. REMOVE head, hat, hair, both arms and hands, staff, all legs, shoes and background. Reconstruct clean navy fabric behind removed hair and arms; round covered shoulder roots and collar opening for animation overlap, no holes. This is a texture for skeletal animation, not a new character pose. Use original slender body proportions and original diagonal belt, never widen the torso or shrink the robe. No effects, labels, outlines around the cutout, ground or shadows. True transparent RGBA background. Exactly one body/garment component, no character face or limbs.

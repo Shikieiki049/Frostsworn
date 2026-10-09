@@ -1,0 +1,80 @@
+assets/full.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+full
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/shoe-left.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+shoe-left
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/shoe-right.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+shoe-right
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/torso-complete.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+torso-complete
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/arm-free.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+arm-free
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/arm-staff.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+arm-staff
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
+assets/staff.png
+size: 1024,1536
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+staff
+  bounds: 0,0,1024,1536
+  offsets: 0,0,1024,1536
+
+assets/full-blink.png
+size: 1254,1254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pma: false
+full-blink
+  bounds: 0,0,1254,1254
+  offsets: 0,0,1254,1254
+
