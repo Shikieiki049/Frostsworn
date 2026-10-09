@@ -57,8 +57,8 @@ def influences(x,y):
     arm=smooth(785,850,x)*(1-smooth(1020,1090,x))*smooth(365,455,y)*(1-smooth(720,780,y))
     assign('arm_staff',arm*.85)
     # Bind the staff to the grip, including its distant top and lower shaft.
-    staff_x=1207-y*.407
-    shaft=(1-smooth(48,86,abs(x-staff_x)))*smooth(200,340,y)*(1-smooth(1030,1100,y))
+    staff_x=1215-(y-70)*.439
+    shaft=(1-smooth(22,53,abs(x-staff_x)))*smooth(200,340,y)*(1-smooth(1030,1100,y))
     crown=smooth(1000,1050,x)*(1-smooth(260,315,y))
     assign('staff',max(shaft,crown))
     charm=(1-smooth(18,43,abs(x-414)))*(1-smooth(220,255,y))*smooth(90,120,y)
@@ -66,23 +66,6 @@ def influences(x,y):
     result={k:v for k,v in result.items() if v>.003}
     total=sum(result.values())
     return [(indices[k],v/total) for k,v in result.items()]
-
-def combat_stance(x,y):
-    """Shape the native mesh into a forward, lower combat stance; preserve UVs."""
-    planted=1-smooth(800,1100,y)
-    forward=46*(1-smooth(440,850,y))+20*planted
-    sink=28*planted
-    free=(1-smooth(455,570,x))*smooth(440,530,y)*(1-smooth(660,740,y))
-    tx,ty=x+forward+30*free,y+sink-24*free
-    staff_x=1207-y*.407
-    shaft=(1-smooth(48,86,abs(x-staff_x)))*smooth(210,340,y)*(1-smooth(1050,1100,y))
-    crown=smooth(1000,1050,x)*(1-smooth(260,315,y))
-    staff=max(shaft,crown)
-    angle=math.radians(7)
-    dx,dy=x-994,y-521
-    sx=994+dx*math.cos(angle)-dy*math.sin(angle)+45
-    sy=521+dx*math.sin(angle)+dy*math.cos(angle)+28
-    return tx*(1-staff)+sx*staff,ty*(1-staff)+sy*staff
 
 def mesh(path, xs, ys, blink=False):
     coords=[(x,y) for y in ys for x in xs]
@@ -93,11 +76,10 @@ def mesh(path, xs, ys, blink=False):
     for x,y in ordered:
         uvs.extend([round(x/W,7),round(y/H,7)])
         weights=influences(x,y)
-        posed_x,posed_y=combat_stance(x,y)
         vertices.append(len(weights))
         for index,weight in weights:
             wx,wy=world[positions[index][0]]
-            vertices.extend([index,round(posed_x-627-wx,5),round(1215-posed_y-wy,5),round(weight,7)])
+            vertices.extend([index,round(x-627-wx,5),round(1215-y-wy,5),round(weight,7)])
     for j in range(len(ys)-1):
         for i in range(len(xs)-1):
             a,b,c,d=[lookup[p] for p in [(xs[i],ys[j]),(xs[i+1],ys[j]),(xs[i+1],ys[j+1]),(xs[i],ys[j+1])]]
@@ -115,17 +97,16 @@ def oscillate(a,phase=0):
     return lambda t:a*(math.sin(t*math.tau/DURATION+phase)-math.sin(phase))
 
 tracks={
- 'hips':{'translate':[{'time':round(i*.1,3),'x':round(3*math.sin(i*.1*math.tau/6),5),'y':round(-3*(1-math.cos(i*.1*math.tau/6)),5)} for i in range(61)]},
- 'chest':{'translate':[{'time':round(i*.1,3),'x':round(5*math.sin(i*.1*math.tau/6),5),'y':round(9*(1-math.cos(i*.1*math.tau/6)),5)} for i in range(61)],'rotate':curve(oscillate(.85),'value')},
- 'head':{'rotate':curve(oscillate(.7,.4),'value')},
- 'hair_mid':{'rotate':curve(oscillate(2.5,.75),'value')},
- 'hair_tail':{'rotate':curve(oscillate(4.5,1.1),'value')},
- 'hem_left':{'rotate':curve(oscillate(2,.5),'value')},
- 'hem_right':{'rotate':curve(oscillate(-1.8,.85),'value')},
- 'arm_free':{'rotate':curve(oscillate(2.2,.35),'value')},
- 'arm_staff':{'rotate':curve(oscillate(.55,.3),'value')},
- 'staff':{'rotate':curve(oscillate(-.25,.3),'value')},
- 'hat_charm':{'rotate':curve(oscillate(3.6,.9),'value')}}
+ 'chest':{'translate':[{'time':round(i*.1,3),'x':round(1.7*math.sin(i*.1*math.tau/6),5),'y':round(3.8*(1-math.cos(i*.1*math.tau/6)),5)} for i in range(61)],'rotate':curve(oscillate(.24),'value')},
+ 'head':{'rotate':curve(oscillate(.24,.4),'value')},
+ 'hair_mid':{'rotate':curve(oscillate(1.05,.75),'value')},
+ 'hair_tail':{'rotate':curve(oscillate(1.9,1.1),'value')},
+ 'hem_left':{'rotate':curve(oscillate(.85,.5),'value')},
+ 'hem_right':{'rotate':curve(oscillate(-.7,.85),'value')},
+ 'arm_free':{'rotate':curve(oscillate(.48,.35),'value')},
+ 'arm_staff':{'rotate':curve(oscillate(.11,.3),'value')},
+ 'staff':{'rotate':curve(oscillate(-.11,.3),'value')},
+ 'hat_charm':{'rotate':curve(oscillate(1.5,.9),'value')}}
 animation={'bones':tracks,'slots':{'eyes':{'attachment':[{'time':0,'name':None},{'time':2.40,'name':'blink'},{'time':2.51,'name':None},{'time':5.16,'name':'blink'},{'time':5.26,'name':None},{'time':6,'name':None}]}}}
 skeleton={'skeleton':{'spine':'4.2.43','x':-627,'y':-39,'width':W,'height':H,'images':'./assets/'},
  'bones':bones,'slots':[{'name':'character','bone':'root','attachment':'body'},{'name':'eyes','bone':'root'}],
@@ -143,4 +124,3 @@ runtime=(ROOT/'spine-webgl.js').read_text('utf-8')
 gifenc=(ROOT/'gifenc.js').read_text('utf-8')
 (ROOT/'待机动画演示.html').write_text(template.replace('/*RUNTIME*/',runtime).replace('/*GIFENC*/',gifenc).replace('/*DATA*/',json.dumps(embedded,separators=(',',':'))),encoding='utf-8')
 print(f'IDLE_RIG: {len(bones)} bones, 2601 vertices, 5000 triangles, 6s loop, eye overlay only')
-
