@@ -182,7 +182,10 @@ public static class EclipseActPatch {public static void Prefix(RunState __instan
 [HarmonyPatch(typeof(RunManager),nameof(RunManager.OnEnded))]
 public static class EclipseWinPatch
 {public static void Prefix(RunManager __instance,bool isVictory){if(isVictory)Eclipse.Victory(__instance.DebugOnlyGetState());}}
-[HarmonyPatch(typeof(Hook),nameof(Hook.BeforeSideTurnStart))]
+// BeforeSideTurnStart schedules player-choice hooks independently on each peer;
+// its callbacks can pause while synchronized actions execute. Apply team effects
+// at the unconditional, awaited boundary before the native turn checksum instead.
+[HarmonyPatch(typeof(Hook),nameof(Hook.AfterSideTurnStart))]
 public static class EclipseTurnPatch
 {
     public static void Postfix(ICombatState combatState,CombatSide side,ref Task __result)=>__result=Run(__result,combatState,side);
