@@ -5,7 +5,7 @@
 - `attack_magic`（2.10 秒）：抬杖蓄能、展开冰系魔法阵、向前释放法术、后坐、收势。法术释放事件为 `spell_release`，时间 1.05 秒。
 - `attack_melee`（1.85 秒）：向后蓄力、抬杖、加速挥击、短暂停顿、随势、收杖。命中事件为 `melee_hit`，时间 0.75 秒。
 
-人物使用 19 根骨骼、18 个刚性附件和两组落脚 IK。肩与肘分别转动，手和法杖沿同一关节链运动；脸部、手部、服装纹样和法杖不做加权拉伸。原始尺寸不一致的独立素材在装配时固定等比缩放，动画过程保持其比例。胸口、腰带和下摆共用一块连续附件，避免腰部断开；法杖位于衣物前方、握拳手指后方，杖杆中心与握拳位置绑定。
+人物使用 23 根骨骼、21 个刚性附件和两组落脚 IK。肩与肘分别转动，手和法杖沿同一关节链运动；脸部、手部、服装纹样和法杖不做加权拉伸。原始尺寸不一致的独立素材在装配时固定等比缩放，动画过程保持其比例。胸口、腰带和下摆共用一块连续附件，避免腰部断开；法杖位于衣物前方、握拳手指后方，杖杆中心与握拳位置绑定。
 
 GPT 图像编辑补齐了身体被头发及部件遮挡的部分，提示词保存在 `image-edit-prompt.txt`。头部与后发使用原立绘的 UV 多边形选区，双臂、手、鞋和法杖沿用用户提供的部件。腿部补图未成功，使用原立绘腿部选区配合关节重叠和 IK。所有 PNG 保持原有 alpha，没有通过 Python 修改图像。
 
@@ -25,3 +25,6 @@ Revision: the neck alignment matches the original head; a shoulder mantle covers
 
 
 V2 asset repair: sleeve-free-v2.png and sleeve-staff-v2.png remove detached hands and the duplicated shoulder mantle; torso-clean-v2.png removes residual sleeves from the central garment. Original hand textures remain independent and have fixed scales of 0.43 (open hand) and 0.50 (grip), increased from 0.31 and 0.34. The shoulder and elbow attachment maps were recalibrated to the new sleeve textures. Prompts are saved in image-edit-repair-prompts.txt. Browser checks include casting extension, raised staff and recovery.
+
+
+V3 gestures: casting uses the existing clenched-hand sprite instead of an open palm. Melee uses an independently authored rigid staff, two fixed grip points, and two additional arm IK constraints. The second hand stays attached throughout anticipation, swing and recovery; idle_melee preserves the two-handed rest pose. Rig: 23 bones, 21 attachments, two planted-foot IK chains plus two arm IK chains. Neither arm scales or stretches. The native runtime test asserts wrist/grip error below 0.001 pixels and identical attack/idle recovery geometry.

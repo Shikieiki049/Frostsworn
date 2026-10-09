@@ -68,16 +68,6 @@ staff
   bounds: 0,0,1024,1536
   offsets: 0,0,1024,1536
 
-assets/arm-free.png
-size: 1254,1254
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-pma: false
-arm-free
-  bounds: 0,0,1254,1254
-  offsets: 0,0,1254,1254
-
 assets/arm-staff.png
 size: 1254,1254
 format: RGBA8888

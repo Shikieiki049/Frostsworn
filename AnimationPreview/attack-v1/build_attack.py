@@ -23,12 +23,29 @@ bone('wrist_staff','forearm_staff',(987,478));bone('staff','wrist_staff',(1030,4
 bone('upper_free','torso',(590,405),angle((590,405),(545,517)),distance((590,405),(545,517)))
 bone('forearm_free','upper_free',(545,517),angle((545,517),(429,531)),distance((545,517),(429,531)))
 bone('wrist_free','forearm_free',(429,531))
+# Independent melee staff drives both grip points and both arm IK targets.
+# Authored positions keep the targets inside normal arm reach.
+bone('melee_staff','root',(840,520),-15)
+def melee_screen(x,y):
+    dx=(x-662)*.65;dy=(y-740)*.65
+    a=math.radians(20)
+    return (840+math.cos(a)*dx-math.sin(a)*dy,520+math.sin(a)*dx+math.cos(a)*dy)
+second_grip=melee_screen(575,900)
+bone('melee_left_grip','melee_staff',second_grip,-15)
+bone('melee_right_wrist','melee_staff',(768,518))
+bone('melee_left_wrist','melee_staff',(second_grip[0]-72,second_grip[1]-2))
+
 ik=[]
 for side,hip,knee,ankle,bend in [('left',(637,738),(579,868),(490,1020),1),('right',(734,810),(767,919),(784,1027),-1)]:
     bone('thigh_'+side,'pelvis',hip,angle(hip,knee),distance(hip,knee))
     bone('shin_'+side,'thigh_'+side,knee,angle(knee,ankle),distance(knee,ankle))
     bone('foot_'+side,'root',ankle)
     ik.append({'name':'plant_'+side,'order':len(ik),'bones':['thigh_'+side,'shin_'+side],'target':'foot_'+side,'mix':1,'bendPositive':bend>0,'softness':5})
+
+ik.extend([
+ {'name':'double_right','order':2,'bones':['upper_staff','forearm_staff'],'target':'melee_right_wrist','mix':0,'bendPositive':False,'softness':0},
+ {'name':'double_left','order':3,'bones':['upper_free','forearm_free'],'target':'melee_left_wrist','mix':0,'bendPositive':True,'softness':0}
+])
 
 def triangulate(poly):
     ids=list(range(len(poly)))
@@ -88,8 +105,14 @@ part('forearm-staff','sleeve-staff-v2','forearm_staff',forepoly,rightfore)
 part('shoulder-mantle','torso-clean-v2','torso',[(400,0),(920,0),(920,310),(870,360),(800,325),(790,409),(705,313),(640,364),(570,414),(565,331),(430,347),(405,310)],bodymap)
 # Shaft is in front of the clothing, with the gripping fingers above it.
 part('staff','staff','staff',transform=affine(.65,(662,740),(1030,492),degrees=5))
-part('hand-free','arm-free','wrist_free',[(935,650),(1254,650),(1254,970),(935,970)],affine(.43,(980,770),(429,531),mirror=True))
+part('hand-free','arm-staff','wrist_free',[(955,495),(1254,495),(1254,800),(955,800)],affine(.55,(980,640),(429,531),mirror=True))
 part('hand-staff','arm-staff','wrist_staff',[(955,495),(1254,495),(1254,800),(955,800)],affine(.50,(1118,594),(1030,492)))
+part('double-staff','staff','melee_staff',transform=affine(.65,(662,740),(840,520),degrees=20))
+slots[-1].pop('attachment')
+part('double-hand-right','arm-staff','melee_staff',[(955,495),(1254,495),(1254,800),(955,800)],affine(.50,(1118,594),(840,520),degrees=20))
+slots[-1].pop('attachment')
+part('double-hand-left','arm-staff','melee_left_grip',[(955,495),(1254,495),(1254,800),(955,800)],affine(.50,(1118,594),second_grip,degrees=20))
+slots[-1].pop('attachment')
 part('head','full','head',[(375,0),(1000,0),(1000,305),(874,320),(899,447),(818,495),(743,453),(717,370),(660,372),(626,330),(570,290),(380,318)])
 part('eyes','full-blink','head',[(665,247),(755,247),(755,299),(665,299)]);slots[-1].pop('attachment')
 
@@ -139,11 +162,26 @@ physical=animation(P,{
  'cape':[(0,0),(.53,3),(.74,-1),(.94,-5),(1.17,3),(1.44,-1),(P,0)],
  'staff':[(0,0),(.52,4),(.74,-2),(.80,-2),(.96,-1),(P,0)]
 },{'pelvis':([(0,0),(.22,-5),(.52,-12,'in'),(.74,20),(.80,20),(.96,26),(1.14,12),(P,0)],[(0,0),(.50,-7),(.74,-15),(.80,-15),(.96,-18),(1.18,-6),(P,0)])})
+# Two-hand melee: the rigid staff and its two grips move as one unit;
+# the arm joints solve towards wrist points without scaling the artwork.
+physical['bones'].pop('upper_staff');physical['bones'].pop('forearm_staff')
+physical['bones'].pop('upper_free');physical['bones'].pop('forearm_free')
+physical['bones']['melee_staff']={
+ 'rotate':[{'time':t,'value':v} for t,v in sample([(0,0),(.25,18),(.52,70,'in'),(.74,-50),(.80,-50,'out'),(.96,-65),(1.18,-20),(P,0)],P)],
+ 'translate':[{'time':t,'x':x,'y':y} for (t,x),(_,y) in zip(sample([(0,0),(.25,-65),(.52,-155,'in'),(.74,30),(.80,30),(.96,20),(1.18,0),(P,0)],P),sample([(0,0),(.25,35),(.52,80,'in'),(.74,-40),(.80,-40),(.96,-85),(1.18,-20),(P,0)],P))]
+}
+physical['ik']={n:[{'time':0,'mix':1},{'time':P,'mix':1}] for n in ['double_right','double_left']}
+physical['slots']={n:{'attachment':[{'time':0,'name':None}]} for n in ['staff','hand-staff','hand-free']}
+for n in ['double-staff','double-hand-right','double-hand-left']:
+ physical['slots'][n]={'attachment':[{'time':0,'name':n}]}
+idle_melee=animation(6,{'torso':[(0,0),(6,0)]})
+idle_melee['ik']={n:[{'time':0,'mix':1},{'time':6,'mix':1}] for n in ['double_right','double_left']}
+idle_melee['slots']=physical['slots']
 idle=animation(6,{'torso':[(0,0),(1.5,.3),(3,0),(4.5,-.3),(6,0)],'hair':[(0,0),(1.5,1),(3,0),(4.5,-1),(6,0)],'cape':[(0,0),(1.5,.45),(3,0),(4.5,-.45),(6,0)]})
 idle['slots']={'eyes':{'attachment':[{'time':0,'name':None},{'time':2.40,'name':'eyes'},{'time':2.51,'name':None},{'time':6,'name':None}]}}
 magic['events']=[{'time':1.05,'name':'spell_release'}]
 physical['events']=[{'time':.75,'name':'melee_hit'}]
-skeleton={'skeleton':{'spine':'4.2.43','x':-627,'y':-39,'width':1254,'height':1254,'images':'./assets/'},'bones':bones,'ik':ik,'slots':slots,'skins':[{'name':'default','attachments':attachments}],'events':{'spell_release':{},'melee_hit':{}},'animations':{'idle_loop':idle,'attack_magic':magic,'attack_melee':physical}}
+skeleton={'skeleton':{'spine':'4.2.43','x':-627,'y':-39,'width':1254,'height':1254,'images':'./assets/'},'bones':bones,'ik':ik,'slots':slots,'skins':[{'name':'default','attachments':attachments}],'events':{'spell_release':{},'melee_hit':{}},'animations':{'idle_loop':idle,'attack_magic':magic,'attack_melee':physical,'idle_melee':idle_melee}}
 (ROOT/'frostsworn-attacks.json').write_text(json.dumps(skeleton,separators=(',',':')),encoding='utf8')
 atlas=''
 for n,(w,h) in images.items():atlas+=f'assets/{n}.png\nsize: {w},{h}\nformat: RGBA8888\nfilter: Linear,Linear\nrepeat: none\npma: false\n{n}\n  bounds: 0,0,{w},{h}\n  offsets: 0,0,{w},{h}\n\n'
@@ -151,7 +189,11 @@ for n,(w,h) in images.items():atlas+=f'assets/{n}.png\nsize: {w},{h}\nformat: RG
 # Position of the staff crystal in local coordinates, for precise VFX anchoring.
 tip=affine(.65,(662,740),(1030,492),degrees=5)(865,140)
 sx,sy,sa=world['staff'];tiplocal=[tip[0]-627-sx,1215-tip[1]-sy]
-embedded={'skeleton':skeleton,'atlas':atlas,'staffTip':tiplocal,'images':{f'assets/{n}.png':'data:image/png;base64,'+base64.b64encode((ROOT/'assets'/f'{n}.png').read_bytes()).decode() for n in images}}
+melee_tip_screen=melee_screen(865,140)
+mbx,mby,mba=world['melee_staff']; mdx,mdy=melee_tip_screen[0]-627-mbx,1215-melee_tip_screen[1]-mby
+mc,ms=math.cos(math.radians(mba)),math.sin(math.radians(mba))
+melee_tip=[mc*mdx+ms*mdy,-ms*mdx+mc*mdy]
+embedded={'skeleton':skeleton,'atlas':atlas,'staffTip':tiplocal,'meleeTip':melee_tip,'images':{f'assets/{n}.png':'data:image/png;base64,'+base64.b64encode((ROOT/'assets'/f'{n}.png').read_bytes()).decode() for n in images}}
 template=(ROOT/'preview-template.html').read_text('utf8')
 (ROOT/'\u653b\u51fb\u52a8\u753b\u6f14\u793a.html').write_text(template.replace('/*RUNTIME*/',(ROOT/'spine-webgl.js').read_text('utf8')).replace('/*GIFENC*/',(ROOT/'gifenc.js').read_text('utf8')).replace('/*DATA*/',json.dumps(embedded,separators=(',',':'))),encoding='utf8')
 print(f'ATTACKS: {len(bones)} bones, {len(slots)} rigid parts, 2 planted IK chains; magic {M}s / melee {P}s')
