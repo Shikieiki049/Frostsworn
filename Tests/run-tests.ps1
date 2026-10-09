@@ -1,16 +1,18 @@
-param([string]$GodotPath='C:/fz/godot/Godot_v4.5.1-stable_mono_win64_console.exe')
+param([string]$GodotPath='C:/fz/godot/Godot_v4.5.1-stable_mono_win64_console.exe', [switch]$Render)
 $ErrorActionPreference='Stop'
 $workspace=Split-Path (Split-Path $PSScriptRoot)
 $godot=$GodotPath
 $info=[System.Diagnostics.ProcessStartInfo]::new($godot)
 $info.UseShellExecute=$false
 $info.CreateNoWindow=$true
+$info.WindowStyle=[System.Diagnostics.ProcessWindowStyle]::Hidden
 $info.RedirectStandardOutput=$true
 $info.RedirectStandardError=$true
 $info.WorkingDirectory=$workspace
 $info.Environment['DOTNET_ROOT']=Join-Path $workspace 'work/dotnet9'
 $info.Environment['DOTNET_ROOT_X64']=Join-Path $workspace 'work/dotnet9'
-@('--headless','--path',(Join-Path $PSScriptRoot 'Engine'),'--log-file',(Join-Path $workspace 'work/engine-test.log'),'--quit-after','1800') | ForEach-Object { $info.ArgumentList.Add($_) }
+if (!$Render) { $info.ArgumentList.Add('--headless') }
+@('--path',(Join-Path $PSScriptRoot 'Engine'),'--log-file',(Join-Path $workspace 'work/engine-test.log'),'--quit-after','1800') | ForEach-Object { $info.ArgumentList.Add($_) }
 $process=[System.Diagnostics.Process]::Start($info)
 $stdout=$process.StandardOutput.ReadToEndAsync()
 $stderr=$process.StandardError.ReadToEndAsync()

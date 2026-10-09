@@ -35,7 +35,7 @@ public static partial class Suite
         Assert(selection.GetNode<TextureRect>("Background").Texture.ResourcePath==art+"selection.png","select scene loads supplied background");
         selection.Free();
         var visuals=(NCreatureVisuals)typeof(FrostswornCharacter).GetMethod("TryCreateCreatureVisuals",BindingFlags.NonPublic|BindingFlags.Instance)!.Invoke(character,null)!;
-        Assert(visuals.GetNode<Sprite2D>("%Visuals").Texture.ResourcePath==art+"battle.png","combat visuals instantiate supplied static character");
+        Assert(visuals.GetNode<Sprite2D>("%Visuals").Texture.ResourcePath==FrostIdleVisuals.EmptyTexture && visuals.HasNode("Visuals/IdleLoop"),"combat visuals instantiate first idle animation");
         Assert(Math.Abs(visuals.GetNode<Sprite2D>("%Visuals").Scale.X-0.31f)<0.001f,"combat art scale aligns new full-height pose");
         visuals.Free();
         var counter=RitsuGodotNodeFactories.CreateFromScenePath<NEnergyCounter>(character.CustomEnergyCounterPath);

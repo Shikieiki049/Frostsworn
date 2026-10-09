@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Entities.Characters;
+using MegaCrit.Sts2.Core.Entities.Characters;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Timeline.Scaffolding;
 using MegaCrit.Sts2.Core.Timeline;
@@ -39,7 +39,7 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
         var builder = VisualCueSetBuilder.Create();
         var style = new VisualNodeStyle { Scale = new Vector2(scale, scale), Position = new Vector2(0, y) };
         foreach (var cue in new[] { "idle", "attack", "cast", "hit", "dead", "die", "relaxed", "rest", "sleep", "wake" })
-            builder.Single(cue, WizardTexture, style);
+            builder.Single(cue, FrostIdleVisuals.EmptyTexture, style);
         return builder.Build();
     }
     public override VisualCueSet VisualCues => StaticCues(0.31f, -162.75f);
@@ -50,7 +50,7 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
 
     protected override NCreatureVisuals TryCreateCreatureVisuals()
     {
-        var visuals = RitsuGodotNodeFactories.CreateFromResource<NCreatureVisuals>(ResourceLoader.Load<Texture2D>(WizardTexture));
+        var visuals = RitsuGodotNodeFactories.CreateFromResource<NCreatureVisuals>(ResourceLoader.Load<Texture2D>(FrostIdleVisuals.EmptyTexture));
         var sprite = visuals.GetNode<Sprite2D>("%Visuals");
         sprite.Scale = new Vector2(0.31f, 0.31f);
         sprite.Position = new Vector2(0, -162.75f);
@@ -66,6 +66,7 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
             marker.Owner = visuals;
             marker.UniqueNameInOwner = true;
         }
+        FrostIdleVisuals.Attach(visuals);
         return visuals;
     }
     public override bool RequiresEpochAndTimeline => true;
