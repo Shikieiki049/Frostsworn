@@ -27,7 +27,7 @@ public static partial class Suite
             Assert(power.Icon is AtlasTexture && power.BigIcon is AtlasTexture, name + " native game icon getters accept atlas textures");
             Assert(texture != null && texture.Atlas != null && texture.Region.End.X <= texture.Atlas.GetWidth() && texture.Region.End.Y <= texture.Atlas.GetHeight(), name + " atlas region within bounds");
             var image = texture!.GetImage();
-            Assert(texture.GetWidth() == 128 && texture.GetHeight() == 128, name + " native 128px texture prevents oversized activation particles");
+            Assert(texture.GetWidth() <= 128 && texture.GetWidth() == texture.GetHeight(), name + " centered square icon stays within native particle size");
             Assert(image.DetectAlpha() != Image.AlphaMode.None && image.GetPixel(0,0).A < 0.01f, name + " transparent background imported");
             var position = new Vector2(12 + slot % 8 * 124, 12 + slot / 8 * 156);
             background.AddChild(new TextureRect { ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, Texture = texture, Position = position, Size = new Vector2(90,90) });
