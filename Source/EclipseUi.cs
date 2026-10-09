@@ -62,7 +62,7 @@ public static class EclipseUi
             int limit=host?Eclipse.LobbyLimit(lobby!):8;
             if(host && value>limit){Eclipse.Choose(lobby!,limit);value=Level();}
             left.Disabled=!host || value<=0;right.Disabled=!host || value>=limit;
-            label.Text=$"日食 {value}";icon.Texture=Icon(value);
+            label.Text=FrostText.EclipseTitle(value);icon.Texture=Icon(value);
         }
         timer.Timeout+=Update;Update();
     }

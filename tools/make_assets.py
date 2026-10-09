@@ -1,4 +1,4 @@
-"""Build original geometric placeholder art and the mod's Chinese localization."""
+"""Build placeholder art and language-specific localization tables."""
 from pathlib import Path
 import json, re, math
 import expansion_content as expansion
@@ -75,7 +75,6 @@ for key,name,desc in [
 ]:
     tables['static_hover_tips']['FROSTSWORN_'+key+'.title']=name
     tables['static_hover_tips']['FROSTSWORN_'+key+'.description']=desc
-# English-language installations display Chinese in this initial Chinese-only release.
 for key, text in tables['cards'].items():
     if key.endswith('.description'):
         tables['cards'][key] = re.sub(r'\{(Damage|Block|Amount|Extra|Third)\}', r'{\1:diff()}', text)
@@ -126,9 +125,26 @@ for cls,line in {
 for suffix in ('.description','.upgradeDescription'):
     k='FROSTSWORN_CARD_ABSOLUTE_BEAM'+suffix
     tables['cards'][k+'.combat']=tables['cards'][k].replace('敌人[gold]寒霜[/gold]上限一半的','{BeamFrost:diff()}层').replace('敌人[gold]寒霜[/gold]上限全部的','{BeamFrost:diff()}层')
+from english_localization import build_english
+tables['static_hover_tips'].update({
+    'FROSTSWORN_COLD_STATUS.description':'\u5f53\u524d\u51b7\u85cf\uff1a{Count}/{Capacity} \u5f20\n\u5f53\u524d\u5bb9\u91cf\u4e0a\u9650\uff1a{Capacity} \u5f20\uff08\u57fa\u78404\uff0c\u6700\u9ad810\uff09\u3002\n\u6bcf\u56de\u5408\u6b63\u5e38\u62bd\u724c\u540e\u9009\u62e9\u89e3\u51bb{Thaw}\u5f20\u3002\n\u89e3\u51bb\u4ec5\u4e0b\u6b21\u6253\u51fa\u51cf\u8d391\uff0c\u4e0d\u53e0\u52a0\u3002\u624b\u724c\u6ee1\u65f6\u7559\u5728\u51b7\u85cf\u533a\u3002',
+    'FROSTSWORN_ARMOR_STATUS.description':'\u5f53\u524d\u51b0\u7532\uff1a{Amount}\n{Description}',
+    'FROSTSWORN_ECLIPSE_UNRECORDED.title':'日食：未记录',
+    'FROSTSWORN_ECLIPSE_QUOTE.description':'"你唯能在光亮处庆祝......全因我允许你这么做。"',
+    **{f'FROSTSWORN_ECLIPSE_{i}.description':text for i,text in enumerate([
+        '无特殊效果。','先古之民只会回复你已损失生命值的70%。','每一幕首个Boss战的前3层不可见。','初始金币-20。',
+        '偶数回合开始时，敌人获得3点格挡。','从除先古之民外获得的回复量减少三分之一。','从事件所受的伤害增加50%。',
+        '奇数回合开始时，敌人获得1点临时力量（不被人工制品抵消）。','友方受到永久伤害（最多50%），下一幕开始时恢复。'])},
+    'FROSTSWORN_FROST_FROZEN.description':'已冰封：跳过下一次行动。',
+    'FROSTSWORN_FROST_RECOVERY.description':'恢复期：正常行动一次后才能再次冰封。',
+    'FROSTSWORN_FROST_UNINTERRUPTIBLE.description':'当前动作不可打断。',
+    'FROSTSWORN_FROST_READY.description':'达到门槛后，在出牌结算结束时冰封。',
+    'FROSTSWORN_FROST_STATUS.description':'当前寒霜：{Frost}\n当前冰封门槛：{Threshold}\n{Status}\n本场已冰封 {Count} 次；每次冰封后门槛增加12。',
+})
+english = build_english(tables)
 for lang in ('zhs','eng','zht'):
     path=assets/'localization'/lang; path.mkdir(parents=True,exist_ok=True)
-    for name,table in tables.items(): (path/(name+'.json')).write_text(json.dumps(table,ensure_ascii=False,indent=2),encoding='utf-8')
+    for name,table in (english if lang=='eng' else tables).items(): (path/(name+'.json')).write_text(json.dumps(table,ensure_ascii=False,indent=2),encoding='utf-8')
 
 def art(path,index,size=(512,384),icon=False):
     w,h=size

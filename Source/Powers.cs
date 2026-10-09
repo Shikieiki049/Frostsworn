@@ -9,7 +9,7 @@ public abstract class FrostPowerBase : ModPowerTemplate
     {
         get
         {
-            if(Description.GetRawText().Contains("冰晶"))yield return FrostKeywords.Crystal();
+            if(FrostText.Contains(Description.GetRawText(),"冰晶"))yield return FrostKeywords.Crystal();
         }
     }
     public override PowerStackType StackType => PowerStackType.Counter;

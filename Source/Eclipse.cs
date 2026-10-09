@@ -85,7 +85,7 @@ public static class Eclipse
     public static string Description(int level)
     {
         level=Math.Clamp(level,0,8);
-        return (level==8?Quote+"\n":"")+(level==0?RulesText[0]:string.Join("\n",Enumerable.Range(1,level).Select(i=>RulesText[i])));
+        return (level==8?FrostText.Get("FROSTSWORN_ECLIPSE_QUOTE.description")+"\n":"")+(level==0?FrostText.Get("FROSTSWORN_ECLIPSE_0.description"):string.Join("\n",Enumerable.Range(1,level).Select(i=>FrostText.Get($"FROSTSWORN_ECLIPSE_{i}.description"))));
     }
     public static bool CanChoose(StartRunLobby lobby)=>lobby.NetService.Type!=NetGameType.Client && !lobby.IsAboutToBeginGame();
     public static bool Choose(StartRunLobby lobby,int level)

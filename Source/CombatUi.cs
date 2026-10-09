@@ -11,10 +11,14 @@ public static class FrostDisplay
     public static string Description(Creature creature)
     {
         var state = FrostActions.Freeze(creature);
-        string status = creature.Monster?.NextMove.Id == MonsterModel.stunnedMoveId ? "已冰封：跳过下一次行动。" :
-            state.NeedsNormalMove ? "恢复期：正常行动一次后才能再次冰封。" :
-            !FrostActions.CanFreeze(creature) ? "当前动作不可打断。" : "达到门槛后，在出牌结算结束时冰封。";
-        return $"当前寒霜：{creature.GetPowerAmount<FrostPower>()}\n当前冰封门槛：{FrostActions.Threshold(creature)}\n{status}\n本场已冰封 {state.Count} 次；每次冰封后门槛增加12。";
+        string key = creature.Monster?.NextMove.Id == MonsterModel.stunnedMoveId ? "FROZEN" :
+            state.NeedsNormalMove ? "RECOVERY" : !FrostActions.CanFreeze(creature) ? "UNINTERRUPTIBLE" : "READY";
+        var text = new LocString("static_hover_tips", "FROSTSWORN_FROST_STATUS.description");
+        text.Add("Frost", creature.GetPowerAmount<FrostPower>());
+        text.Add("Threshold", FrostActions.Threshold(creature));
+        text.Add("Status", FrostText.Get($"FROSTSWORN_FROST_{key}.description"));
+        text.Add("Count", state.Count);
+        return text.GetFormattedText();
     }
 
     public static ProgressBar Create(Control parent, Creature creature)
@@ -68,7 +72,7 @@ public static class FrostDisplay
         Update();
         return bar;
     }
-    public static string ColdDescription(Player player) => $"当前冷藏：{ColdStorage.Pile(player).Cards.Count}/{ColdStorage.Capacity(player)} 张\n当前容量上限：{ColdStorage.Capacity(player)} 张（基础4，最高10）。\n每回合正常抽牌后选择解冻{1+player.Creature.GetPowerAmount<SlowReleasePower>()}张。\n解冻仅下次打出减费1，不叠加。手牌满时留在冷藏区。";
+    public static string ColdDescription(Player player) => FrostText.Format("FROSTSWORN_COLD_STATUS.description", ("Count",ColdStorage.Pile(player).Cards.Count),("Capacity",ColdStorage.Capacity(player)),("Thaw",1+player.Creature.GetPowerAmount<SlowReleasePower>()));
 }
 
 [HarmonyPatch(typeof(NCreatureStateDisplay),nameof(NCreatureStateDisplay.SetCreature))]

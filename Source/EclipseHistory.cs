@@ -46,7 +46,7 @@ public static class EclipseHistory
         }
         else
         {
-            var label=new Label {Text="日食：未记录",Position=new Vector2(-10,70),MouseFilter=Control.MouseFilterEnum.Ignore};
+            var label=new Label {Text=FrostText.Get("FROSTSWORN_ECLIPSE_UNRECORDED.title"),Position=new Vector2(-10,70),MouseFilter=Control.MouseFilterEnum.Ignore};
             label.AddThemeFontSizeOverride("font_size",13);parent.AddChild(label);
         }
     }

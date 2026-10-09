@@ -12,7 +12,7 @@ public abstract class FrostRelic : ModRelicTemplate
         get
         {
             foreach(var (term,key) in new[]{("寒霜","FROSTSWORN_FROST"),("冰封","FROSTSWORN_FROST"),("冷藏","FROSTSWORN_COLD"),("冰甲","FROSTSWORN_ARMOR"),("雪势","FROSTSWORN_SNOW")}.DistinctBy(x=>x.Item2))
-                if(DynamicDescription.GetRawText().Contains(term) || (key=="FROSTSWORN_FROST" && DynamicDescription.GetRawText().Contains("冰封")))
+                if(FrostText.Contains(DynamicDescription.GetRawText(),term) || (key=="FROSTSWORN_FROST" && FrostText.Contains(DynamicDescription.GetRawText(),"冰封")))
                     yield return new HoverTip(new LocString("static_hover_tips",key+".title"),new LocString("static_hover_tips",key+".description"),null);
         }
     }

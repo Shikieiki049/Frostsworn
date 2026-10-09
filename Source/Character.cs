@@ -75,7 +75,7 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
 
 public sealed class FrostCardPool : TypeListCardPoolModel
 {
-    public override string Title => "霜誓者";
+    public override string Title => new LocString("characters","FROSTSWORN_CHARACTER_FROSTSWORN_CHARACTER.title").GetFormattedText();
     public override string EnergyColorName => "frostsworn";
     public override string BigEnergyIconPath => "res://Frostsworn/art075/energy.png";
     public override string TextEnergyIconPath => "res://Frostsworn/art076/energy_text.png";

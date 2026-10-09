@@ -1,10 +1,10 @@
 {
   "id": "Frostsworn",
   "pck_name": "Frostsworn",
-  "name": "霜誓者 · 完整卡池测试版",
+  "name": "Frostsworn / 霜誓者",
   "author": "Shikieiki",
-  "description": "冰系法师：寒霜进度条、冷藏、冰甲、冰晶、雪势与自霜。93种卡牌、9件遗物、3种专属药水；全角色日食0–8，支持房主统一选择。",
-  "version": "0.8.14",
+  "description": "An ice mage with Frost, Cold Storage, Ice Armor, Ice Crystals, Snowfall and Self-Frost. 93 cards, 9 relics, 3 exclusive potions; Eclipse 0-8 for all characters with host-controlled multiplayer difficulty. English and Chinese localization.",
+  "version": "0.8.15",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,

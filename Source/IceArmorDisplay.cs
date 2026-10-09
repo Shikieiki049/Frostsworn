@@ -29,7 +29,7 @@ public static class IceArmorDisplay
             NHoverTipSet.Remove(badge);
             if(!badge.Visible)return;
             var desc=new LocString("static_hover_tips","FROSTSWORN_ARMOR.description").GetFormattedText();
-            NHoverTipSet.CreateAndShow(badge,new HoverTip(new LocString("static_hover_tips","FROSTSWORN_ARMOR.title"),$"当前冰甲：{creature.GetPowerAmount<IceArmorPower>()}\n{desc}",null),HoverTip.GetHoverTipAlignment(badge))?.SetFollowOwner();
+            NHoverTipSet.CreateAndShow(badge,new HoverTip(new LocString("static_hover_tips","FROSTSWORN_ARMOR.title"),FrostText.Format("FROSTSWORN_ARMOR_STATUS.description",("Amount",creature.GetPowerAmount<IceArmorPower>()),("Description",desc)),null),HoverTip.GetHoverTipAlignment(badge))?.SetFollowOwner();
         }
         badge.MouseEntered+=()=>{hovered=true;Show();};badge.MouseExited+=()=>{hovered=false;NHoverTipSet.Remove(badge);};
         badge.FocusEntered+=()=>{hovered=true;Show();};badge.FocusExited+=()=>{hovered=false;NHoverTipSet.Remove(badge);};

@@ -45,16 +45,16 @@ public abstract class FrostCard(CardSpec spec):ModCardTemplate(spec.Cost,spec.Ty
         get
         {
             string text=Description.GetRawText();
-            if(text.Contains("力量"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.StrengthPower>();
-            if(text.Contains("敏捷"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.DexterityPower>();
-            if(text.Contains("易伤"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.VulnerablePower>();
-            if(text.Contains("虚弱"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.WeakPower>();
-            if(text.Contains("消耗")&&!Keywords.Contains(CardKeyword.Exhaust))yield return HoverTipFactory.FromKeyword(CardKeyword.Exhaust);
+            if(FrostText.Contains(text,"力量"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.StrengthPower>();
+            if(FrostText.Contains(text,"敏捷"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.DexterityPower>();
+            if(FrostText.Contains(text,"易伤"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.VulnerablePower>();
+            if(FrostText.Contains(text,"虚弱"))yield return HoverTipFactory.FromPower<MegaCrit.Sts2.Core.Models.Powers.WeakPower>();
+            if(FrostText.Contains(text,"消耗")&&!Keywords.Contains(CardKeyword.Exhaust))yield return HoverTipFactory.FromKeyword(CardKeyword.Exhaust);
             if(text.Contains("energyIcons"))yield return HoverTipFactory.ForEnergy(this);
             foreach(var pair in new[]{("寒霜","FROST"),("碎冰","SHATTER"),("冰甲","ARMOR"),("自霜","SELF"),("雪势","SNOW")})
-                if(text.Contains(pair.Item1)) yield return Tip(pair.Item2);
-            if(text.Contains("冷藏")||text.Contains("解冻"))yield return Tip("COLD");
-            if(this is not IceCrystal && text.Contains("冰晶"))
+                if(FrostText.Contains(text,pair.Item1)) yield return Tip(pair.Item2);
+            if(FrostText.Contains(text,"冷藏")||FrostText.Contains(text,"解冻"))yield return Tip("COLD");
+            if(this is not IceCrystal && FrostText.Contains(text,"冰晶"))
                 yield return FrostKeywords.Crystal(IsUpgraded && this is CrystalVolley or Glitter,this is Glitter);
             if(this is Glitter) yield return ModelDb.Enchantment<SharpEnchantment>().HoverTip;
             if(this is Pierce)yield return HoverTipFactory.FromCard<Depleted>();

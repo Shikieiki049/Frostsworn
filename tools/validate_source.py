@@ -5,9 +5,12 @@ import re
 from pathlib import Path
 from cards_data import cards
 from version_info import ROOT, version
+from english_localization import validate as validate_english
 
 
 def validate():
+    languages = {lang: {p.stem: json.loads(p.read_text('utf-8-sig')) for p in (ROOT / 'Assets/Frostsworn/localization' / lang).glob('*.json')} for lang in ('zhs', 'eng')}
+    validate_english(languages['zhs'], languages['eng'])
     for script in (ROOT / 'tools').glob('*.py'):
         ast.parse(script.read_text('utf-8-sig'), filename=str(script))
     names = [card[0] for card in cards]

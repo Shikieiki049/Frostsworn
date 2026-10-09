@@ -1,11 +1,11 @@
 {
-  "FROSTSWORN_POTION_FROST_BOTTLE.title": "冰冰药水",
-  "FROSTSWORN_POTION_FROST_BOTTLE.description": "给予{Amount}层[gold]寒霜[/gold]。",
-  "FROSTSWORN_POTION_FROST_BOTTLE.selectionScreenPrompt": "选择要冷藏的牌。",
-  "FROSTSWORN_POTION_LIQUID_NITROGEN.title": "液氮",
-  "FROSTSWORN_POTION_LIQUID_NITROGEN.description": "[gold]冷藏[/gold]至多3张[gold]手牌[/gold]。",
-  "FROSTSWORN_POTION_LIQUID_NITROGEN.selectionScreenPrompt": "选择要冷藏的牌。",
-  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.title": "分形雪花",
-  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.description": "本场战斗中，生成的[gold]冰晶[/gold]获得锐利。",
-  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.selectionScreenPrompt": "选择要冷藏的牌。"
+  "FROSTSWORN_POTION_FROST_BOTTLE.title": "Chill Potion",
+  "FROSTSWORN_POTION_FROST_BOTTLE.description": "Apply {Amount} [gold]Frost[/gold].",
+  "FROSTSWORN_POTION_FROST_BOTTLE.selectionScreenPrompt": "Choose a card to put into Cold Storage.",
+  "FROSTSWORN_POTION_LIQUID_NITROGEN.title": "Liquid Nitrogen",
+  "FROSTSWORN_POTION_LIQUID_NITROGEN.description": "Put up to 3 cards from your [gold]Hand[/gold] into [gold]Cold Storage[/gold].",
+  "FROSTSWORN_POTION_LIQUID_NITROGEN.selectionScreenPrompt": "Choose a card to put into Cold Storage.",
+  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.title": "Fractal Snowflake",
+  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.description": "[gold]Ice Crystals[/gold] created this combat gain [gold]Sharp[/gold].",
+  "FROSTSWORN_POTION_FRACTAL_SNOWFLAKE.selectionScreenPrompt": "Choose a card to put into Cold Storage."
 }
