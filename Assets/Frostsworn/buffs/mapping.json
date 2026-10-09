@@ -1,0 +1,194 @@
+[
+  {
+    "power": "ArmorNextPower",
+    "name": "下回合冰甲",
+    "sheet": 1,
+    "index": 0
+  },
+  {
+    "power": "IceArmorPower",
+    "name": "冰甲",
+    "sheet": 1,
+    "index": 1
+  },
+  {
+    "power": "ColdStoragePower",
+    "name": "冷藏",
+    "sheet": 1,
+    "index": 2
+  },
+  {
+    "power": "EndlessStormPower",
+    "name": "永夜风暴",
+    "sheet": 1,
+    "index": 3
+  },
+  {
+    "power": "SixfoldSnowPower",
+    "name": "积雪",
+    "sheet": 1,
+    "index": 4
+  },
+  {
+    "power": "SnowPower",
+    "name": "雪势",
+    "sheet": 1,
+    "index": 5
+  },
+  {
+    "power": "ThawNextPower",
+    "name": "下回合解冻",
+    "sheet": 1,
+    "index": 6
+  },
+  {
+    "power": "IceCellarPower",
+    "name": "冰窖",
+    "sheet": 1,
+    "index": 7
+  },
+  {
+    "power": "HeatExchangePower",
+    "name": "热交换",
+    "sheet": 2,
+    "index": 0
+  },
+  {
+    "power": "SlowReleasePower",
+    "name": "速释装置",
+    "sheet": 2,
+    "index": 1
+  },
+  {
+    "power": "CrystalAmuletPower",
+    "name": "冰晶护符",
+    "sheet": 2,
+    "index": 2
+  },
+  {
+    "power": "ColdExpansionPower",
+    "name": "冷库扩张",
+    "sheet": 2,
+    "index": 3
+  },
+  {
+    "power": "FrostPower",
+    "name": "寒霜",
+    "sheet": 2,
+    "index": 4
+  },
+  {
+    "power": "GlacialCorePower",
+    "name": "极寒晶核",
+    "sheet": 2,
+    "index": 5
+  },
+  {
+    "power": "BlessingWindPower",
+    "name": "祝福之风",
+    "sheet": 2,
+    "index": 6
+  },
+  {
+    "power": "HeartInscriptionPower",
+    "name": "铭刻于心",
+    "sheet": 2,
+    "index": 7
+  },
+  {
+    "power": "CrystalEdgePower",
+    "name": "晶锋",
+    "sheet": 3,
+    "index": 0
+  },
+  {
+    "power": "WinterArchivePower",
+    "name": "漫冬",
+    "sheet": 3,
+    "index": 1
+  },
+  {
+    "power": "HiddenBladePower",
+    "name": "藏锋秘术",
+    "sheet": 3,
+    "index": 2
+  },
+  {
+    "power": "StormCorePower",
+    "name": "风暴核心",
+    "sheet": 3,
+    "index": 3
+  },
+  {
+    "power": "GlacierBodyPower",
+    "name": "冰川形态",
+    "sheet": 3,
+    "index": 4
+  },
+  {
+    "power": "IceMirrorPower",
+    "name": "冰镜圣所",
+    "sheet": 3,
+    "index": 5
+  },
+  {
+    "power": "ColdBloodEchoPower",
+    "name": "寒血回响",
+    "sheet": 3,
+    "index": 6
+  },
+  {
+    "power": "SelfFrostGuardPower",
+    "name": "暴雪庇护",
+    "sheet": 3,
+    "index": 7
+  },
+  {
+    "power": "FractalSnowPower",
+    "name": "分形雪花",
+    "sheet": 4,
+    "index": 0
+  },
+  {
+    "power": "CrystalResonancePower",
+    "name": "晶群共鸣",
+    "sheet": 4,
+    "index": 1
+  },
+  {
+    "power": "FlowingPowerPower",
+    "name": "流淌而出的强大力量",
+    "sheet": 4,
+    "index": 2
+  },
+  {
+    "power": "SelfFrostPower",
+    "name": "自霜",
+    "sheet": 4,
+    "index": 3
+  },
+  {
+    "power": "SnowEyePower",
+    "name": "雪眼",
+    "sheet": 4,
+    "index": 4
+  },
+  {
+    "power": "DrawNextPower",
+    "name": "冬日筹备",
+    "sheet": 4,
+    "index": 5
+  },
+  {
+    "power": "IceReleasePower",
+    "name": "冰释",
+    "sheet": 4,
+    "index": 6
+  },
+  {
+    "power": "FatedStoryPower",
+    "name": "命定的物语",
+    "sheet": 4,
+    "index": 7
+  }
+]

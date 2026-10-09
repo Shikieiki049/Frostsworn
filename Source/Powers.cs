@@ -14,7 +14,7 @@ public abstract class FrostPowerBase : ModPowerTemplate
     }
     public override PowerStackType StackType => PowerStackType.Counter;
     public override PowerType Type => PowerType.Buff;
-    public override string CustomIconPath => "res://Frostsworn/icons/" + GetType().Name + ".svg";
+    public override string CustomIconPath => FrostPowerArt.PathFor(GetType().Name);
     public override string CustomBigIconPath => CustomIconPath;
 }
 
