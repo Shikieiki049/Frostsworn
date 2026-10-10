@@ -4,7 +4,7 @@
 
 ## 当前交付状态
 
-代码和模拟测试已完成。`Assets/Frostsworn/diagnostics/config.json` 的 endpoint 默认留空：目前只会保存本地脱敏报告，**尚未启用实际 GitHub 上传**。上线需要部署中转服务，再配置真实 HTTPS 地址并重新打包。没有服务器时，推荐 [Cloudflare Workers 配置步骤](report-worker-setup.md)。以下 Python 服务供已有服务器者使用。
+从 0.8.31 起，`Assets/Frostsworn/diagnostics/config.json` 已配置 `https://frostsworn-reports.newzshiki.workers.dev/reports`。Cloudflare 服务已部署，虚构诊断端到端写入 GitHub 验证通过；测试没有采集真实玩家日志。上传失败仍保留本地脱敏报告和队列，稍后重试。[Cloudflare Workers 配置步骤](report-worker-setup.md)包含维护说明。以下 Python 服务供已有服务器者使用。
 
 报告包括版本、时间、错误堆栈、近期日志中的诊断行，以及多人不同步报告中的 JSON 差异。不会发送完整原始日志、原始存档、ZIP、二进制附件。绝对路径、邮箱、IP、账号 ID、已识别的凭据和身份字段会被删除或匿名化。多人 ID 在同一个报告中使用一致的匿名代号，保留状态比对用途。脱敏尽量降低个人信息泄露，但自由文本无法保证识别所有个人信息，玩家授权说明明确报告会公开。
 

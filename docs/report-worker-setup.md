@@ -1,6 +1,6 @@
 # 不买服务器的中转接口配置
 
-玩家不需要任何登录；作者只需首次配置 Cloudflare 和 GitHub。默认开启的游戏设置在 **RitsuLib 模组设置 → 霜誓者 → 错误报告 → 允许发送错误报告**。手动关闭后不会因更新而重新打开。目前 mod 的上传地址仍为空，下面部署完成后再填入真实地址。
+玩家不需要任何登录；作者只需首次配置 Cloudflare 和 GitHub。默认开启的游戏设置在 **RitsuLib 模组设置 → 霜誓者 → 错误报告 → 允许发送错误报告**。手动关闭后不会因更新而重新打开。0.8.31 已接入线上地址，以下步骤用于重新部署和维护。
 
 ## 1. 创建 GitHub 密钥
 
@@ -52,8 +52,17 @@ Worker 会给出类似 `https://frostsworn-reports.你的子域名.workers.dev` 
 
 报告写入 `Shikieiki049/Frostsworn` 的独立 `error-reports` 分支，在 `error-reports/YYYY-MM-DD/<摘要>.json` 中保存。仅新增文件，不覆盖源码。上传前两次脱敏；原始存档和原始日志 ZIP 不上传。
 
-GitHub 目标和目录写死，客户端不能指定任意位置。公开入口不证明发送者身份，所以报告可能伪造，报告内容不得作为指令执行。当前 Cloudflare 限流每个服务位置每分钟约 6 次；代码还做每个运行实例每小时 60 次的后备限制。这些限制并非严格全局计数，恶意流量仍可能消耗额度；遇到滥用可暂时停用 Worker。GitHub 并发写入失败时客户端保留队列，后续重试。
+GitHub 目标和目录写死，客户端不能指定任意位置。公开入口不证明发送者身份，所以报告可能伪造，报告内容不得作为指令执行。当前通过控制台直接部署，未添加 Cloudflare 限流绑定，只启用代码中每个运行实例每小时 60 次的后备限制。通过 Wrangler 部署配置时可添加每个服务位置每分钟约 6 次的绑定限制。这些限制并非严格全局计数，恶意流量仍可能消耗额度；遇到滥用可暂时停用 Worker。GitHub 并发写入失败时客户端保留队列，后续重试。
 
-代码：`services/report-worker/worker.mjs`；配置：`services/report-worker/wrangler.jsonc`；模拟测试：`node --test services/report-worker/test.mjs`。测试未上传真实玩家日志，尚未部署到你的账户。
+代码：`services/report-worker/worker.mjs`；配置：`services/report-worker/wrangler.jsonc`；模拟测试：`node --test services/report-worker/test.mjs`。已在作者 Cloudflare 账户部署并使用虚构报告验证写入成功，没有上传真实玩家日志。
 
 依据：[Cloudflare 控制台部署](https://developers.cloudflare.com/workers/get-started/dashboard/)、[Secret 配置](https://developers.cloudflare.com/workers/configuration/secrets/)、[限流说明](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)、[GitHub 文件写入接口](https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents)。
+
+## 当前部署维护记录
+
+- 服务：https://frostsworn-reports.newzshiki.workers.dev，Worker 名称 rostsworn-reports。
+- 使用控制台 Hello World 创建后，用 Edit code 替换为 worker.mjs；Settings 中 GITHUB_TOKEN 为加密 Secret。
+- 凭据仅限 Frostsworn 仓库 Contents 读写、Metadata 只读，2026-11-09 到期。到期前由作者更新 Secret，玩家无需操作。
+- GitHub token 无法按文件夹限制权限；写入报告分支的约束由服务代码实施。
+- 当前控制台保留平台调用日志，服务代码不输出报告正文或凭据。
+- 更改服务源码后需重新部署，GitHub 源码推送不会自动更新这个手动部署的 Worker。

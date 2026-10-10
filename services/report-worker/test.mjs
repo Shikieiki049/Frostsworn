@@ -21,6 +21,7 @@ test('fixed repository and branch, create only, exact repeat deduplication', asy
   const github = async (url, options) => {
     assert(url.startsWith('https://api.github.com/repos/Shikieiki049/Frostsworn/'));
     assert(options.headers.Authorization === 'Bearer test-secret');
+    assert.equal(options.redirect, 'manual'); // Cloudflare supports manual/follow; never forward credentials.
     const path = new URL(url).pathname;
     if (path.endsWith('git/ref/heads/error-reports')) return json({});
     if (options.method === 'GET') return files.has(path) ? json({ content: files.get(path) }) : json({}, 404);
@@ -37,7 +38,7 @@ test('branch creation and concurrent create race verify existing bytes', async (
   let ready = false, content, post = 0;
   const github = async (url, options) => {
     if (url.endsWith('git/ref/heads/error-reports')) return json({}, ready ? 200 : 404);
-    if (url.endsWith('/Frostsworn/')) return json({ default_branch: 'main' });
+    if (url.endsWith('/Frostsworn')) return json({ default_branch: 'main' });
     if (url.endsWith('git/ref/heads/main')) return json({ object: { sha: 'existing-head' } });
     if (options.method === 'POST') { const body = JSON.parse(options.body); assert.deepEqual(body, { ref: 'refs/heads/error-reports', sha: 'existing-head' }); post++; ready = true; return json({}, 201); }
     if (options.method === 'GET') return content ? json({ content }) : json({}, 404);
@@ -49,6 +50,7 @@ test('branch creation and concurrent create race verify existing bytes', async (
 
 test('GitHub rejection never becomes a successful receipt', async () => {
   await assert.rejects(saveReport(sample(), 'test', async () => json({}, 403)));
+  await assert.rejects(saveReport(sample(), 'test', async () => new Response(null, { status: 302, headers: { Location: 'https://example.com' } })));
 });
 
 test('HTTP validation, missing secret, rate limiting, health', async () => {

@@ -49,14 +49,14 @@ function base64(bytes) {
   return btoa(binary);
 }
 
-export async function saveReport(report, token, apiFetch = fetch) {
+export async function saveReport(report, token, apiFetch = (url, options) => fetch(url, options)) {
   const { result, encoded } = sanitize(report);
   const digest = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', encoded)), x => x.toString(16).padStart(2, '0')).join('');
   const day = new Date(result.timestamp_utc).toISOString().slice(0, 10);
   const path = `error-reports/${day}/${digest}.json`;
   async function api(method, route, body) {
-    return apiFetch(`https://api.github.com/repos/${REPO}/${route}`, {
-      method, redirect: 'error', signal: AbortSignal.timeout(12000),
+    return apiFetch(`https://api.github.com/repos/${REPO}${route ? '/' + route : ''}`, {
+      method, redirect: 'manual', signal: AbortSignal.timeout(12000),
       headers: { Authorization: `Bearer ${token}`, 'User-Agent': 'Frostsworn-error-relay', Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2026-03-10', 'Content-Type': 'application/json' },
       body: body === undefined ? undefined : JSON.stringify(body)
