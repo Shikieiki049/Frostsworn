@@ -1,0 +1,1 @@
+{"event":"synthetic_final_verification","mod_version":"0.8.31-test","payload":{"hp":48,"max_hp":64,"message":"Synthetic test player-1 [email] [ip] [credential]"},"request":"state_divergence","schema":"frostsworn.error-report.v1","timestamp_utc":"2026-10-10T06:41:00Z"}
