@@ -30,6 +30,19 @@
 [*][b]多人[/b]：由房主选择，全队使用同一难度；多人进度与单人分开，角色之间共享多人日食进度。
 [/list]
 
+[b]各级新增效果[/b]（高等级包含之前所有等级的效果）：
+[list]
+[*][b]日食0[/b]：无特殊效果。
+[*][b]日食1[/b]：先古之民只会回复你已损失生命值的70%。
+[*][b]日食2[/b]：隐藏每一幕首个Boss前的3层地图节点，无法看到房间类型。
+[*][b]日食3[/b]：初始金币减少20。
+[*][b]日食4[/b]：偶数回合开始时，敌人获得3点格挡。
+[*][b]日食5[/b]：除先古之民外，所有来源的回复量减少三分之一；正数回复最低为1点。
+[*][b]日食6[/b]：事件造成的生命损失增加50%；最大生命值的增减不受此项影响。
+[*][b]日食7[/b]：奇数回合开始时，敌人获得1点临时力量，不被人工制品抵消。
+[*][b]日食8[/b]：友方每次受到未被格挡的伤害且存活时，最大生命值减少1点，累计最多减少50%；下一幕开始时恢复由日食扣除的最大生命值。
+[/list]
+
 [h2]安装与联机[/h2]
 请同时订阅前置模组 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]RitsuLib[/url]。
 当前适配[b]游戏0.111.0 / RitsuLib 0.6.7[/b]。联机时，所有玩家需要使用相同版本的霜誓者与RitsuLib。模组会持续调整，更新后建议新开一局。
@@ -42,7 +55,17 @@
 欢迎在留言区反馈玩法体验或问题。汇报Bug时，请尽量说明模组版本、日食等级、单人/多人模式，以及问题发生前的操作。
 [url=https://github.com/Shikieiki049/Frostsworn]GitHub源码与问题反馈[/url]
 
-本模组为玩家制作的非官方作品，与Mega Crit无隶属关系。
+[h2]致谢[/h2]
+[list]
+[*][b]Codex / OpenAI[/b]：协助代码开发、问题排查、英文翻译，以及图像编辑与动画原型制作。
+[*][b]Shikieiki049[/b]：玩法设计、素材提供、测试与反馈。
+[*][b]RitsuLib及其作者[/b]：提供模组框架、设置与联机相关支持。
+[*][b]Mega Crit / Slay the Spire 2[/b]：原版游戏，以及本模组复用的游戏接口、特效与音效。
+[*][url=https://tutorials.sts2modding.com/]STS2 Modding Tutorials[/url]：模组制作与创意工坊上传教程。
+[*][url=https://github.com/ptrlrd/spire-codex]ptrlrd / spire-codex[/url]：原版数据与实现参考。
+[*][b]Godot、.NET、Harmony、Steam Workshop与Cloudflare Workers[/b]：运行、开发、发布与错误报告服务所用的工具和平台。
+[*]感谢参与测试、反馈问题和提出建议的玩家。
+[/list]
 
 [hr][/hr]
 [h1]Frostsworn — Slay the Spire 2 Character Mod[/h1]
@@ -74,6 +97,19 @@ Frostsworn is an ice mage built around control, preparation, and bursts of frost
 Adds [b]Eclipse 0–8 for ALL characters[/b], with cumulative modifiers to healing, resources, and combat.
 Single-player progression is tracked separately for each character. In multiplayer, the host selects one difficulty for the whole party; multiplayer progression is separate from single-player and shared across characters.
 
+[b]Modifiers added at each level[/b] (higher levels include all earlier modifiers):
+[list]
+[*][b]Eclipse 0[/b] — No special effects.
+[*][b]Eclipse 1[/b] — Ancients restore only 70% of your missing HP.
+[*][b]Eclipse 2[/b] — Hide the map nodes on the three floors before the first Boss of each Act, concealing their room types.
+[*][b]Eclipse 3[/b] — Start with 20 less Gold.
+[*][b]Eclipse 4[/b] — At the start of even-numbered turns, enemies gain 3 Block.
+[*][b]Eclipse 5[/b] — Healing from all sources other than Ancients is reduced by one third. Positive healing restores at least 1 HP.
+[*][b]Eclipse 6[/b] — HP loss from events is increased by 50%. Changes to Max HP are unaffected by this modifier.
+[*][b]Eclipse 7[/b] — At the start of odd-numbered turns, enemies gain 1 temporary Strength. Cannot be negated by Artifact.
+[*][b]Eclipse 8[/b] — Each time an ally takes unblocked damage and survives, they lose 1 Max HP, up to a total reduction of 50%. Max HP lost to Eclipse is restored at the start of the next Act.
+[/list]
+
 [h2]Requirements & Multiplayer[/h2]
 Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]RitsuLib[/url]. Currently targets [b]game 0.111.0 / RitsuLib 0.6.7[/b]. All players should use matching Frostsworn and RitsuLib versions. Starting a new run after updating is recommended.
 
@@ -85,4 +121,14 @@ This option is [b]on by default[/b]. Sanitized diagnostic logs from errors and m
 Feedback is welcome! For bug reports, please include your mod version, Eclipse level, single-player or multiplayer mode, and the steps leading to the issue.
 [url=https://github.com/Shikieiki049/Frostsworn]Source code and issue tracker[/url]
 
-An unofficial community-made mod, unaffiliated with Mega Crit.
+[h2]Credits[/h2]
+[list]
+[*][b]Codex / OpenAI[/b] — Assistance with development, debugging, English translation, image editing, and animation prototypes.
+[*][b]Shikieiki049[/b] — Gameplay design, supplied artwork, testing, and feedback.
+[*][b]RitsuLib and its author(s)[/b] — Mod framework, settings, and multiplayer support.
+[*][b]Mega Crit / Slay the Spire 2[/b] — The game and the native interfaces, visual effects, and sounds reused by this mod.
+[*][url=https://tutorials.sts2modding.com/]STS2 Modding Tutorials[/url] — Modding and Workshop publishing guides.
+[*][url=https://github.com/ptrlrd/spire-codex]ptrlrd / spire-codex[/url] — Reference game data and implementations.
+[*][b]Godot, .NET, Harmony, Steam Workshop, and Cloudflare Workers[/b] — Tools and platforms used to run, develop, publish, and support error reporting for the mod.
+[*]Thanks to the players who tested the mod, reported issues, and shared suggestions.
+[/list]

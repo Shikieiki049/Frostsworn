@@ -25,7 +25,12 @@ empty and removes existing dependencies.
 Steam stores localized descriptions separately. The first description revision
 updated the English entry while the Simplified Chinese page retained its old
 text; this was a language mismatch, not a browser cache issue.
-Both English and Simplified Chinese entries now have the bilingual description.
+English and Simplified Chinese entries now contain their respective language
+sections of `description.bbcode.txt`, split at `[hr][/hr]`. The expanded Eclipse
+0–8 modifiers and credits exceed Steam's 8000-byte limit when combined: upload
+each language separately (English: 5209 UTF-8 bytes; Chinese: 4942 UTF-8 bytes).
+Both localized public pages were checked for the added modifiers and credits,
+and removal of the author's specified disclaimer, on 2026-10-10.
 For another explicit description change, update both `english` and `schinese`
 using `SteamUGC.SetItemUpdateLanguage` before setting the description.
 `uploader-language.patch` adds a `language` field to the official uploader's
