@@ -209,7 +209,7 @@ def build_english(chinese):
         'cardsModifierTitle':'Frostsworn Cards','cardsModifierDescription':'Use the Frostsworn card pool for this run.',
         'unlockText':'The frost oath is sworn.','bestiaryQuote':'Let this winter linger a little longer.',
         'bestiaryKillQuote':'Even ice will melt.','eventDeathPrevention':'It is not yet time to thaw.',
-        'banter.alive.endTurnPing':'Give me a little more time.','banter.dead.endTurnPing':"The rest is up to you.",
+        'banter.alive.endTurnPing':"I'll give you a little more time.",'banter.dead.endTurnPing':"The rest is up to you.",
     }.items(): result['characters'][char+'.'+suffix] = text
     for suffix, text in {'title':'Frost Oath','description':'Seal away the past. Enter the Spire.', 'unlockInfo':"The Frostsworn's journey.",'unlockText':'Frostsworn','storyTitle':'Frost Oath'}.items():
         result['epochs'][char+'_EPOCH.'+suffix] = text

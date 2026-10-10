@@ -34,7 +34,7 @@ for suffix,text in {
     'cardsModifierTitle':'霜誓者卡牌','cardsModifierDescription':'本局使用霜誓者卡池。','unlockText':'霜誓已立。',
     'bestiaryQuote':'让这个冬天再停留片刻。','bestiaryKillQuote':'冰终会融化。','eventDeathPrevention':'尚未到解冻之时。',
 }.items(): tables['characters'][char+'.'+suffix]=text
-for state,text in [('alive','再给我一点时间。'),('dead','接下来就交给你们了。')]:
+for state,text in [('alive','再给你一点时间。'),('dead','接下来就交给你们了。')]:
     tables['characters'][char+'.banter.'+state+'.endTurnPing']=text
 powers=expansion.powers
 for cls,(name,desc) in powers.items():
