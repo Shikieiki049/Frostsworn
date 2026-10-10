@@ -28,7 +28,8 @@ text; this was a language mismatch, not a browser cache issue.
 English and Simplified Chinese entries now contain their respective language
 sections of `description.bbcode.txt`, split at `[hr][/hr]`. The expanded Eclipse
 0–8 modifiers and credits exceed Steam's 8000-byte limit when combined: upload
-each language separately (English: 5209 UTF-8 bytes; Chinese: 4942 UTF-8 bytes).
+each language separately and check each section is under 8000 UTF-8 bytes.
+Both descriptions explicitly disclose AI use in code and artwork near the top.
 Both localized public pages were checked for the added modifiers and credits,
 and removal of the author's specified disclaimer, on 2026-10-10.
 For another explicit description change, update both `english` and `schinese`
