@@ -8,6 +8,8 @@ namespace Frostsworn;
 
 public static class FrostIdleVisuals
 {
+    // Supplied death art has transparent padding below the visible staff.
+    public const float DeathGroundY = 963f;
     public const string EmptyTexture = "res://Frostsworn/idle/empty.svg";
     public static void Attach(Node root)
     {
@@ -23,8 +25,29 @@ public static class FrostIdleVisuals
     {
         var idle = root.FindChild("IdleLoop", true, false);
         if (idle == null) return;
-        if (cue.ToLowerInvariant() is "dead" or "death" or "die") idle.SetProcess(false);
-        else if (cue.ToLowerInvariant() is "idle" or "relaxed" or "relaxed_loop" or "revive") idle.SetProcess(true);
+        if (idle.GetParent() is not Sprite2D body) return;
+        if (cue.ToLowerInvariant() is "dead" or "death" or "die")
+        {
+            idle.SetProcess(false);
+            if (idle is CanvasItem canvas) canvas.Hide();
+            var portrait = body.GetNodeOrNull<Sprite2D>("DeathPortrait");
+            if (portrait == null)
+            {
+                var texture = ResourceLoader.Load<Texture2D>("res://Frostsworn/idle/death.png");
+                float scale = 0.275f / 0.31f;
+                portrait = new Sprite2D { Name = "DeathPortrait", Texture = texture,
+                    Centered = false, Scale = Vector2.One * scale,
+                    Position = new Vector2(-texture.GetWidth() * 0.5f * scale, 525 - DeathGroundY * scale) };
+                body.AddChild(portrait);
+            }
+            portrait.Show();
+        }
+        else if (cue.ToLowerInvariant() is "idle" or "relaxed" or "relaxed_loop" or "revive")
+        {
+            body.GetNodeOrNull<Sprite2D>("DeathPortrait")?.Hide();
+            if (idle is CanvasItem canvas) canvas.Show();
+            idle.SetProcess(true);
+        }
     }
     public static void EnsureMerchant(NMerchantCharacter root)
     {

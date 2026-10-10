@@ -29,6 +29,10 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
     public override string CustomIconPath => PortraitTexture;
     public override string CustomCharacterSelectIconPath => "res://Frostsworn/art075/selection.png";
     public override string CustomCharacterSelectLockedIconPath => CustomCharacterSelectIconPath;
+    public override string CustomArmPointingTexturePath => "res://Frostsworn/multiplayer/point.svg";
+    public override string CustomArmRockTexturePath => "res://Frostsworn/multiplayer/rock.svg";
+    public override string CustomArmPaperTexturePath => "res://Frostsworn/multiplayer/paper.svg";
+    public override string CustomArmScissorsTexturePath => "res://Frostsworn/multiplayer/scissors.svg";
     public override string CustomMapMarkerPath => "res://Frostsworn/art075/map.png";
     public override string CustomCharacterSelectBgPath => "res://Frostsworn/character/selection.tscn";
     public override string CustomEnergyCounterPath => "res://scenes/combat/energy_counters/ironclad_energy_counter.tscn";
@@ -38,7 +42,7 @@ public sealed class FrostswornCharacter : ModCharacterTemplate<FrostCardPool, Fr
     {
         var builder = VisualCueSetBuilder.Create();
         var style = new VisualNodeStyle { Scale = new Vector2(scale, scale), Position = new Vector2(0, y) };
-        foreach (var cue in new[] { "idle", "attack", "cast", "hit", "dead", "die", "relaxed", "rest", "sleep", "wake" })
+        foreach (var cue in new[] { "idle", "attack", "cast", "hit", "dead", "death", "die", "relaxed", "rest", "sleep", "wake" })
             builder.Single(cue, FrostIdleVisuals.EmptyTexture, style);
         return builder.Build();
     }
