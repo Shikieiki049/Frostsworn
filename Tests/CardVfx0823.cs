@@ -17,6 +17,15 @@ public static partial class Suite
     {
         typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(NMerchantRoom).Assembly});
         var tree=(SceneTree)Engine.GetMainLoop();await tree.ToSignal(tree,SceneTree.SignalName.ProcessFrame);
+        var visual=new Node2D {Position=new(300,500)};tree.Root.AddChild(visual);
+        Assert(FrostCardVfx.BeamOrigin(visual,new(7,9))==new Vector2(7,9),"other characters retain their native beam origin");
+        var rig=new Node2D {Name="IdleLoop",Scale=Vector2.One*.275f};visual.AddChild(rig);
+        Assert(FrostCardVfx.BeamOrigin(visual,Vector2.Zero).DistanceTo(new Vector2(440.25f,209.875f))<.01f,"beam originates at elevated staff crystal rather than torso");
+        visual.Position=new(700,500);visual.Scale=Vector2.One*.8f;
+        Assert(FrostCardVfx.BeamOrigin(visual,Vector2.Zero).DistanceTo(new Vector2(812.2f,267.9f))<.01f,"beam origin follows each multiplayer model position and scale");
+        var origins=Enumerable.Range(0,32).Select(_=>rig.ToLocal(FrostCardVfx.CrystalOrigin(visual,Vector2.Zero))).ToArray();
+        Assert(origins.All(p=>p.X>=-260 && p.X<=650 && p.Y>=-1040 && p.Y<=-740) && origins.Distinct().Count()>1,"cosmetic summon positions vary within a bounded area around the caster");
+        visual.QueueFree();
         var cards=typeof(FrostCard).Assembly.GetTypes().Where(t=>!t.IsAbstract && typeof(FrostCard).IsAssignableFrom(t)).ToArray();
         var expected=cards.Where(t=>t!=typeof(FrostStrike) && t!=typeof(FrostDefend) && t!=typeof(Depleted)).ToArray();
         Assert(expected.Length==90 && expected.All(FrostCardVfx.Profiles.ContainsKey) && FrostCardVfx.Profiles.Count==90,"all 90 playable non-basic cards have explicit intentional profiles");
@@ -32,6 +41,27 @@ public static partial class Suite
             Assert(hitCallbacks.Count==(FrostCardVfx.Profiles.TryGetValue(type,out var profile) && profile.Target!=FrostMotif.None?1:0),"native per-hit callback configured for "+type.Name);
         }
         var container=new Node2D();tree.Root.AddChild(container);
+        var flight=FrostCardVfx.CreateCrystalFlight(new Vector2(180,290),new Vector2(900,290));container.AddChild(flight);
+        var projectile=flight.GetNode<Node2D>("FlyingCrystal");
+        var flightTween=(Tween)flight.GetMeta("flight_tween").AsGodotObject();flightTween.Pause();
+        Assert(flight.GetNode<Node2D>("SummonCircle").Position==projectile.Position,"small magic circle marks the exact crystal summon position");
+        Assert(projectile.Position==new Vector2(-720,0),"small crystal starts at caster instead of appearing on target");
+        flightTween.CustomStep(.21);
+        Assert(projectile.Position.X>-720 && projectile.Position.X<0,"ice crystal visibly travels toward target");
+        if(DisplayServer.GetName()!="headless") {
+            await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-flight-0824.png"));
+        }
+        flightTween.CustomStep(.12);
+        await tree.ToSignal(tree,SceneTree.SignalName.ProcessFrame);
+        Assert(!GodotObject.IsInstanceValid(projectile) && flight.HasNode("FrostCardFx"),"crystal shatters only after flight reaches enemy");
+        if(DisplayServer.GetName()!="headless") {
+            await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-impact-0824.png"));
+        }
+        flightTween.Play();
+        await tree.ToSignal(tree.CreateTimer(3.7),SceneTreeTimer.SignalName.Timeout);
+        Assert(!GodotObject.IsInstanceValid(flight),"crystal flight and impact clean themselves up");
         foreach(var profile in FrostCardVfx.Profiles.Values)
         {
             var fx=FrostCardVfx.CreateAt(profile.Caster|profile.Target,new Vector2(100,300),new Vector2(400,300),profile.Strength);

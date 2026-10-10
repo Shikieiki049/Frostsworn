@@ -131,8 +131,77 @@ public static class FrostCardVfx
     private static Node2D? Impact(FrostCard card,Creature target,FrostVfxProfile profile)
     {
         if(TestMode.IsOn || target.IsDead || target.GetCreatureNode() is not {} victim || target.GetVfxContainer()==null)return null;
-        var source=card.Owner.Creature.GetCreatureNode()?.VfxSpawnPosition ?? victim.VfxSpawnPosition;
+        var caster=card.Owner.Creature.GetCreatureNode();
+        var source=caster?.VfxSpawnPosition ?? victim.VfxSpawnPosition;
+        if(profile.Target.HasFlag(FrostMotif.Beam) && caster!=null)source=BeamOrigin(caster.Visuals,source);
+        if(card is IceCrystal && caster!=null)source=CrystalOrigin(caster.Visuals,source);
+        if(card is IceCrystal)return CreateCrystalFlight(source,victim.VfxSpawnPosition,profile.Strength);
         return CreateAt(profile.Target,source,victim.VfxSpawnPosition,profile.Strength);
+    }
+    public static Vector2 BeamOrigin(Node2D visuals,Vector2 fallback)
+    {
+        // Approved idle mesh coordinates: the crystal in the staff head.
+        // Transform through the rig so each player's position/scale is respected.
+        return visuals.FindChild("IdleLoop",true,false) is Node2D idle
+            ?idle.ToGlobal(new Vector2(510,-1055)):fallback;
+    }
+    public static Node2D CreateCrystalFlight(Vector2 source,Vector2 target,float strength=.65f)
+    {
+        var root=new Node2D {Name="FrostCrystalFlight",Position=target};
+        var from=source-target;
+        var summon=CreateCrystalSigil(from);
+        summon.TreeEntered+=()=>{
+            var fade=summon.CreateTween();fade.TweenInterval(.1);fade.TweenProperty(summon,"modulate:a",0f,.35);
+        };
+        root.AddChild(summon);
+        var projectile=new Node2D {Name="FlyingCrystal",Position=from,Rotation=(-from).Angle()};
+        var texture=ResourceLoader.Load<Texture2D>("res://images/vfx/orbs/frost_orb_particle.png");
+        projectile.AddChild(new Sprite2D {Texture=texture,Modulate=Ice,Rotation=Mathf.Pi/2,
+            Scale=new Vector2(.65f,1.2f)*(32*Math.Clamp(strength,.6f,1.2f)/Math.Max(texture.GetWidth(),texture.GetHeight()))});
+        projectile.AddChild(new Line2D {Points=new[]{new Vector2(-26,0),Vector2.Zero},Width=3,
+            DefaultColor=new Color(Ice,.3f),Antialiased=true});
+        root.AddChild(projectile);
+        root.TreeEntered+=()=>{
+            var flight=root.CreateTween();
+            root.SetMeta("flight_tween",flight);
+            flight.TweenInterval(.1);
+            flight.TweenProperty(projectile,"position",Vector2.Zero,.22);
+            flight.TweenCallback(Callable.From(()=>{
+                projectile.QueueFree();
+                root.AddChild(CreateAt(FrostMotif.Crystal|FrostMotif.Shards,Vector2.Zero,Vector2.Zero,strength));
+            }));
+            flight.TweenInterval(3.5);
+            flight.TweenCallback(Callable.From(()=>root.QueueFree()));
+        };
+        return root;
+    }
+    public static Node2D CreateCrystalSigil(Vector2 position)
+    {
+        var sigil=new Node2D {Name="SummonCircle",Position=position};
+        Vector2 Tilt(Vector2 p)=>new(p.X,p.Y*.72f);
+        void Ink(IEnumerable<Vector2> points,Color color,float width=1,bool closed=false)=>sigil.AddChild(new Line2D {
+            Points=points.Select(Tilt).ToArray(),DefaultColor=color,Width=width,Closed=closed,Antialiased=true,
+            BeginCapMode=Line2D.LineCapMode.Round,EndCapMode=Line2D.LineCapMode.Round});
+        Ink(Enumerable.Range(0,64).Select(i=>Vector2.FromAngle(i*Mathf.Tau/64)*32),new Color(Blue,.8f),1.2f,true);
+        Ink(Enumerable.Range(0,64).Select(i=>Vector2.FromAngle(i*Mathf.Tau/64)*25),new Color(Ice,.6f),.8f,true);
+        Ink(Enumerable.Range(0,6).Select(i=>Vector2.FromAngle(i*Mathf.Tau/6)*5),Ice,1,true);
+        for(int i=0;i<6;i++)
+        {
+            var axis=Vector2.FromAngle(-Mathf.Pi/2+i*Mathf.Tau/6);var side=axis.Orthogonal();
+            Ink(new[]{axis*6,axis*21},Ice,1.2f);
+            Ink(new[]{axis*12+side*5,axis*16,axis*12-side*5},new Color(Ice,.85f),1);
+            Ink(new[]{axis*28,axis*30+side*2,axis*32,axis*30-side*2},Ice,1,true);
+        }
+        return sigil;
+    }
+    public static Vector2 CrystalOrigin(Node2D visuals,Vector2 fallback)
+    {
+        // Cosmetic randomness only: never use the run/combat RNG streams.
+        float x=-260+System.Random.Shared.NextSingle()*910;
+        float y=-1040+System.Random.Shared.NextSingle()*300;
+        return visuals.FindChild("IdleLoop",true,false) is Node2D idle
+            ?idle.ToGlobal(new Vector2(x,y))
+            :fallback+new Vector2(x*.15f,(y+800)*.15f);
     }
     public static void Cast(FrostCard card,CardPlay play)
     {
