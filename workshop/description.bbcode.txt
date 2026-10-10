@@ -1,0 +1,88 @@
+[h1]霜誓者 · Frostsworn[/h1]
+[b]冰封敌人的行动，把下一回合的胜机藏进寒冬。[/b]
+
+霜誓者是一名加入《杀戮尖塔2》的冰霜法师。你可以用寒霜控制敌人、召唤冰晶发动攻击，也可以将卡牌冷藏，等待解冻后组织爆发。冰甲与雪势支撑攻防，而自霜让强大的力量伴随着需要承担的代价。
+
+[h2]角色特色[/h2]
+[list]
+[*][b]寒霜与冰封[/b]：累积寒霜，达到敌人的冰封门槛后使其跳过一次行动。同一敌人被冰封得越多，后续门槛越高——把控制留给最关键的一回合。
+[*][b]冷藏与解冻[/b]：将卡牌暂时封存，回合开始时解冻。解冻牌下次打出费用降低1点；通过抽牌、额外解冻和相关能力，为下一回合铺好连招。
+[*][b]冰晶[/b]：召唤可打出的攻击牌，用强化、升级和联动让一枚冰晶汇成一场冰晶风暴。
+[*][b]冰甲[/b]：在格挡之后抵挡伤害，使用时消耗，每回合自然融化。积攒防护，也要把握出手的时机。
+[*][b]雪势[/b]：回合结束时对所有敌人造成非攻击伤害，随后层数减半。让不断积累的风雪成为持续的进攻。
+[*][b]自霜[/b]：下回合失去生命，换取当下的收益。借助相关卡牌与能力，将风险纳入你的战斗计划。
+[/list]
+
+[h2]模组内容[/h2]
+[list]
+[*][b]93张卡牌[/b]，包含基础牌、衍生牌与先古牌。
+[*][b]9件遗物[/b]、[b]3种专属药水[/b]。
+[*]中文与英文本地化。
+[*]角色待机动画、静态死亡立绘、多人宝箱手势，以及自定义头像、卡图和状态图标。
+[*]与卡名和牌效相配的战斗特效及音效。
+[*]单人和多人模式支持。
+[/list]
+
+[h2]日食挑战[/h2]
+除了霜誓者，本模组还为[b]所有角色[/b]提供日食0–8挑战。各级效果逐步叠加，改变恢复、资源与战斗条件。
+[list]
+[*][b]单人[/b]：每个角色分别记录最高日食难度。
+[*][b]多人[/b]：由房主选择，全队使用同一难度；多人进度与单人分开，角色之间共享多人日食进度。
+[/list]
+
+[h2]安装与联机[/h2]
+请同时订阅前置模组 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]RitsuLib[/url]。
+当前适配[b]游戏0.111.0 / RitsuLib 0.6.7[/b]。联机时，所有玩家需要使用相同版本的霜誓者与RitsuLib。模组会持续调整，更新后建议新开一局。
+
+[h2]模组设置与错误报告[/h2]
+在RitsuLib模组设置中打开[b]霜誓者 → 错误报告[/b]，可以切换[b]“允许发送错误报告”[/b]。
+该选项[b]默认开启[/b]：遇到错误或多人数据不同步时，自动发送经过脱敏的诊断日志到作者的[b]公开GitHub仓库[/b]，帮助定位问题。不需要玩家登录，也不会发送完整存档。关闭后停止收集和发送，后续更新保留你的选择。
+
+[h2]反馈与源码[/h2]
+欢迎在留言区反馈玩法体验或问题。汇报Bug时，请尽量说明模组版本、日食等级、单人/多人模式，以及问题发生前的操作。
+[url=https://github.com/Shikieiki049/Frostsworn]GitHub源码与问题反馈[/url]
+
+本模组为玩家制作的非官方作品，与Mega Crit无隶属关系。
+
+[hr][/hr]
+[h1]Frostsworn — Slay the Spire 2 Character Mod[/h1]
+[b]Freeze your enemies. Store your next turn's winning play in the cold.[/b]
+
+Frostsworn is an ice mage built around control, preparation, and bursts of frost magic. Freeze enemies with Frost, conjure Ice Crystals, or put cards into Cold Storage for a stronger turn ahead. Ice Armor and Snowfall support your defense and offense, while Self-Frost makes powerful plays come with a cost.
+
+[h2]Playstyle[/h2]
+[list]
+[*][b]Frost & Freeze[/b] — Reach an enemy's Freeze threshold to make it skip an action. Repeated Freezes raise that enemy's threshold, so time your control carefully.
+[*][b]Cold Storage & Thaw[/b] — Store cards for later and Thaw them at the start of your turn. A Thawed card costs 1 less the next time it is played. Combine draw, extra Thaws, and supporting Powers to prepare your next combo.
+[*][b]Ice Crystals[/b] — Create Attack cards, then strengthen, upgrade, and combine them through dedicated synergies.
+[*][b]Ice Armor[/b] — Absorbs damage after Block and is consumed as it protects you. It naturally melts each turn, rewarding well-timed defense.
+[*][b]Snowfall[/b] — Deals non-Attack damage to ALL enemies at the end of your turn, then halves its stacks.
+[*][b]Self-Frost[/b] — Trade HP loss next turn for benefits now, and use supporting cards and Powers to manage the cost.
+[/list]
+
+[h2]Content[/h2]
+[list]
+[*][b]93 cards[/b], including starter, generated, and Ancient cards.
+[*][b]9 relics[/b] and [b]3 character-specific potions[/b].
+[*]Chinese and English localization.
+[*]Animated idle visuals, static death artwork, multiplayer treasure gestures, and custom portraits, card art, and status icons.
+[*]Card effects and sounds matched to their themes and mechanics.
+[*]Single-player and multiplayer support.
+[/list]
+
+[h2]Eclipse Challenge[/h2]
+Adds [b]Eclipse 0–8 for ALL characters[/b], with cumulative modifiers to healing, resources, and combat.
+Single-player progression is tracked separately for each character. In multiplayer, the host selects one difficulty for the whole party; multiplayer progression is separate from single-player and shared across characters.
+
+[h2]Requirements & Multiplayer[/h2]
+Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]RitsuLib[/url]. Currently targets [b]game 0.111.0 / RitsuLib 0.6.7[/b]. All players should use matching Frostsworn and RitsuLib versions. Starting a new run after updating is recommended.
+
+[h2]Settings & Error Reports[/h2]
+In RitsuLib's mod settings, open [b]Frostsworn → Error reports[/b] to change [b]Allow sending error reports[/b].
+This option is [b]on by default[/b]. Sanitized diagnostic logs from errors and multiplayer state divergence are sent to the author's [b]public GitHub repository[/b] for troubleshooting. No player login is required, and full saves are not sent. Turning it off stops collection and sending; updates preserve your choice.
+
+[h2]Feedback & Source[/h2]
+Feedback is welcome! For bug reports, please include your mod version, Eclipse level, single-player or multiplayer mode, and the steps leading to the issue.
+[url=https://github.com/Shikieiki049/Frostsworn]Source code and issue tracker[/url]
+
+An unofficial community-made mod, unaffiliated with Mega Crit.

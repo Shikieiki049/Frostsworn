@@ -12,6 +12,13 @@ routine updates: the author may change the title and description on Steam.
 those fields during future uploads. `mod_id.txt` identifies the existing item;
 always use it to avoid creating another listing.
 
+`description.bbcode.txt` records the bilingual description revision requested
+by the author. It uses Steam headings and lists. Only add it as the JSON
+`description` field when an explicit description update is requested; ordinary
+mod updates must leave description omitted. Keep `dependencies` and `tags` in
+every upload configuration: the uploader treats omitted dependency lists as
+empty and removes existing dependencies.
+
 The local uploader workspace is `../work/WorkshopUploader/Frostsworn`. For an
 update, copy the release's `Frostsworn.dll`, `Frostsworn.pck` and
 `mod_manifest.json` into its `content` folder and verify their hashes against
