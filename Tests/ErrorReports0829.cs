@@ -17,6 +17,21 @@ public static partial class Suite
         Directory.CreateDirectory(root);
         try
         {
+            Assert(FrostReportSettings.Supported,"native consent bridge matches installed RitsuLib methods");
+            FrostReportSettings.Register();
+            var settings=STS2RitsuLib.Settings.ModSettingsRegistry.GetPages().Single(x=>x.ModId==Entry.ModId);
+            Assert(settings.Sections.SelectMany(x=>x.Entries).Any(x=>x.Id=="allow_error_reports" && x is STS2RitsuLib.Settings.ToggleModSettingsEntryDefinition),"real RitsuLib settings registry contains the report toggle under Frostsworn");
+            int defaults=0;
+            FrostReportSettings.ApplyDefault(TelemetryConsentState.Unknown,value=>{Assert(value,"first install enables reports");defaults++;});
+            FrostReportSettings.ApplyDefault(TelemetryConsentState.Denied,value=>defaults++);
+            FrostReportSettings.ApplyDefault(TelemetryConsentState.Granted,value=>defaults++);
+            Assert(defaults==1,"startup default never overrides an existing allow or deny choice");
+            bool allowed=false;
+            var binding=FrostReportSettings.CreateBinding(()=>allowed,value=>allowed=value);
+            binding.Write(true);Assert(binding.Read(),"settings toggle immediately enables native permission binding");
+            allowed=false;Assert(!binding.Read(),"external native consent changes are reflected by settings toggle");
+            binding.Write(false);binding.Save();Assert(!binding.Read(),"disabling reports remains disabled when settings save");
+            Assert(!FrostReportSettings.IsAllowed(TelemetryConsentState.Denied,FrostReportSettings.Requests) && !FrostReportSettings.IsAllowed(TelemetryConsentState.Granted,new[]{"diagnostics"}),"denial and incomplete permission never display fully allowed");
             var scrub=new FrostReportScrubber();
             string raw="ERROR: 76561198000000001 76561198000000002 email@example.com 192.168.1.2 ::1 ghp_exampleSECRET C:\\Users\\TestPlayer\\save.json";
             string cleaned=scrub.Text(raw);

@@ -28,6 +28,8 @@ public static class FrostErrorReports
         try {adapter=new FrostReportAdapter(endpoint,folder,logs);}
         catch(ArgumentException){adapter=new FrostReportAdapter("",folder,logs);}
         TelemetryRegistry.RegisterApplicant(CreateApplicant(adapter));
+        try {FrostReportSettings.InitializeDefault();FrostReportSettings.Register();}
+        catch {RitsuLibFramework.CreateLogger(Entry.ModId).Warn("Error report settings could not initialize. Manage permission in RitsuLib data sharing settings.");}
     }
     public static TelemetryApplicant CreateApplicant(ITelemetryAdapter adapter)=>new() {
             ApplicantId=ApplicantId,OwnerModId=Entry.ModId,DisplayName="Frostsworn error reports",

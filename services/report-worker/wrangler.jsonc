@@ -1,0 +1,8 @@
+{
+  "name": "frostsworn-reports",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-10",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "ratelimits": [{ "name": "REPORT_RATE_LIMITER", "namespace_id": "7495", "simple": { "limit": 6, "period": 60 } }]
+}

@@ -1,6 +1,8 @@
 # 霜誓者 Frostsworn
 
-当前版本 **0.8.29**，支持 Slay the Spire 2 **0.111.0** 与 RitsuLib **0.6.7**。
+当前版本 **0.8.30**，支持 Slay the Spire 2 **0.111.0** 与 RitsuLib **0.6.7**。
+
+0.8.30：在 RitsuLib 的“霜誓者”设置中新增“允许发送错误报告”，默认开启并保留玩家手动关闭的选择；与原生数据共享授权同步。新增 Cloudflare Workers 中转实现，玩家无需登录。上传地址尚未配置，当前只保存本地脱敏报告。[中转接口配置步骤](docs/report-worker-setup.md)。
 
 0.8.29：接入 RitsuLib 玩家授权后的自动异常和多人不同步报告，保存脱敏诊断，并提供向 GitHub 独立报告分支上传的服务器组件。当前上传地址留空，只保存本地报告；部署服务后配置 HTTPS 地址才会实际上传。[部署与数据范围](docs/error-reports.md)。
 
