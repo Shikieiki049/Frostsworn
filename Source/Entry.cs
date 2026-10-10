@@ -27,6 +27,7 @@ public static class Entry
             OnOpen = c => c.ShowDefaultPileScreen()
         }).PileType;
         Eclipse.Initialize();
+        FrostErrorReports.Initialize();
         new Harmony("Frostsworn.mechanics").PatchAll(Assembly.GetExecutingAssembly());
         RitsuLibFramework.CreateLogger(ModId).Info($"Frostsworn {FrostVersion.Value}: 93 card definitions, 3 character potions, 9 relics, ancient mappings, Eclipse 0-8 and dynamic cold capacity registered.");
     }
