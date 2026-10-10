@@ -160,12 +160,14 @@ public static class FrostCardVfx
         projectile.Scale=crystalScale;
         root.AddChild(projectile);
         root.TreeEntered+=()=>{
+            FrostCardAudio.CrystalSummon();
             var flight=root.CreateTween();
             root.SetMeta("flight_tween",flight);
             flight.TweenProperty(projectile,"modulate:a",1f,.14).From(0f);
             flight.Parallel().TweenProperty(projectile,"scale",crystalScale,.14).From(crystalScale*.35f);
             flight.TweenProperty(projectile,"position",Vector2.Zero,.22);
             flight.TweenCallback(Callable.From(()=>{
+                FrostCardAudio.CrystalImpact();
                 projectile.QueueFree();
                 root.AddChild(CreateAt(FrostMotif.Crystal|FrostMotif.Shards,Vector2.Zero,Vector2.Zero,strength));
             }));

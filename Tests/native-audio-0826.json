@@ -1,0 +1,29 @@
+{
+  "event:/sfx/characters/defect/defect_frost_channel": {
+    "oneshot": true
+  },
+  "event:/sfx/characters/defect/defect_glass_channel": {
+    "oneshot": true
+  },
+  "event:/sfx/characters/defect/defect_hyperbeam": {
+    "oneshot": true
+  },
+  "event:/sfx/characters/silent/silent_attack": {
+    "oneshot": true
+  },
+  "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_magic": {
+    "oneshot": true
+  },
+  "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_stone": {
+    "oneshot": true
+  },
+  "event:/sfx/block_break": {
+    "oneshot": true
+  },
+  "event:/sfx/ui/enchant_shimmer": {
+    "oneshot": true
+  },
+  "event:/sfx/ui/enchant_whoosh": {
+    "oneshot": true
+  }
+}

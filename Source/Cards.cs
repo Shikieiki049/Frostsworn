@@ -64,6 +64,7 @@ public abstract class FrostCard(CardSpec spec):ModCardTemplate(spec.Cost,spec.Ty
     protected override Task OnPlay(PlayerChoiceContext context,CardPlay play)
     {
         FrostCardVfx.Cast(this,play);
+        FrostCardAudio.Cast(this);
         return RevisedEffects.Play(this,context,play);
     }
     public override Task AfterCardChangedPiles(CardModel card,PileType oldPileType,AbstractModel? clonedBy)
