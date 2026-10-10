@@ -3,6 +3,8 @@
 
 [b]AI使用说明：本模组的代码与美术制作均使用了AI工具，包括代码生成与修改，以及部分美术素材的生成、编辑和补全。[/b]
 
+[b]急需美术和动画师>_<[/b] 欢迎有兴趣的朋友通过留言区或GitHub联系！
+
 霜誓者是一名加入《杀戮尖塔2》的冰霜法师。你可以用寒霜控制敌人、召唤冰晶发动攻击，也可以将卡牌冷藏，等待解冻后组织爆发。冰甲与雪势支撑攻防，而自霜让强大的力量伴随着需要承担的代价。
 
 [h2]角色特色[/h2]
@@ -74,6 +76,8 @@
 [b]Freeze your enemies. Store your next turn's winning play in the cold.[/b]
 
 [b]AI disclosure: AI tools were used to create this mod's code and artwork, including code generation and revision, as well as generation, editing, and completion of some art assets.[/b]
+
+[b]Artists and animators urgently needed >_<[/b] Interested? Get in touch through the comments or GitHub!
 
 Frostsworn is an ice mage built around control, preparation, and bursts of frost magic. Freeze enemies with Frost, conjure Ice Crystals, or put cards into Cold Storage for a stronger turn ahead. Ice Armor and Snowfall support your defense and offense, while Self-Frost makes powerful plays come with a cost.
 

@@ -11,7 +11,7 @@ export function sanitize(input) {
   if (!input || input.schema !== 'frostsworn.error-report.v1' || !['diagnostics', 'state_divergence'].includes(input.request)) throw new Error('schema');
   const aliases = new Map();
   const text = value => value.slice(0, 65536)
-    .replace(/(?:file:\/\/)?[a-z]:[\\/][^\r\n"'<>]+|(?<![:\w/])\/(?:home|Users|root|tmp|var|mnt)\/[^\r\n"'<>]+|\\\\[^\r\n"'<>]+/gi, '[absolute-path]')
+    .replace(/(?<![\w])(?:file:\/\/\/?)?[a-z]:[\\/][^\r\n"'<>]+|(?<![:\w/])\/(?:home|Users|root|tmp|var|mnt)\/[^\r\n"'<>]+|\\\\[^\r\n"'<>]+/gi, '[absolute-path]')
     .replace(/\b(?:github_pat_|gh[pousr]_)[\w]+|Bearer\s+\S+|(?:password|token|secret|api[_-]?key)\s*[=:]\s*\S+/gi, '[credential]')
     .replace(/\b[\w.%+-]+@[\w.-]+\.[a-z]{2,}\b/gi, '[email]')
     .replace(/(?<!\d)\d{17}(?!\d)/g, id => {

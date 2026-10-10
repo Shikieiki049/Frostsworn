@@ -60,6 +60,8 @@ GitHub 目标和目录写死，客户端不能指定任意位置。公开入口�
 
 ## 当前部署维护记录
 
+- 2026-10-11：修复服务端把 `res://`、`user://` 末尾误识别为 Windows 盘符的问题，Python 备用中转同步修复。Windows、Unix、UNC 和 file URI 私人路径继续脱敏。Worker 与 Python 共11项测试通过；线上版本 `e905f29f` 已部署，虚构诊断写入 GitHub 后核对资源路径保留、私人路径隐藏。无需更新玩家模组。已被旧服务删掉的路径无法从公开报告还原。
+
 - 服务：https://frostsworn-reports.newzshiki.workers.dev，Worker 名称 rostsworn-reports。
 - 使用控制台 Hello World 创建后，用 Edit code 替换为 worker.mjs；Settings 中 GITHUB_TOKEN 为加密 Secret。
 - 凭据仅限 Frostsworn 仓库 Contents 读写、Metadata 只读，2026-11-09 到期。到期前由作者更新 Secret，玩家无需操作。

@@ -16,6 +16,17 @@ def report():
 
 
 class RelayTests(unittest.TestCase):
+    def test_virtual_paths_and_repeated_scrubbing(self):
+        raw = report()
+        raw['payload']['paths'] = ['res://Frostsworn/art075/energy.png', 'user://logs/godot.log',
+                                  r'C:\Users\PrivateName\save.json', 's:/private/save.json',
+                                  'file:///C:/private/save.json', '/home/private/save.json',
+                                  r'\\server\private\save.json']
+        once = json.loads(sanitize(raw))
+        self.assertEqual(once['payload']['paths'][:2], raw['payload']['paths'][:2])
+        self.assertEqual(once['payload']['paths'][2:], ['[absolute-path]'] * 5)
+        self.assertEqual(json.loads(sanitize(once))['payload']['paths'], once['payload']['paths'])
+
     def test_public_boundary_and_path(self):
         raw = report()
         raw.update(repo='attacker/other', path='Source/Entry.cs', bundle='RAW_SAVE')

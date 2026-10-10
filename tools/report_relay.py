@@ -22,7 +22,7 @@ KEYS = ('username', 'playername', 'displayname', 'steamid', 'accountid',
         'installid', 'profile', 'ipaddress', 'email', 'authorization',
         'password', 'token', 'secret', 'apikey', 'chat', 'hostname', 'computername')
 SECRET = re.compile(r'\b(?:github_pat_|gh[pousr]_)[\w]+|Bearer\s+\S+|(?:password|token|secret|api[_-]?key)\s*[=:]\s*\S+', re.I)
-PATH = re.compile(r'(?:file://)?[a-z]:[\\/][^\r\n\"\'<>]+|(?<![:\w/])/(?:home|Users|root|tmp|var|mnt)/[^\r\n\"\'<>]+|\\\\[^\r\n\"\'<>]+', re.I)
+PATH = re.compile(r'(?<![\w])(?:file:///?)?[a-z]:[\\/][^\r\n\"\'<>]+|(?<![:\w/])/(?:home|Users|root|tmp|var|mnt)/[^\r\n\"\'<>]+|\\\\[^\r\n\"\'<>]+', re.I)
 EMAIL = re.compile(r'\b[\w.%+-]+@[\w.-]+\.[a-z]{2,}\b', re.I)
 IP = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?\b|(?<!\w)(?:[0-9a-f]{0,4}:){2,}[0-9a-f:]{0,39}(?!\w)', re.I)
 IDS = re.compile(r'(?<!\d)\d{17}(?!\d)')

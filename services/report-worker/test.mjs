@@ -4,6 +4,17 @@ import worker, { sanitize, saveReport } from './worker.mjs';
 const sample = () => ({ schema: 'frostsworn.error-report.v1', request: 'diagnostics', mod_version: '0.8.30', timestamp_utc: '2026-10-10T12:00:00Z', payload: { message: 'ERROR: hp 48' } });
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status });
 
+test('virtual game paths survive repeated scrubbing while filesystem paths stay private', () => {
+  const report = sample();
+  report.payload.paths = ['res://Frostsworn/art075/energy.png', 'user://logs/godot.log',
+    'C:\\Users\\PrivateName\\save.json', 's:/private/save.json', 'file:///C:/private/save.json',
+    '/home/private/save.json', '\\\\server\\private\\save.json'];
+  const once = sanitize(report).result;
+  assert.deepEqual(once.payload.paths.slice(0, 2), report.payload.paths.slice(0, 2));
+  assert.deepEqual(once.payload.paths.slice(2), Array(5).fill('[absolute-path]'));
+  assert.deepEqual(sanitize(once).result.payload.paths, once.payload.paths);
+});
+
 test('public boundary strips identities and arbitrary destination', () => {
   const report = sample();
   report.path = 'Source/Entry.cs'; report.repo = 'attacker/repo'; report.bundle = 'RAW_SAVE';
