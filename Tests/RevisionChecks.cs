@@ -184,7 +184,7 @@ public static partial class Suite
         Assert(enemy.CurrentHp==9965,"cold hammer adds five per stored base energy");
         await Reset();var saved=await Cargo<FrostStrike>(PileType.Hand);for(int i=0;i<3;i++)await Cargo<FrostDefend>(PileType.Draw);
         selector.PrepareToSelect(new[]{saved});await Effect<DeepCache>(true);
-        Assert(saved.Pile==ColdStorage.Pile(player)&&pcs.Hand.Cards.Count==2&&enemy.CurrentHp==9995,"hidden blade stores optionally and draws upgraded two");
+        Assert(saved.Pile==ColdStorage.Pile(player)&&pcs.Hand.Cards.Count==2&&enemy.CurrentHp==9996,"hidden blade deals four, stores optionally and draws two");
         await Reset();await Effect<CrystalVolley>(true);
         Assert(pcs.Hand.Cards.Count==CardPile.MaxCardsInHand&&pcs.Hand.Cards.All(c=>c is IceCrystal&&c.IsUpgraded)&&enemy.CurrentHp==9981,"crystal volley fills hand with upgraded crystals");
         await Reset();var a=await Cargo<FrostStrike>(PileType.Hand);var b=await Cargo<FrostDefend>(PileType.Hand);
@@ -604,9 +604,10 @@ public static partial class Suite
             if(raw.Contains("energyIcons"))
             {
                 var rendered=c.GetDescriptionForPile(PileType.None);
-                Assert(rendered.Contains("_energy_icon.png[/img]")&&!rendered.Contains('{'),type.Name+" renders native energy icons");
+                var energyIcon=ModelDb.CardPool<FrostCardPool>().TextEnergyIconPath;
+                Assert(rendered.Contains(energyIcon+"[/img]")&&!rendered.Contains('{'),type.Name+" renders character energy icons");
                 if(c is OverdrawWarmth or QuietMeditation or HeatExchange)
-                    Assert(System.Text.RegularExpressions.Regex.Matches(rendered,"_energy_icon.png").Count==(int)c.DynamicVars["Amount"].BaseValue,type.Name+" energy icon count matches upgrade");
+                    Assert(System.Text.RegularExpressions.Regex.Matches(rendered,System.Text.RegularExpressions.Regex.Escape(energyIcon)).Count==(int)c.DynamicVars["Amount"].BaseValue,type.Name+" energy icon count matches upgrade");
             }
         }
     }

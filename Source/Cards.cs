@@ -61,7 +61,11 @@ public abstract class FrostCard(CardSpec spec):ModCardTemplate(spec.Cost,spec.Ty
         }
     }
     private static HoverTip Tip(string key)=>new(new LocString("static_hover_tips","FROSTSWORN_"+key+".title"),new LocString("static_hover_tips","FROSTSWORN_"+key+".description"),null);
-    protected override Task OnPlay(PlayerChoiceContext context,CardPlay play)=>RevisedEffects.Play(this,context,play);
+    protected override Task OnPlay(PlayerChoiceContext context,CardPlay play)
+    {
+        FrostCardVfx.Cast(this,play);
+        return RevisedEffects.Play(this,context,play);
+    }
     public override Task AfterCardChangedPiles(CardModel card,PileType oldPileType,AbstractModel? clonedBy)
     {
         if(card!=this)return Task.CompletedTask;

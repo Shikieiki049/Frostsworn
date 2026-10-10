@@ -26,6 +26,7 @@ public static class RevisedEffects
             if(random)command.TargetingRandomOpponents(own.CombatState!,true);
             else if(all)command.TargetingAllOpponents(own.CombatState!);
             else if((victim??target) is {} t)command.Targeting(t);else return 0;
+            FrostCardVfx.ConfigureAttack(card,command);
             var result=await command.Execute(context);
             return result.Results.SelectMany(x=>x).Sum(r=>r.TotalDamage+r.OverkillDamage);
         }
