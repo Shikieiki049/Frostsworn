@@ -46,18 +46,25 @@ public static partial class Suite
         var flightTween=(Tween)flight.GetMeta("flight_tween").AsGodotObject();flightTween.Pause();
         Assert(flight.GetNode<Node2D>("SummonCircle").Position==projectile.Position,"small magic circle marks the exact crystal summon position");
         Assert(projectile.Position==new Vector2(-720,0),"small crystal starts at caster instead of appearing on target");
-        flightTween.CustomStep(.21);
+        var sigil=flight.GetNode<Node2D>("SummonCircle");
+        var drawTween=(Tween)sigil.GetMeta("draw_tween").AsGodotObject();drawTween.Pause();
+        Assert(projectile.GetChildren().OfType<Polygon2D>().Count()==6,"ice crystal has six individually lit facets instead of a flat particle");
+        var ring=sigil.GetChildren().OfType<Line2D>().First();
+        Assert(ring.Points.Length==2,"summon circle starts undrawn");
+        drawTween.CustomStep(.06);Assert(ring.Points.Length>2 && ring.Points.Length<65,"summon circle progressively draws its strokes");
+        drawTween.CustomStep(.07);Assert(ring.Points.Length==65 && ring.Points.Max(p=>p.Y)-ring.Points.Min(p=>p.Y)>ring.Points.Max(p=>p.X)-ring.Points.Min(p=>p.X),"complete summon portal is upright toward flight direction");
+        flightTween.CustomStep(.25);
         Assert(projectile.Position.X>-720 && projectile.Position.X<0,"ice crystal visibly travels toward target");
         if(DisplayServer.GetName()!="headless") {
             await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-flight-0824.png"));
+            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-flight-0825.png"));
         }
         flightTween.CustomStep(.12);
         await tree.ToSignal(tree,SceneTree.SignalName.ProcessFrame);
         Assert(!GodotObject.IsInstanceValid(projectile) && flight.HasNode("FrostCardFx"),"crystal shatters only after flight reaches enemy");
         if(DisplayServer.GetName()!="headless") {
             await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-impact-0824.png"));
+            tree.Root.GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://../../../outputs/crystal-impact-0825.png"));
         }
         flightTween.Play();
         await tree.ToSignal(tree.CreateTimer(3.7),SceneTreeTimer.SignalName.Timeout);

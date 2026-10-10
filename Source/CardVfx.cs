@@ -149,22 +149,21 @@ public static class FrostCardVfx
     {
         var root=new Node2D {Name="FrostCrystalFlight",Position=target};
         var from=source-target;
-        var summon=CreateCrystalSigil(from);
+        var summon=CreateCrystalSigil(from,-from);
         summon.TreeEntered+=()=>{
-            var fade=summon.CreateTween();fade.TweenInterval(.1);fade.TweenProperty(summon,"modulate:a",0f,.35);
+            var fade=summon.CreateTween();fade.TweenInterval(.18);fade.TweenProperty(summon,"modulate:a",0f,.25);
         };
         root.AddChild(summon);
-        var projectile=new Node2D {Name="FlyingCrystal",Position=from,Rotation=(-from).Angle()};
-        var texture=ResourceLoader.Load<Texture2D>("res://images/vfx/orbs/frost_orb_particle.png");
-        projectile.AddChild(new Sprite2D {Texture=texture,Modulate=Ice,Rotation=Mathf.Pi/2,
-            Scale=new Vector2(.65f,1.2f)*(32*Math.Clamp(strength,.6f,1.2f)/Math.Max(texture.GetWidth(),texture.GetHeight()))});
-        projectile.AddChild(new Line2D {Points=new[]{new Vector2(-26,0),Vector2.Zero},Width=3,
-            DefaultColor=new Color(Ice,.3f),Antialiased=true});
+        var projectile=CreateFacetedCrystal();projectile.Name="FlyingCrystal";
+        projectile.Position=from;projectile.Rotation=(-from).Angle();
+        var crystalScale=Vector2.One*Math.Clamp(strength/.65f,.8f,1.2f);
+        projectile.Scale=crystalScale;
         root.AddChild(projectile);
         root.TreeEntered+=()=>{
             var flight=root.CreateTween();
             root.SetMeta("flight_tween",flight);
-            flight.TweenInterval(.1);
+            flight.TweenProperty(projectile,"modulate:a",1f,.14).From(0f);
+            flight.Parallel().TweenProperty(projectile,"scale",crystalScale,.14).From(crystalScale*.35f);
             flight.TweenProperty(projectile,"position",Vector2.Zero,.22);
             flight.TweenCallback(Callable.From(()=>{
                 projectile.QueueFree();
@@ -175,13 +174,32 @@ public static class FrostCardVfx
         };
         return root;
     }
-    public static Node2D CreateCrystalSigil(Vector2 position)
+    public static Node2D CreateFacetedCrystal()
     {
-        var sigil=new Node2D {Name="SummonCircle",Position=position};
-        Vector2 Tilt(Vector2 p)=>new(p.X,p.Y*.72f);
-        void Ink(IEnumerable<Vector2> points,Color color,float width=1,bool closed=false)=>sigil.AddChild(new Line2D {
-            Points=points.Select(Tilt).ToArray(),DefaultColor=color,Width=width,Closed=closed,Antialiased=true,
-            BeginCapMode=Line2D.LineCapMode.Round,EndCapMode=Line2D.LineCapMode.Round});
+        // Thick asymmetric crystal with separately lit facets, not a particle dart.
+        var crystal=new Node2D {Name="FacetedIceCrystal"};
+        Vector2[] rim={new(18,0),new(5,-12),new(-12,-8),new(-18,3),new(-4,12),new(9,8)};
+        var ridge=new Vector2(-1,-1);
+        string[] colors={"E6FBFF","A4E3FF","638FDB","477AC0","87CDF2","C7F4FF"};
+        for(int i=0;i<rim.Length;i++)crystal.AddChild(new Polygon2D {
+            Polygon=new[]{ridge,rim[i],rim[(i+1)%rim.Length]},Color=new Color(colors[i]),Antialiased=true});
+        crystal.AddChild(new Line2D {Points=rim,Closed=true,Width=.9f,DefaultColor=new Color("86CDEB"),Antialiased=true});
+        crystal.AddChild(new Line2D {Points=new[]{rim[2],ridge,rim[0]},Width=.8f,DefaultColor=new Color(Ice,.8f),Antialiased=true});
+        return crystal;
+    }
+    public static Node2D CreateCrystalSigil(Vector2 position,Vector2? direction=null)
+    {
+        var sigil=new Node2D {Name="SummonCircle",Position=position,Rotation=(direction??Vector2.Right).Angle()};
+        // A vertical portal, its plane perpendicular to the outgoing crystal.
+        Vector2 Tilt(Vector2 p)=>new(p.X*.55f,p.Y);
+        var strokes=new List<(Line2D Line,Vector2[] Points)>();
+        void Ink(IEnumerable<Vector2> points,Color color,float width=1,bool closed=false)
+        {
+            var path=points.Select(Tilt).ToList();if(closed)path.Add(path[0]);
+            var line=new Line2D {Points=new[]{path[0],path[0]},DefaultColor=color,Width=width,Antialiased=true,
+                BeginCapMode=Line2D.LineCapMode.Round,EndCapMode=Line2D.LineCapMode.Round};
+            strokes.Add((line,path.ToArray()));sigil.AddChild(line);
+        }
         Ink(Enumerable.Range(0,64).Select(i=>Vector2.FromAngle(i*Mathf.Tau/64)*32),new Color(Blue,.8f),1.2f,true);
         Ink(Enumerable.Range(0,64).Select(i=>Vector2.FromAngle(i*Mathf.Tau/64)*25),new Color(Ice,.6f),.8f,true);
         Ink(Enumerable.Range(0,6).Select(i=>Vector2.FromAngle(i*Mathf.Tau/6)*5),Ice,1,true);
@@ -192,6 +210,18 @@ public static class FrostCardVfx
             Ink(new[]{axis*12+side*5,axis*16,axis*12-side*5},new Color(Ice,.85f),1);
             Ink(new[]{axis*28,axis*30+side*2,axis*32,axis*30-side*2},Ice,1,true);
         }
+        sigil.TreeEntered+=()=>{
+            var draw=sigil.CreateTween();sigil.SetMeta("draw_tween",draw);
+            draw.TweenMethod(Callable.From<float>(progress=>{
+                foreach(var (line,path) in strokes)
+                {
+                    float cursor=progress*(path.Length-1);int end=Math.Min((int)cursor,path.Length-1);
+                    var visible=path.Take(end+1).ToList();
+                    if(end<path.Length-1)visible.Add(path[end].Lerp(path[end+1],cursor-end));
+                    line.Points=visible.ToArray();
+                }
+            }),0f,1f,.12);
+        };
         return sigil;
     }
     public static Vector2 CrystalOrigin(Node2D visuals,Vector2 fallback)
