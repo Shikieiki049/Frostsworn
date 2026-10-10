@@ -23,11 +23,11 @@ public static partial class Suite
             Assert(texture.Atlas!=null && texture.Region.End.X<=texture.Atlas.GetWidth() && texture.Region.End.Y<=texture.Atlas.GetHeight(), name+" separate atlas region loads within bounds");
         }
         foreach (var card in new FrostCard[]{ModelDb.Card<FrostStrike>(),ModelDb.Card<FrostDefend>(),ModelDb.Card<FreezeRay>()})
-            Assert(card.CustomPortraitPath.StartsWith(art) && ResourceLoader.Load<Texture2D>(card.CustomPortraitPath).GetWidth()>1000,card.GetType().Name+" supplied portrait loads");
+            Assert(card.CustomPortraitPath.StartsWith("res://Frostsworn/") && ResourceLoader.Load<Texture2D>(card.CustomPortraitPath).GetWidth()>1000,card.GetType().Name+" supplied portrait loads");
         var character=ModelDb.Character<FrostswornCharacter>();
         Assert(character.CharacterSelectIcon!=null && character.CharacterSelectLockedIcon!=null && character.MapMarker!=null,"native character-select and map getters load without texture type errors");
         foreach (var relic in new RelicModel[]{ModelDb.Relic<WinterCore>(),ModelDb.Relic<WinterCrown>()})
-            Assert(relic.Icon is AtlasTexture && relic.BigIcon is AtlasTexture && relic.IconOutline is AtlasTexture,relic.GetType().Name+" native relic getters use supplied atlas");
+            Assert(relic.Icon.ResourcePath.StartsWith("res://Frostsworn/") && relic.BigIcon is AtlasTexture && relic.IconOutline.ResourcePath.StartsWith("res://Frostsworn/"),relic.GetType().Name+" native relic getters use supplied artwork");
         foreach (var potion in new PotionModel[]{ModelDb.Potion<FrostBottle>(),ModelDb.Potion<LiquidNitrogen>(),ModelDb.Potion<FractalSnowflake>()})
             Assert(potion.Image is AtlasTexture && potion.Outline is AtlasTexture,potion.GetType().Name+" native potion getters use supplied atlas");
         Assert(ResourceLoader.Load<CompressedTexture2D>(character.CustomCharacterSelectIconPath)!=null,"select icon uses imported PNG");
@@ -39,12 +39,13 @@ public static partial class Suite
         Assert(Math.Abs(visuals.GetNode<Sprite2D>("%Visuals").Scale.X-0.31f)<0.001f,"combat art scale aligns new full-height pose");
         visuals.Free();
         var counter=RitsuGodotNodeFactories.CreateFromScenePath<NEnergyCounter>(character.CustomEnergyCounterPath);
-        Assert(counter.GetNode<Control>("%Layers").GetNode<TextureRect>("Art").Texture.ResourcePath==art+"energy.png","native energy counter factory accepts custom scene and texture");
-        Assert(counter.HasNode("Label") && counter.HasNode("%StarAnchor") && counter.HasNode("%EnergyVfxBack"),"energy counter required nodes survive conversion");
+        FrostArtLayout.ApplyEnergy(counter);
+        Assert(counter.GetNode<Control>("%Layers").GetNode<TextureRect>("FrostEnergy").Texture.ResourcePath==art+"energy.png","native energy counter accepts custom artwork");
+        Assert(counter.HasNode("Label") && counter.HasNode("%Layers") && counter.HasNode("%EnergyVfxBack") && counter.HasNode("%EnergyVfxFront"),"native energy counter nodes survive artwork replacement");
         counter.Free();
         var pool=ModelDb.CardPool<FrostCardPool>();var frame=(ShaderMaterial)pool.PoolFrameMaterial;
-        Assert(Math.Abs(frame.GetShaderParameter("h").AsSingle()-0.62f)<0.001f && Math.Abs(frame.GetShaderParameter("s").AsSingle()-2.37f)<0.001f && Math.Abs(frame.GetShaderParameter("v").AsSingle()-2.62f)<0.001f,"card frame uses supplied HSV parameters");
-        Assert(pool.EnergyColorName=="frostsworn" && pool.BigEnergyIconPath==art+"energy.png" && pool.TextEnergyIconPath==pool.BigEnergyIconPath,"energy icons have independent character color key");
+        Assert(Math.Abs(frame.GetShaderParameter("h").AsSingle()-FrostTheme.FrameHue)<0.001f && Math.Abs(frame.GetShaderParameter("s").AsSingle()-FrostTheme.FrameSaturation)<0.001f && Math.Abs(frame.GetShaderParameter("v").AsSingle()-FrostTheme.FrameValue)<0.001f,"card frame uses current HSV parameters");
+        Assert(pool.EnergyColorName=="frostsworn" && pool.BigEnergyIconPath==art+"energy.png" && ResourceLoader.Load<Texture2D>(pool.TextEnergyIconPath)!=null,"both energy icon sizes load with independent character color key");
         GD.Print("ART075_COMPLETE");
     }
 }

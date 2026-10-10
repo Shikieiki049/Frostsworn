@@ -46,7 +46,7 @@ public static partial class Suite
         Assert(heal.BaseValue==9 && damage.BaseValue==3,"preview copies never change event mechanics or compound on repeated display");
         healthVars.AddTo(loc);Assert(((DynamicVar)loc.Variables["Heal"]).BaseValue==9 && EclipseEventText.Adjust("回复9点生命。",player)=="回复6点生命。","ordinary event healing preview uses two thirds");
         Assert(!Eclipse.Description(8).Contains("日食1：") && Eclipse.Description(0)=="无特殊效果。" && Eclipse.Description(8).StartsWith(Eclipse.Quote),"Eclipse tooltip contains effects only and preserves quotation");
-        Assert(new LocString("characters",player.Character.Id.Entry+".banter.alive.endTurnPing").GetFormattedText()=="再给我一点时间。" && new LocString("characters",player.Character.Id.Entry+".banter.dead.endTurnPing").GetFormattedText()=="接下来就交给你们了。","alive and dead multiplayer ping are localized");
+        Assert(new LocString("characters",player.Character.Id.Entry+".banter.alive.endTurnPing").GetFormattedText()=="再给你一点时间。" && new LocString("characters",player.Character.Id.Entry+".banter.dead.endTurnPing").GetFormattedText()=="接下来就交给你们了。","alive and dead multiplayer ping are localized");
         var screen=new NCharacterSelectScreen();var net=DispatchProxy.Create<INetGameService,EclipseNetProxy085>();var proxy=(EclipseNetProxy085)(object)net;
         var lobby=new StartRunLobby(GameMode.Standard,net,screen,2);lobby.Players.Add(new StartRunLobbyPlayer{id=net.NetId,character=player.Character});
         proxy.Kind=NetGameType.Host;EclipseNetwork.Accept(lobby,8);EclipseNetwork.Publish(lobby);
