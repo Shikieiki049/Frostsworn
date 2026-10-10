@@ -20,6 +20,27 @@ mod updates must leave description omitted. Keep `dependencies` and `tags` in
 every upload configuration: the uploader treats omitted dependency lists as
 empty and removes existing dependencies.
 
+### Language-specific descriptions and cover
+
+Steam stores localized descriptions separately. The first description revision
+updated the English entry while the Simplified Chinese page retained its old
+text; this was a language mismatch, not a browser cache issue.
+Both English and Simplified Chinese entries now have the bilingual description.
+For another explicit description change, update both `english` and `schinese`
+using `SteamUGC.SetItemUpdateLanguage` before setting the description.
+`uploader-language.patch` adds a `language` field to the official uploader's
+config and fails if Steam rejects the requested language. Apply it to a clone
+of https://github.com/megacrit/sts2-mod-uploader and build the uploader locally.
+The local build is `../work/WorkshopUploaderLocalized`; executables and Steam
+libraries are not committed here.
+
+`cover.png` is the author's requested upper-body close-up of the character
+artwork, formatted as a 512x512 PNG (592430 bytes), replacing the full-body
+thumbnail. It was produced through an image edit of `art075/selection.png`, then
+resized to meet the Workshop preview limit. Copy it to the uploader workspace
+as `image.png`. The wide preview image is unchanged. The Chinese Workshop page
+was visually verified with the new cover and description on 2026-10-10.
+
 The local uploader workspace is `../work/WorkshopUploader/Frostsworn`. For an
 update, copy the release's `Frostsworn.dll`, `Frostsworn.pck` and
 `mod_manifest.json` into its `content` folder and verify their hashes against

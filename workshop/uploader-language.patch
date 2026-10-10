@@ -1,0 +1,35 @@
+diff --git a/src/ModConfig.cs b/src/ModConfig.cs
+index 06c0db1..d543c28 100644
+--- a/src/ModConfig.cs
++++ b/src/ModConfig.cs
+@@ -4,6 +4,7 @@ public class ModConfig
+ {
+   public string? title;
+   public string? description;
++  public string? language;
+   public string? visibility;
+   public string? changeNote;
+   public List<string>? tags;
+@@ -11,4 +12,4 @@ public class ModConfig
+   public string[]? contentDescriptors;
+   public string? minBranch;
+   public string? maxBranch;
+-}
+\ No newline at end of file
++}
+diff --git a/src/UploadCommand.cs b/src/UploadCommand.cs
+index 8c4bef1..a96f393 100644
+--- a/src/UploadCommand.cs
++++ b/src/UploadCommand.cs
+@@ -199,6 +199,11 @@ public static class UploadCommand
+         Log.Info($"Uploading '{modConfig.title}' to the steam workshop with item ID {workshopItem.m_PublishedFileId}...");
+ 
+         UGCUpdateHandle_t updateHandle = SteamUGC.StartItemUpdate(_sts2AppId, workshopItem);
++        if (modConfig.language != null && !SteamUGC.SetItemUpdateLanguage(updateHandle, modConfig.language))
++        {
++            Log.Error("Could not select the requested Workshop language.");
++            return 1;
++        }
+ 
+         if (modConfig.title != null)
+         {
