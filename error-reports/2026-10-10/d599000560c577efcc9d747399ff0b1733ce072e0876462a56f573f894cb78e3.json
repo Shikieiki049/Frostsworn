@@ -1,0 +1,1 @@
+{"event":"synthetic_path_redaction_verification","mod_version":"0.8.31-test","payload":{"message":"Synthetic relay regression check; no player data.","paths":["res://Frostsworn/art075/energy.png","user://logs/godot.log","[absolute-path]","[absolute-path]"]},"request":"diagnostics","schema":"frostsworn.error-report.v1","timestamp_utc":"2026-10-10T18:20:53.5915439Z"}
