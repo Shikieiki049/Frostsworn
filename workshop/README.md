@@ -8,8 +8,9 @@ result 1, visibility 0, content size 375657645 bytes. RitsuLib dependency:
 
 `initial-workshop.json` records the first uploaded metadata. Do not use it for
 routine updates: the author may change the title and description on Steam.
-`workshop.json` deliberately omits title, description and visibility, preserving
-those fields during future uploads. `mod_id.txt` identifies the existing item;
+`workshop.json` deliberately omits title and description, preserving
+those fields during future uploads, and explicitly keeps this release public.
+`mod_id.txt` identifies the existing item;
 always use it to avoid creating another listing.
 
 `description.bbcode.txt` records the bilingual description revision requested
