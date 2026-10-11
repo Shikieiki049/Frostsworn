@@ -86,6 +86,27 @@ public static partial class Suite
             ((JsonObject)divergence.Payload!)["bundle"]=new JsonObject {["content"]="invalid-base64"};
             result=await zipped.SendAsync(FrostErrorReports.CreateApplicant(zipped),new[]{divergence});
             Assert(result.Success,"damaged ZIP does not poison the diagnostic queue");
+            using var largeZip=new MemoryStream();
+            using(var archive=new ZipArchive(largeZip,ZipArchiveMode.Create,true))
+            {
+                using(var writer=new StreamWriter(archive.CreateEntry("diff.json").Open()))writer.Write("{\"hp\":17,\"path\":\"C:/Users/PrivatePerson/run.json\"}");
+                var noise=new byte[100000];new Random(42).NextBytes(noise);
+                using(var writer=new StreamWriter(archive.CreateEntry("noise.txt").Open()))writer.Write(Convert.ToBase64String(noise));
+            }
+            string encoded=Convert.ToBase64String(largeZip.ToArray());
+            Assert(encoded.Length>65536,"nested attachment regression exceeds old string truncation limit");
+            var nested=Envelope("nested","state_divergence");
+            ((JsonObject)nested.Payload!)["applicant_payload"]=new JsonObject {["bundle"]=new JsonObject {["content"]=encoded}};
+            await zipped.SendAsync(FrostErrorReports.CreateApplicant(zipped),new[]{nested});
+            var extracted=JsonNode.Parse(captured!)!;
+            Assert(extracted["bundle_files"]!.AsArray().Any(x=>x?["name"]?.GetValue<string>()=="diff.json") && !Encoding.UTF8.GetString(captured!).Contains("PrivatePerson") && extracted["payload"]?["applicant_payload"]?["bundle"]==null,"native nested ZIP extracts sanitized differences without raw attachment");
+            string pendingFolder=Path.Combine(root,"pending");
+            var pending=new FrostReportAdapter("",pendingFolder,root,(bytes,ct)=>{captured=bytes;return Task.FromResult(false);});
+            await pending.SendAsync(FrostErrorReports.CreateApplicant(pending),new[]{nested});
+            string pendingPath=Directory.GetFiles(pendingFolder,"*.json").Single();
+            File.WriteAllText(pendingPath,"{\"payload\":\"old broken cache\"}");
+            await pending.SendAsync(FrostErrorReports.CreateApplicant(pending),new[]{nested});
+            Assert(JsonNode.Parse(captured!)?["attachment_parser"]?.GetValue<int>()==2,"pending old cache is regenerated from queued original envelope");
             using var cancellation=new CancellationTokenSource();cancellation.Cancel();bool canceled=false;
             try {await local.SendAsync(applicant,new[]{first},cancellation.Token);}catch(OperationCanceledException){canceled=true;}
             Assert(canceled,"shutdown cancellation propagates without marking delivery");

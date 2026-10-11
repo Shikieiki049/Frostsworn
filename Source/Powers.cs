@@ -49,14 +49,18 @@ public static class FrostActions
     }
     public static async Task Crystals(Player owner, int count, bool upgraded=false, bool sharp=false)
     {
-        if(count<=0 || owner.Creature.IsDead) return;
+        var combat=owner.Creature.CombatState;
+        if(count<=0 || owner.Creature.IsDead || combat==null || !CombatManager.Instance.IsInProgress) return;
         if(owner.Creature.GetPower<CrystalResonancePower>() is {} resonance) count+=resonance.Amount;
         for (int i = 0; i < count && !owner.Creature.IsDead; i++)
         {
-            var card = owner.Creature.CombatState!.CreateCard<IceCrystal>(owner);
+            if(!CombatManager.Instance.IsInProgress || owner.Creature.CombatState!=combat) break;
+            var card = combat.CreateCard<IceCrystal>(owner);
             if(upgraded) { card.UpgradeInternal(); card.FinalizeUpgradeInternal(); }
             if(sharp) CardCmd.Enchant<SharpEnchantment>(card,1);
-            await CardPileCmd.AddGeneratedCardToCombat(card, PileType.Hand, owner);
+            // Combat may end during generation hooks; the plural native API safely returns an empty result.
+            var added=await CardPileCmd.AddGeneratedCardsToCombat([card], PileType.Hand, owner);
+            if(added.Count==0) break;
         }
     }
     public static Task Gain<T>(PlayerChoiceContext context, Player owner, int amount, CardModel source) where T : PowerModel

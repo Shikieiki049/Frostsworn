@@ -1,6 +1,8 @@
 # 霜誓者 Frostsworn
 
-当前版本 **0.8.31**，支持 Slay the Spire 2 **0.111.0** 与 RitsuLib **0.6.7**。
+当前版本 **0.8.32**，支持 Slay the Spire 2 **0.111.0** 与 RitsuLib **0.6.7**。
+
+0.8.32：修复战斗结束时生成冰晶的空结果越界。联机错误附件兼容 RitsuLib 的嵌套 bundle，提取脱敏差异而不上传原始压缩包；旧版尚未发送的缓存重新处理，已发送报告保持去重。通过针对性游戏引擎测试；尚不能从旧版截断附件判断联机不同步的具体原因。
 
 0.8.31：已接入 Cloudflare Workers 错误报告服务，虚构报告端到端上传验证通过。玩家无需登录；“允许发送错误报告”默认开启并保留手动关闭的选择，失败保留本地队列重试。报告写入 GitHub 的独立 error-reports 分支。凭据仅保存在 Cloudflare Secret，不随 mod 分发。[中转接口配置步骤](docs/report-worker-setup.md)。
 

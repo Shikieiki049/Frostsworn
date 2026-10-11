@@ -108,18 +108,31 @@ public sealed class FrostReportAdapter : ITelemetryAdapter
         string identity=envelope.TimestampUtc.ToString("O")+"\n"+envelope.EventName+"\n"+envelope.RequestId+"\n"+envelope.Payload?.ToJsonString();
         string id=Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity))).ToLowerInvariant();
         string path=Path.Combine(folder,id+".json");
-        if(System.IO.File.Exists(path))return(path,System.IO.File.ReadAllBytes(path));
+        if(System.IO.File.Exists(path))
+        {
+            var previous=System.IO.File.ReadAllBytes(path);
+            // Preserve delivered identities; rebuild only pending reports from the old attachment parser.
+            if(System.IO.File.Exists(path+".uploaded") || JsonNode.Parse(previous)?["attachment_parser"]?.GetValue<int>()==2)
+                return(path,previous);
+        }
         var scrub=new FrostReportScrubber();
         var payload=envelope.Payload?.DeepClone();
-        JsonArray? bundle=null;
-        if(payload is JsonObject obj && obj["bundle"] is JsonObject zipped)
+        var bundle=new JsonArray();
+        void ExtractBundle(JsonObject obj)
         {
-            try {bundle=ReadBundle(zipped,scrub);}
-            catch(Exception ex) when(ex is InvalidDataException or FormatException or JsonException){bundle=new JsonArray();}
-            obj.Remove("bundle");
+            var attachment=obj["bundle"];
+            obj.Remove("bundle"); // Never pass raw binary attachments to the public text scrubber.
+            if(attachment is not JsonObject zipped)return;
+            try {foreach(var file in ReadBundle(zipped,scrub).ToArray())bundle.Add(file?.DeepClone());}
+            catch(Exception ex) when(ex is InvalidDataException or FormatException or JsonException or InvalidOperationException){ }
+        }
+        if(payload is JsonObject obj)
+        {
+            ExtractBundle(obj);
+            if(obj["applicant_payload"] is JsonObject applicantPayload)ExtractBundle(applicantPayload);
         }
         var report=new JsonObject {
-            ["schema"]="frostsworn.error-report.v1",["mod_version"]=FrostVersion.Value,
+            ["schema"]="frostsworn.error-report.v1",["attachment_parser"]=2,["mod_version"]=FrostVersion.Value,
             ["timestamp_utc"]=envelope.TimestampUtc.ToString("O"),["event"]=scrub.Text(envelope.EventName),
             ["request"]=envelope.RequestId,["payload"]=scrub.Node(payload),["bundle_files"]=bundle,
             ["diagnostic_log_tail"]=scrub.DiagnosticLines(ReadLogTail(logFolder)),
