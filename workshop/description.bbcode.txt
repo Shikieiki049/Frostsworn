@@ -55,6 +55,14 @@
 在RitsuLib模组设置中打开[b]霜誓者 → 错误报告[/b]，可以切换[b]“允许发送错误报告”[/b]。
 该选项[b]默认开启[/b]：遇到错误或多人数据不同步时，自动发送经过脱敏的诊断日志到作者的[b]公开GitHub仓库[/b]，帮助定位问题。不需要玩家登录，也不会发送完整存档。关闭后停止收集和发送，后续更新保留你的选择。
 
+[h2]更新计划[/h2]
+[list]
+[*]1：修Bug。
+[*]2：新增角色。
+[*]3：新增先古之民。
+[*]4：完善现有内容以及平衡性调整。
+[/list]
+
 [h2]反馈与源码[/h2]
 欢迎在留言区反馈玩法体验或问题。汇报Bug时，请尽量说明模组版本、日食等级、单人/多人模式，以及问题发生前的操作。
 [url=https://github.com/Shikieiki049/Frostsworn]GitHub源码与问题反馈[/url]
@@ -124,6 +132,14 @@ Requires [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]
 [h2]Settings & Error Reports[/h2]
 In RitsuLib's mod settings, open [b]Frostsworn → Error reports[/b] to change [b]Allow sending error reports[/b].
 This option is [b]on by default[/b]. Sanitized diagnostic logs from errors and multiplayer state divergence are sent to the author's [b]public GitHub repository[/b] for troubleshooting. No player login is required, and full saves are not sent. Turning it off stops collection and sending; updates preserve your choice.
+
+[h2]Update Plans[/h2]
+[list]
+[*]1: Fix bugs.
+[*]2: Add new characters.
+[*]3: Add new Ancients.
+[*]4: Refine existing content and adjust balance.
+[/list]
 
 [h2]Feedback & Source[/h2]
 Feedback is welcome! For bug reports, please include your mod version, Eclipse level, single-player or multiplayer mode, and the steps leading to the issue.
