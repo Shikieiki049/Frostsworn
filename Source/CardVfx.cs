@@ -260,28 +260,39 @@ public static class FrostCardVfx
     {
         var root=new Node2D {Name="FrostCardFx",Position=target};
         float size=Math.Clamp(strength,.6f,1.2f);
-        void Part(string scene,float scale=1f,Color? color=null,Vector2? offset=null,float angle=0)
+        bool Part(string scene,float scale=1f,Color? color=null,Vector2? offset=null,float angle=0)
         {
-            var node=ResourceLoader.Load<PackedScene>(Vfx+scene+".tscn").Instantiate<Node2D>();
+            var node=NativeScene<Node2D>(scene);
+            if(node==null)return false;
             node.Scale*=scale*size;node.Position=offset??Vector2.Zero;node.Rotation+=angle;
             Prepare(node,color??Ice);root.AddChild(node);
+            return true;
         }
         if(motifs.HasFlag(FrostMotif.Snow) || motifs.HasFlag(FrostMotif.Storm))
         {
             bool storm=motifs.HasFlag(FrostMotif.Storm);
-            var snow=ResourceLoader.Load<PackedScene>(Vfx+NativeScenes[0]+".tscn").Instantiate<GpuParticles2D>();
-            Prepare(snow,Ice);snow.OneShot=true;snow.Amount=storm?64:28;snow.Lifetime=1.15;
-            snow.Explosiveness=.75f;snow.Position=new(0,-85);snow.Scale=new(size,size);
-            float dotSize=Math.Max(1,snow.Texture.GetWidth());
-            snow.ProcessMaterial=new ParticleProcessMaterial {
-                EmissionShape=ParticleProcessMaterial.EmissionShapeEnum.Box,EmissionBoxExtents=new(storm?125:90,40,0),
-                Direction=new(0,1,0),Spread=25,Gravity=new(0,75,0),InitialVelocityMin=25,InitialVelocityMax=75,
-                ScaleMin=3f/dotSize,ScaleMax=6f/dotSize,Color=new Color(Ice,.75f)
-            };
-            root.AddChild(snow);
+            var snow=NativeScene<GpuParticles2D>(NativeScenes[0]);
+            if(snow?.Texture!=null)
+            {
+                Prepare(snow,Ice);snow.OneShot=true;snow.Amount=storm?64:28;snow.Lifetime=1.15;
+                snow.Explosiveness=.75f;snow.Position=new(0,-85);snow.Scale=new(size,size);
+                float dotSize=Math.Max(1,snow.Texture.GetWidth());
+                snow.ProcessMaterial=new ParticleProcessMaterial {
+                    EmissionShape=ParticleProcessMaterial.EmissionShapeEnum.Box,EmissionBoxExtents=new(storm?125:90,40,0),
+                    Direction=new(0,1,0),Spread=25,Gravity=new(0,75,0),InitialVelocityMin=25,InitialVelocityMax=75,
+                    ScaleMin=3f/dotSize,ScaleMax=6f/dotSize,Color=new Color(Ice,.75f)
+                };
+                root.AddChild(snow);
+            }
+            else snow?.Free();
             if(storm)Part(NativeScenes[5],.45f,new Color(Ice,.3f));
         }
-        if(motifs.HasFlag(FrostMotif.Armor))Part(NativeScenes[1],.85f);
+        if(motifs.HasFlag(FrostMotif.Armor) && !Part(NativeScenes[1],.85f))
+        {
+            // Some game versions omit the evoke shield. Prefer the native passive shield;
+            // retain a small ice shield even when neither scene is available.
+            if(!Part(NativeScenes[2],.85f))IceShield(root,size);
+        }
         if(motifs.HasFlag(FrostMotif.Shards))
         {
             // The original rock-shatter motion with ice pieces instead of stones
@@ -311,8 +322,8 @@ public static class FrostCardVfx
         }
         if(motifs.HasFlag(FrostMotif.Crystal))
         {
-            var texture=ResourceLoader.Load<Texture2D>("res://images/vfx/orbs/frost_orb_particle.png");
-            for(int i=0;i<3;i++)
+            var texture=NativeTexture();
+            for(int i=0;texture!=null && i<3;i++)
             {
                 float a=-Mathf.Pi/2+i*Mathf.Tau/3;
                 var crystal=new Sprite2D {Texture=texture,Position=Vector2.FromAngle(a)*38*size,Scale=Vector2.One*(26*size/Math.Max(texture.GetWidth(),texture.GetHeight())),Rotation=a+Mathf.Pi/2};
@@ -343,16 +354,41 @@ public static class FrostCardVfx
         }
         if(motifs.HasFlag(FrostMotif.Mist))Part(NativeScenes[2],.65f);
         if(motifs.HasFlag(FrostMotif.Bind))
-        {Part(NativeScenes[1],.6f,offset:new(0,-35));Part(NativeScenes[2],.6f,offset:new(0,35));Ring(root,Blue,true,size*.7f);}
+        {if(!Part(NativeScenes[1],.6f,offset:new(0,-35)))Part(NativeScenes[2],.6f,offset:new(0,-35));Part(NativeScenes[2],.6f,offset:new(0,35));Ring(root,Blue,true,size*.7f);}
         if(motifs.HasFlag(FrostMotif.Prism))Part(NativeScenes[3],.65f,Blue);
         if(motifs.HasFlag(FrostMotif.Blood))Ring(root,Blood,true,size*.65f);
         // Local tween only. No Cmd.Wait, synchronized tasks or unbounded emitters.
         root.TreeEntered+=()=>root.CreateTween().TweenInterval(3.4).Finished+=()=>{if(GodotObject.IsInstanceValid(root))root.QueueFree();};
         return root;
     }
+    // Optional art must not interrupt a card's effect when native resources change.
+    private static T? NativeScene<T>(string scene) where T:Node
+    {
+        string path=Vfx+scene+".tscn";
+        if(!ResourceLoader.Exists(path))return null;
+        if(ResourceLoader.Load(path) is not PackedScene packed)return null;
+        var node=packed.Instantiate();
+        if(node is T typed)return typed;
+        node.Free();return null;
+    }
+    private static Texture2D? NativeTexture()
+    {
+        const string path="res://images/vfx/orbs/frost_orb_particle.png";
+        return ResourceLoader.Exists(path)?ResourceLoader.Load(path) as Texture2D:null;
+    }
+    private static void IceShield(Node2D root,float size)
+    {
+        var shield=new Node2D {Name="IceShieldFallback"};
+        var points=Enumerable.Range(0,6).Select(i=>Vector2.FromAngle(i*Mathf.Tau/6-Mathf.Pi/2)*52*size).ToArray();
+        shield.AddChild(new Polygon2D {Polygon=points,Color=new Color(Blue,.16f)});
+        shield.AddChild(new Line2D {Points=points.Append(points[0]).ToArray(),Width=3*size,DefaultColor=new Color(Ice,.8f),Antialiased=true});
+        shield.TreeEntered+=()=>shield.CreateTween().TweenProperty(shield,"modulate:a",0f,.65f);
+        root.AddChild(shield);
+    }
     private static void ScatterCrystals(Node2D root,int count,float size,Color tint)
     {
-        var texture=ResourceLoader.Load<Texture2D>("res://images/vfx/orbs/frost_orb_particle.png");
+        var texture=NativeTexture();
+        if(texture==null)return;
         for(int i=0;i<count;i++)
         {
             float a=-Mathf.Pi/2+i*Mathf.Tau/count;
@@ -365,7 +401,8 @@ public static class FrostCardVfx
     }
     private static void Ring(Node2D root,Color color,bool inward,float size)
     {
-        var node=ResourceLoader.Load<PackedScene>(Vfx+NativeScenes[6]+".tscn").Instantiate<Node2D>();
+        var node=NativeScene<Node2D>(NativeScenes[6]);
+        if(node==null)return;
         Prepare(node,color);node.Scale=new(size*.75f,size*.45f);root.AddChild(node);
         if(inward)node.TreeEntered+=()=>node.CreateTween().TweenProperty(node,"scale",node.Scale*.35f,.35);
     }
@@ -402,7 +439,7 @@ public static class FrostCardVfx
         }
         if(particles.Name=="rock")
         {
-            particles.Texture=ResourceLoader.Load<Texture2D>("res://images/vfx/orbs/frost_orb_particle.png");
+            if(NativeTexture() is {} texture)particles.Texture=texture;
             // The original rock texture is large. Keep replacement shards small.
             if(particles.ProcessMaterial is ParticleProcessMaterial material)
             {material.ScaleMin=.08f;material.ScaleMax=.16f;}
