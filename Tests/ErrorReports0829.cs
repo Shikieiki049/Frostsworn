@@ -69,10 +69,16 @@ public static partial class Suite
             online=true;result=await partial.SendAsync(FrostErrorReports.CreateApplicant(partial),new[]{first,second});
             Assert(result.Success && batchCalls==3,"partial batch retries only undelivered report");
             File.WriteAllText(Path.Combine(root,"godot-test.log"),"[INFO] chat private-chat\nERROR: "+raw+"\n   at Frostsworn.Method()\n[INFO] account private-account");
+            string difference="State divergence diagnostics\nLocal progress\nPRIVATE_PROGRESS\nOverview\n--------\nchecksum.value: local=123; remote=456\nPlayers\n-------\nplayers[0].maxHp: local=48; remote=64\nplayers[0].powers\n  local:\n    FROSTSWORN_POWER_ICE_ARMOR: 2\n  remote:\n    FROSTSWORN_POWER_ICE_ARMOR: 3\nplayers[0].username\n  local:\n    PRIVATE_PLAYER\nnetwork.remotePeer: local=76561198000000001; remote=76561198000000002\ncontext.path: local=C:/Users/PrivatePerson/run.json\nLOCAL STATE DUMP\nRAW_FULL_STATE\nREMOTE STATE DUMP\nRAW_REMOTE_STATE";
+            string diff=scrub.DivergenceReport(difference);
+            Assert(diff.Contains("local=48; remote=64") && diff.Contains("ICE_ARMOR: 2") && diff.Contains("ICE_ARMOR: 3"),"plain divergence summary keeps scalar and multiline gameplay differences");
+            Assert(!new[]{"PRIVATE_PROGRESS","PRIVATE_PLAYER","PrivatePerson","76561198","RAW_FULL_STATE","RAW_REMOTE_STATE"}.Any(diff.Contains),"difference summary removes identities, paths, preamble progress and complete state dumps");
+            Assert(scrub.DivergenceReport("unrecognized report format\nPRIVATE_PLAYER")=="","unknown report format does not publish unrestricted text");
+            Assert(scrub.DivergenceReport("Overview\n"+string.Join('\n',Enumerable.Repeat(new string('x',5000),2000))).Length<100000,"plain summary is bounded");
             using var zip=new MemoryStream();
             using(var archive=new ZipArchive(zip,ZipArchiveMode.Create,true))
             {
-                foreach(var pair in new[]{("diff.json","{\"hp\":48,\"steam_id\":\"76561198000000001\"}"),("../escape.json","{}"),("save.bin","RAW_SAVE"),("trace.log",raw)})
+                foreach(var pair in new[]{("diff.json","{\"hp\":48,\"steam_id\":\"76561198000000001\"}"),("../escape.json","{}"),("save.bin","RAW_SAVE"),("trace.log",raw),("state-divergence-report.txt",difference)})
                 {using var writer=new StreamWriter(archive.CreateEntry(pair.Item1).Open());writer.Write(pair.Item2);}
             }
             var divergence=Envelope("difference","state_divergence");
@@ -82,6 +88,8 @@ public static partial class Suite
             await zipped.SendAsync(FrostErrorReports.CreateApplicant(zipped),new[]{divergence});
             string bundle=Encoding.UTF8.GetString(captured!);
             Assert(bundle.Contains("diff.json") && bundle.Contains("48") && !bundle.Contains("escape.json") && !bundle.Contains("RAW_SAVE") && !bundle.Contains("76561198"),"divergence ZIP permits only sanitized diagnostic entries and excludes traversal/binary saves");
+            Assert(JsonNode.Parse(captured!)!["bundle_files"]!.AsArray().Single(x=>x?["name"]?.GetValue<string>()=="state-divergence-report.txt")!["data"]!.GetValue<string>().Contains("local=48; remote=64"),"actual ZIP report filename uses summary parsing instead of log filtering");
+            Assert(!bundle.Contains("RAW_FULL_STATE") && !bundle.Contains("PRIVATE_PLAYER"),"ZIP summary never transmits full states or personal names");
             Assert(bundle.Contains("Frostsworn.Method") && !bundle.Contains("private-chat") && !bundle.Contains("private-account"),"real log tail selection preserves diagnostic stack and filters personal lines");
             ((JsonObject)divergence.Payload!)["bundle"]=new JsonObject {["content"]="invalid-base64"};
             result=await zipped.SendAsync(FrostErrorReports.CreateApplicant(zipped),new[]{divergence});
@@ -104,9 +112,9 @@ public static partial class Suite
             var pending=new FrostReportAdapter("",pendingFolder,root,(bytes,ct)=>{captured=bytes;return Task.FromResult(false);});
             await pending.SendAsync(FrostErrorReports.CreateApplicant(pending),new[]{nested});
             string pendingPath=Directory.GetFiles(pendingFolder,"*.json").Single();
-            File.WriteAllText(pendingPath,"{\"payload\":\"old broken cache\"}");
+            File.WriteAllText(pendingPath,"{\"attachment_parser\":2,\"payload\":\"old broken cache\"}");
             await pending.SendAsync(FrostErrorReports.CreateApplicant(pending),new[]{nested});
-            Assert(JsonNode.Parse(captured!)?["attachment_parser"]?.GetValue<int>()==2,"pending old cache is regenerated from queued original envelope");
+            Assert(JsonNode.Parse(captured!)?["attachment_parser"]?.GetValue<int>()==3,"pending old cache is regenerated from queued original envelope");
             using var cancellation=new CancellationTokenSource();cancellation.Cancel();bool canceled=false;
             try {await local.SendAsync(applicant,new[]{first},cancellation.Token);}catch(OperationCanceledException){canceled=true;}
             Assert(canceled,"shutdown cancellation propagates without marking delivery");

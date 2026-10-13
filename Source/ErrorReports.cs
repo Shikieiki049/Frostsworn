@@ -112,7 +112,7 @@ public sealed class FrostReportAdapter : ITelemetryAdapter
         {
             var previous=System.IO.File.ReadAllBytes(path);
             // Preserve delivered identities; rebuild only pending reports from the old attachment parser.
-            if(System.IO.File.Exists(path+".uploaded") || JsonNode.Parse(previous)?["attachment_parser"]?.GetValue<int>()==2)
+            if(System.IO.File.Exists(path+".uploaded") || JsonNode.Parse(previous)?["attachment_parser"]?.GetValue<int>()==3)
                 return(path,previous);
         }
         var scrub=new FrostReportScrubber();
@@ -132,7 +132,7 @@ public sealed class FrostReportAdapter : ITelemetryAdapter
             if(obj["applicant_payload"] is JsonObject applicantPayload)ExtractBundle(applicantPayload);
         }
         var report=new JsonObject {
-            ["schema"]="frostsworn.error-report.v1",["attachment_parser"]=2,["mod_version"]=FrostVersion.Value,
+            ["schema"]="frostsworn.error-report.v1",["attachment_parser"]=3,["mod_version"]=FrostVersion.Value,
             ["timestamp_utc"]=envelope.TimestampUtc.ToString("O"),["event"]=scrub.Text(envelope.EventName),
             ["request"]=envelope.RequestId,["payload"]=scrub.Node(payload),["bundle_files"]=bundle,
             ["diagnostic_log_tail"]=scrub.DiagnosticLines(ReadLogTail(logFolder)),
@@ -173,7 +173,8 @@ public sealed class FrostReportAdapter : ITelemetryAdapter
             JsonNode? data;
             if(Path.GetExtension(name).Equals(".json",StringComparison.OrdinalIgnoreCase))
             {try {data=scrub.Node(JsonNode.Parse(text));}catch(JsonException){continue;}}
-            else data=JsonValue.Create(scrub.DiagnosticLines(text));
+            else data=JsonValue.Create(Path.GetFileName(name).Equals("state-divergence-report.txt",StringComparison.OrdinalIgnoreCase)
+                ?scrub.DivergenceReport(text):scrub.DiagnosticLines(text));
             files.Add(new JsonObject {["name"]=scrub.Text(Path.GetFileName(name)),["data"]=data});
         }
         return files;
@@ -238,6 +239,31 @@ public sealed class FrostReportScrubber
         // Large numeric account/peer IDs must also be aliased, without losing party correspondence.
         string raw=node.ToJsonString();if(Ids.IsMatch(raw))return JsonValue.Create(Text(raw));
         return node.DeepClone();
+    }
+    // RitsuLib's summary is plain text, not a Godot log. Never include its raw state dumps.
+    public string DivergenceReport(string report)
+    {
+        try
+        {
+            var summary=new StringBuilder();bool inSummary=false,privateBlock=false;int lines=0;
+            foreach(string line in report.Replace("\r","").Split('\n'))
+            {
+                string heading=line.Trim();
+                if(heading.Equals("LOCAL STATE DUMP",StringComparison.OrdinalIgnoreCase) ||
+                    heading.Equals("REMOTE STATE DUMP",StringComparison.OrdinalIgnoreCase))break;
+                if(!inSummary){if(heading=="Overview")inSummary=true;else continue;}
+                // A sensitive field may put its value on indented following lines.
+                if(line.Length>0 && !char.IsWhiteSpace(line[0]))privateBlock=false;
+                if(SensitiveLine.IsMatch(line)){privateBlock=true;continue;}
+                if(privateBlock)continue;
+                string clean=Text(line.Length>4096?line[..4096]+" [truncated]":line);
+                if(++lines>1500 || summary.Length+clean.Length+1>98304)
+                {summary.AppendLine("[summary truncated]");break;}
+                summary.AppendLine(clean);
+            }
+            return summary.ToString();
+        }
+        catch(RegexMatchTimeoutException){return "[redacted]";}
     }
     public string DiagnosticLines(string log)
     {

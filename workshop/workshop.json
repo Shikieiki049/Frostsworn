@@ -10,6 +10,6 @@
   "dependencies": [
     3747602295
   ],
-  "changeNote": "",
+  "changeNote": "0.8.34\n修复多人不同步报告的差异摘要被日志过滤清空，保留脱敏的两端数值及多行差异。\n排除完整状态转储和个人字段；重新解析尚未发送的旧缓存，已发送报告不重复上传。\n通过附件解析、脱敏、缓存迁移与重试测试。此更新修复诊断收集，不代表已修复联机不同步根因。\nFix plain-text divergence summaries being discarded by log filtering. Preserve sanitized differences, exclude full state dumps, and regenerate pending old caches without duplicating delivered reports. Verified extraction, redaction, migration and retries.",
   "title": "霜誓者 Frostsworn｜冰霜法师与日食挑战"
 }
