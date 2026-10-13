@@ -8,3 +8,5 @@
 - 优先使用原版 CharacterModel、EventModel、CreatureCmd、CardCmd、原版 UI 节点以及 RitsuLib 已有接口。参考 https://github.com/ptrlrd/spire-codex ，最终签名以目标版本游戏 DLL 为准。
 - 不提交游戏 DLL、原版解包结果、测试存档、账号凭据、构建缓存和版本 ZIP。构建产物放 Releases 或本地 dist，不放源码历史。
 - 只运行与变更有关的检查；不为了整理源码改变牌效、日食规则或联机协议。
+
+- 工坊发布配置必须显式保留完整非空标题“霜誓者 Frostsworn｜冰霜法师与日食挑战”，默认语言及每次本地化更新都携带标题；不能依赖省略 title 自动保留。发布后同时检查页面标题与改动说明。
