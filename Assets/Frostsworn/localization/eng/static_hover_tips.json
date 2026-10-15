@@ -41,6 +41,7 @@
   "FROSTSWORN_FROST_UNINTERRUPTIBLE.description": "The current action cannot be interrupted.",
   "FROSTSWORN_FROST_READY.description": "Freezes after a card resolves if the threshold is reached.",
   "FROSTSWORN_FROST_STATUS.description": "Current Frost: {Frost}\nCurrent Freeze threshold: {Threshold}\n{Status}\nFrozen {Count} times this combat; each Freeze raises the threshold by 12.",
-  "FROSTSWORN_VOID_RARITY.title": "Void",
+  "FROSTSWORN_VOID_RARITY.title": "Void Relic",
+  "FROSTSWORN_VOID_COLLECTION.title": "[color=#B780B0][font_size=28][b]Void:[/b][/font_size][/color] Corrupted relics obtainable only through special means.",
   "FROSTSWORN_VOID_PICK.prompt": "Choose a card."
 }

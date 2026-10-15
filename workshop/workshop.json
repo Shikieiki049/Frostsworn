@@ -10,6 +10,6 @@
   "dependencies": [
     3747602295
   ],
-  "changeNote": "0.9.0 工坊标题更新 / Workshop title update\n中英文标题增加“虚空遗物+事件更新”前缀；游戏内容与0.9.0保持一致。\nAdded the Void Relics + Event Update prefix to both localized Workshop titles. Game content remains unchanged from 0.9.0.",
+  "changeNote": "0.9.1 虚空内容显示修复 / Void presentation fixes\n清理16件遗物的邻图残边并重新居中；修正图鉴虚空分类字体并补充说明。\n详情稀有度改为“虚空遗物”，名称恢复默认颜色；使原遗物无效化单独换行。\n补全力量、敏捷、消耗、手牌等关键词标色与相关原版词条提示；移除虚空侵染重复的消耗、永恒描述。\n虚空摇篮插图按比例放入左侧区域；发霉曲奇计数按0→1→0循环显示，每第二场升级奖励规则不变。\n通过16件原生图鉴详情、中英文文本、诅咒最终描述、循环计数及原生事件视觉布局测试。\nClean and center all 16 Void relic icons. Match native compendium heading formatting, add rarity explanation, restore default name colors, and separate counterpart suppression text. Add native keyword highlights and relevant tooltips, remove duplicated Curse keyword rules, fit event art into the left panel, and loop Moldy Cookie display 0/1 without changing its reward cadence. Focused engine and rendered UI checks passed.",
   "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战"
 }

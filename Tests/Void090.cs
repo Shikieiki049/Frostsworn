@@ -1,4 +1,5 @@
 using System;
+using MegaCrit.Sts2.Core.Localization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ public static partial class Suite
   await Clear();var gearbox=Relic<OverdriveGearbox>();var strike=await Card<FrostStrike>(PileType.Hand);Turn(14);
   for(int i=0;i<7;i++)await gearbox.AfterCardPlayed(ctx,Play(strike));
   Assert(player.Creature.GetPowerAmount<VigorPower>()==20 && gearbox.VoidCount==0,"Gearbox triggers every seven cards and caps Vigor at 20");
-  var cookie=Relic<MoldyCookie>();await cookie.AfterCombatVictory(null!);Assert(cookie.ModifyCardRewardUpgradeOdds(player,strike,0)==0,"Cookie does not upgrade first combat rewards");await cookie.AfterCombatVictory(null!);Assert(cookie.ModifyCardRewardUpgradeOdds(player,strike,0)==1,"Cookie upgrades every second combat reward set");
+  var cookie=Relic<MoldyCookie>();await cookie.AfterCombatVictory(null!);Assert(cookie.DisplayAmount==1 && cookie.ModifyCardRewardUpgradeOdds(player,strike,0)==0,"Cookie does not upgrade first combat rewards");await cookie.AfterCombatVictory(null!);Assert(cookie.DisplayAmount==0 && cookie.ModifyCardRewardUpgradeOdds(player,strike,0)==1,"Cookie upgrades every second combat reward set");
   await Clear();var jelly=Relic<LighthouseJelly>();await CreatureCmd.SetMaxAndCurrentHp(player.Creature,100);
   Assert(!jelly.ShouldDieLate(player.Creature),"Lighthouse Jellyfish prevents lethal HP loss above 10 Max HP");await CreatureCmd.SetCurrentHp(player.Creature,0);
   GD.Print($"VOID_JELLY hp={player.Creature.CurrentHp}, max={player.Creature.MaxHp}, block={player.Creature.Block}");
@@ -127,23 +128,54 @@ public static partial class Suite
   Assert(player.Relics.OfType<BloodlessCord>().Any() && !player.Relics.OfType<BloodVial>().Any() && player.Deck.Cards.OfType<VoidInfection>().Count()==1,"random corruption transforms only an eligible owned relic and adds the Curse");
   var ev3=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev3.BeginEvent(player,null,false);await ev3.Take();Assert(player.Relics.OfType<VoidRelic>().Count()==2 && player.Deck.Cards.OfType<VoidInfection>().Count()==2,"taking a new Void relic also adds the Curse");
   Assert(ev.CreateInitialPortrait().GetWidth()>1000,"event uses supplied Void Cradle artwork");
+  for(int i=0;i<4;i++){await cookie.AfterCombatVictory(null!);Assert(cookie.DisplayAmount==(i+1)%2,"Cookie counter stays in the 0/1 cycle across repeated combats");}
+  Assert(ModelDb.Relic<FaceborrowMembrane>().DynamicDescription.GetRawText().Contains("[gold]力量[/gold]") && ModelDb.Relic<FaceborrowMembrane>().HoverTipsExcludingRelic.Count()==2,"Void relics highlight and expose native Strength/Dexterity tips");
+  Assert(!ModelDb.Card<VoidInfection>().Description.GetRawText().Contains("永恒") && ModelDb.Card<VoidInfection>().Description.GetRawText().Contains("[gold]消耗[/gold]"),"Curse highlights Exhaust without manually duplicating automatic keywords");
+  Assert(all.All(r=>r.DynamicDescription.GetRawText().Contains("\n使")),"counterpart suppression is always on a new line");
+  var fit=new TextureRect();VoidEventPortraitPatch.Fit(fit);Assert(fit.Size.X==860 && fit.StretchMode==TextureRect.StretchModeEnum.KeepAspectCentered && fit.OffsetRight<0,"event art fits in the left panel without overlapping the native option column");fit.Free();
+  var curseText=ModelDb.Card<VoidInfection>().GetDescriptionForPile(PileType.None);
+  Assert(System.Text.RegularExpressions.Regex.Matches(curseText,"永恒").Count==1 && System.Text.RegularExpressions.Regex.Matches(curseText,"消耗").Count==2,"native final Curse description includes one Exhaust rule and one Eternal rule");
   var tree=(SceneTree)Engine.GetMainLoop();
   typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(NRelicCollection).Assembly});
   TestMode.IsOn=false;
   tree.Root.Size=new Vector2I(1920,1080);
   var category=ResourceLoader.Load<PackedScene>(NRelicCollectionCategory.scenePath).Instantiate<NRelicCollectionCategory>();tree.Root.AddChild(category);
+  category.Position=new Vector2(40,30);category.Size=new Vector2(1800,950);
   var collection=new NRelicCollection();
   AccessTools.Method(typeof(VoidCollectionPatch),"Postfix").Invoke(null,new object[]{category,RelicRarity.Event,collection,all.Cast<RelicModel>().ToHashSet(),UnlockState.all,UnlockState.all.Relics.ToHashSet()});
   var section=category.GetNode<NRelicCollectionCategory>("FrostswornVoidRelics");
-  Assert(section.GetGridItems().Sum(row=>row.Count)==16 && section.GetNode<MegaRichTextLabel>("%Header").GetThemeColor("default_color")==VoidRelics.Color,"actual native compendium category displays all 16 Void entries with purple header");
+  Assert(section.GetGridItems().Sum(row=>row.Count)==16 && section.GetNode<MegaRichTextLabel>("%Header").Text.Contains("[font_size=28][b]虚空：") && section.GetNode<MegaRichTextLabel>("%Header").Text.Contains("只能通过特殊途径获得的腐化遗物。"),"actual native compendium category displays all 16 Void entries with purple header");
   var inspect=ResourceLoader.Load<PackedScene>("res://scenes/screens/inspect_relic_screen/inspect_relic_screen.tscn").Instantiate<NInspectRelicScreen>();tree.Root.AddChild(inspect);
   AccessTools.Field(typeof(NInspectRelicScreen),"_relics").SetValue(inspect,all);
   ((HashSet<RelicModel>)AccessTools.Field(typeof(NInspectRelicScreen),"_allUnlockedRelics").GetValue(inspect)!).UnionWith(all);
   foreach(var relic in all){SaveManager.Instance.MarkRelicAsSeen(relic);AccessTools.Method(typeof(NInspectRelicScreen),"SetRelic").Invoke(inspect,new object[]{Array.IndexOf(all,relic)});var label=(MegaLabel)AccessTools.Field(typeof(NInspectRelicScreen),"_rarityLabel").GetValue(inspect)!;Assert(label.Text.Contains("虚空") && label.GetThemeColor("font_color")==VoidRelics.Color,"native inspection opens custom rarity: "+relic.GetType().Name);}
+  AccessTools.Method(typeof(NInspectRelicScreen),"SetRarityVisuals").Invoke(inspect,new object[]{RelicRarity.Event});
+  Assert(!((MegaLabel)AccessTools.Field(typeof(NInspectRelicScreen),"_rarityLabel").GetValue(inspect)!).HasThemeColorOverride("font_color"),"returning to native rarities removes the custom purple override");
+  var lastName=(MegaLabel)AccessTools.Field(typeof(NInspectRelicScreen),"_nameLabel").GetValue(inspect)!;
+  Assert(!lastName.HasThemeColorOverride("font_color"),"relic names retain native default color");
+  AccessTools.Method(typeof(NInspectRelicScreen),"SetRelic").Invoke(inspect,new object[]{Array.FindIndex(all,r=>r is FaceborrowMembrane)});
+  inspect.Visible=false;
+  if(DisplayServer.GetName()!="headless"){
+   await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-collection-091.png");
+  }
   inspect.Visible=true;inspect.GetNode<Control>("%Popup").Modulate=Colors.White;
   if(DisplayServer.GetName()!="headless"){
    await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-compendium-090.png");
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-compendium-091.png");
+  }
+  if(DisplayServer.GetName()!="headless"){
+   inspect.Visible=false;category.Visible=false;
+   // Move native visual nodes into a neutral canvas: the test host has no room synchronizer.
+   var nativeLayout=ResourceLoader.Load<PackedScene>("res://scenes/events/default_event_layout.tscn").Instantiate<Control>();
+   var canvas=new Control {Size=new Vector2(1920,1080)};tree.Root.AddChild(canvas);
+   foreach(var child in nativeLayout.GetChildren().ToArray()){nativeLayout.RemoveChild(child);canvas.AddChild(child);}
+   var portrait=canvas.GetNode<TextureRect>("Portrait");portrait.Texture=ev.CreateInitialPortrait();VoidEventPortraitPatch.Fit(portrait);
+   var title=canvas.GetNode<MegaLabel>("VBoxContainer/Title");title.SetTextAutoSize(ev.Title.GetFormattedText());title.Modulate=Colors.White;
+   var desc=canvas.GetNode<MegaRichTextLabel>("VBoxContainer/EventDescription");desc.SetTextAutoSize(new LocString("events","FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description").GetFormattedText());desc.Modulate=Colors.White;
+   canvas.GetNode<Control>("VBoxContainer/SharedEventLabel").Visible=false;
+   await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-event-091.png");canvas.Free();nativeLayout.Free();
   }
   var locTables=(Dictionary<string,MegaCrit.Sts2.Core.Localization.LocTable>)typeof(MegaCrit.Sts2.Core.Localization.LocManager).GetField("_tables",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(MegaCrit.Sts2.Core.Localization.LocManager.Instance)!;
   foreach(var table in new[]{"cards","relics","powers","events","static_hover_tips"}){
@@ -154,6 +186,7 @@ public static partial class Suite
   inspect.Free();category.Free();collection.Free();TestMode.IsOn=true;
  }
 }
+
 
 
 

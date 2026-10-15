@@ -17,13 +17,17 @@ public static class VoidInspectRarityPatch
         var label=AccessTools.Field(typeof(NInspectRelicScreen),"_rarityLabel").GetValue(__instance) as MegaLabel;
         if(label!=null){label.Modulate=Colors.White;label.AddThemeColorOverride("font_color",VoidRelics.Color);label.SetTextAutoSize(new LocString("static_hover_tips","FROSTSWORN_VOID_RARITY.title").GetFormattedText());}
         var name=AccessTools.Field(typeof(NInspectRelicScreen),"_nameLabel").GetValue(__instance) as MegaLabel;
-        if(name!=null){name.Modulate=Colors.White;name.AddThemeColorOverride("font_color",VoidRelics.Color);}
+        if(name!=null){name.Modulate=Colors.White;name.RemoveThemeColorOverride("font_color");}
         if(AccessTools.Field(typeof(NInspectRelicScreen),"_frameHsv").GetValue(__instance) is ShaderMaterial frame)
         {frame.SetShaderParameter("h",.85f);frame.SetShaderParameter("s",.45f);frame.SetShaderParameter("v",.95f);}
         return false;
     }
     static void Postfix(NInspectRelicScreen __instance,RelicRarity rarity)
-    {if(rarity!=VoidRelics.Rarity && AccessTools.Field(typeof(NInspectRelicScreen),"_nameLabel").GetValue(__instance) is MegaLabel label){label.Modulate=Colors.White;label.RemoveThemeColorOverride("font_color");}}
+    {
+        if(rarity==VoidRelics.Rarity)return;
+        if(AccessTools.Field(typeof(NInspectRelicScreen),"_nameLabel").GetValue(__instance) is MegaLabel label){label.Modulate=Colors.White;label.RemoveThemeColorOverride("font_color");}
+        if(AccessTools.Field(typeof(NInspectRelicScreen),"_rarityLabel").GetValue(__instance) is MegaLabel rarityLabel)rarityLabel.RemoveThemeColorOverride("font_color");
+    }
 }
 
 [HarmonyPatch(typeof(NInspectRelicScreen),"UpdateRelicDisplay")]
@@ -46,7 +50,10 @@ public static class VoidInspectDisplayPatch
         description.SetTextAutoSize(unlocked && seen?relic.DynamicDescription.GetFormattedText():new LocString("inspect_relic_screen",unlocked?"UNDISCOVERED_DESCRIPTION":"LOCKED_DESCRIPTION").GetFormattedText());
         flavor.Text=unlocked && seen?relic.Flavor.GetFormattedText():"";
         image.Texture=relic.BigIcon;image.SelfModulate=unlocked && seen?Colors.White:new Color(.1f,.1f,.1f);
-        NHoverTipSet.Clear();return false;
+        NHoverTipSet.Clear();
+        if(MegaCrit.Sts2.Core.Nodes.NGame.Instance!=null && seen && unlocked && Get("_hoverTipRect") is Control rect)
+            NHoverTipSet.CreateAndShow(__instance,relic.HoverTipsExcludingRelic)?.SetAlignment(rect,MegaCrit.Sts2.Core.HoverTips.HoverTip.GetHoverTipAlignment(__instance));
+        return false;
     }
 }
 
@@ -61,9 +68,9 @@ public static class VoidCollectionPatch
         var section=ResourceLoader.Load<PackedScene>(NRelicCollectionCategory.scenePath).Instantiate<NRelicCollectionCategory>();
         section.Name="FrostswornVoidRelics";
         __instance.AddChild(section);
-        section.LoadRelics(VoidRelics.Rarity,collection,new LocString("static_hover_tips","FROSTSWORN_VOID_RARITY.title"),seenRelics,unlockState,allUnlockedRelics);
+        section.LoadRelics(VoidRelics.Rarity,collection,new LocString("static_hover_tips","FROSTSWORN_VOID_COLLECTION.title"),seenRelics,unlockState,allUnlockedRelics);
         section.GetNode<MegaRichTextLabel>("%Header").Modulate=Colors.White;
-        section.GetNode<MegaRichTextLabel>("%Header").AddThemeColorOverride("default_color",VoidRelics.Color);
+        section.GetNode<MegaRichTextLabel>("%Header").RemoveThemeColorOverride("default_color");
 
     }
 }
@@ -73,4 +80,24 @@ public static class VoidCollectionNavigationPatch
 {
     static void Postfix(NRelicCollectionCategory __instance,ref List<IReadOnlyList<Control>> __result)
     {if(__instance.GetNodeOrNull<NRelicCollectionCategory>("FrostswornVoidRelics") is {} section)__result.AddRange(section.GetGridItems());}
+}
+
+// Only adjust this event's native portrait slot; leave the text/options layout intact.
+[HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout),"SetPortrait")]
+public static class VoidEventPortraitPatch
+{
+    public static void Fit(TextureRect portrait)
+    {
+        portrait.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.Center);
+        portrait.OffsetLeft=-920;portrait.OffsetRight=-60;
+        portrait.OffsetTop=-300;portrait.OffsetBottom=350;
+        portrait.Scale=Vector2.One;portrait.PivotOffset=Vector2.Zero;
+        portrait.ExpandMode=TextureRect.ExpandModeEnum.IgnoreSize;
+        portrait.StretchMode=TextureRect.StretchModeEnum.KeepAspectCentered;
+    }
+    static void Postfix(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout __instance)
+    {
+        if(AccessTools.Field(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout),"_event").GetValue(__instance) is VoidCradle &&
+           __instance.GetNodeOrNull<TextureRect>("%Portrait") is {} portrait)Fit(portrait);
+    }
 }

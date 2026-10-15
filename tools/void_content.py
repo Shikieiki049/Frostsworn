@@ -1,5 +1,9 @@
 """Void Cradle content and localization. Kept separate from the character's reward card pool."""
 import re
+from english_localization import gold
+
+def highlight(text, eng):
+ return gold(text) if eng else re.sub(r"抽牌堆|弃牌堆|手牌|消耗|格挡|力量|敏捷|活力|升级", lambda m:"[gold]"+m.group(0)+"[/gold]",text)
 
 RELICS=[
 ('BloodlessCord','无血脐带','Bloodless Cord','每攀爬一层楼层，回复1点生命。','Whenever you climb a floor, heal 1 HP.','小血瓶','Blood Vial'),
@@ -24,7 +28,7 @@ def apply(zh,en):
  for tables,eng in [(zh,False),(en,True)]:
   for cls,zname,ename,zdesc,edesc,zorig,eorig in RELICS:
    key='FROSTSWORN_RELIC_'+slug(cls)
-   tables['relics'].update({key+'.title':ename if eng else zname,key+'.description':(edesc+' Disables '+eorig+'.') if eng else (zdesc+'使'+zorig+'无效化。'),key+'.flavor':'Something familiar lives inside. Something else looks back.' if eng else '熟悉的轮廓里，栖息着陌生的东西。'})
+   tables['relics'].update({key+'.title':ename if eng else zname,key+'.description':highlight(edesc+'\nDisables '+eorig+'.',True) if eng else highlight(zdesc+'\n使'+zorig+'无效化。',False),key+'.flavor':'Something familiar lives inside. Something else looks back.' if eng else '熟悉的轮廓里，栖息着陌生的东西。'})
   tables.setdefault('events',{})
   ev='FROSTSWORN_EVENT_VOID_CRADLE'
   text={
@@ -41,8 +45,8 @@ def apply(zh,en):
   'pages.LEAVE.description':('You step away. The tendrils linger, then withdraw.\n\nOnly after you have walked some distance do your relics stop trembling.','你收回了手。触须在空中停留片刻，慢慢缩回茧中。\n\n走出很远后，你随身的遗物才终于停止震颤。')}
   tables['events'].update({ev+'.'+k:v[0 if eng else 1] for k,v in text.items()})
   card='FROSTSWORN_CARD_VOID_INFECTION'
-  tables['cards'].update({card+'.title':'Void Infection' if eng else '虚空侵染',card+'.description':'When this card is Exhausted, lose 5 HP.\nExhaust.\nEternal.' if eng else '这张牌被消耗时，失去5点生命。\n消耗。\n永恒。'})
-  tips=tables['static_hover_tips'];tips['FROSTSWORN_VOID_RARITY.title']='Void' if eng else '虚空';tips['FROSTSWORN_VOID_PICK.prompt']='Choose a card.' if eng else '选择一张牌。'
+  tables['cards'].update({card+'.title':'Void Infection' if eng else '虚空侵染',card+'.description':'When this card is [gold]Exhausted[/gold], lose 5 HP.' if eng else '这张牌被[gold]消耗[/gold]时，失去5点生命。'})
+  tips=tables['static_hover_tips'];tips['FROSTSWORN_VOID_RARITY.title']='Void Relic' if eng else '虚空遗物';tips['FROSTSWORN_VOID_COLLECTION.title']='[color=#B780B0][font_size=28][b]Void:[/b][/font_size][/color] Corrupted relics obtainable only through special means.' if eng else '[color=#B780B0][font_size=28][b]虚空：[/b][/font_size][/color]只能通过特殊途径获得的腐化遗物。';tips['FROSTSWORN_VOID_PICK.prompt']='Choose a card.' if eng else '选择一张牌。'
   for power,stat in [('STRENGTH','力量'),('DEXTERITY','敏捷')]:
    k='FROSTSWORN_POWER_VOID_FADING_'+power+'_POWER'
    tables['powers'][k+'.title']=('Fading '+power.title()) if eng else '衰减'+stat

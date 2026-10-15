@@ -386,5 +386,5 @@
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.description.combat": "造成{Damage:diff()}点[gold]伤害[/gold]，给予{BeamFrost:diff()}层[gold]寒霜[/gold]。",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.upgradeDescription.combat": "造成{Damage:diff()}点[gold]伤害[/gold]，给予{BeamFrost:diff()}层[gold]寒霜[/gold]。",
   "FROSTSWORN_CARD_VOID_INFECTION.title": "虚空侵染",
-  "FROSTSWORN_CARD_VOID_INFECTION.description": "这张牌被消耗时，失去5点生命。\n消耗。\n永恒。"
+  "FROSTSWORN_CARD_VOID_INFECTION.description": "这张牌被[gold]消耗[/gold]时，失去5点生命。"
 }

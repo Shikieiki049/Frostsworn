@@ -38,3 +38,13 @@ Tests/Void090.cs 在独立Godot测试宿主验证全部16件遗物注册、图�
 ## 美术
 
 使用用户提供的事件图、诅咒图和两张遗物图集。内置图像编辑工具只用于透明背景处理；tools/prepare_void_art.py 按从左到右、从上到下切片，统一透明画布和图标尺寸。
+
+
+## 0.9.1 display fixes
+
+- Slice whole alpha components before centering; do not clip icons at regular grid edges. Regenerate with `tools/prepare_void_art.py`.
+- Native 28px bold collection header, explanatory text, purple rarity only, default name color, native stat/keyword hover tips, separate counterpart suppression line.
+- Void Infection keeps automatic Exhaust/Eternal keyword lines; the rules sentence highlights Exhaust.
+- Event artwork occupies the left panel; it retains its aspect ratio and cannot overlap the native text/options column.
+- Moldy Cookie displays completed combats modulo 2 (0 → 1 → 0), preserving saved combat totals and every-second-combat rewards.
+- Focused engine tests cover all 16 inspection entries, final native Curse text, keyword tips, repeat counter cycles and native event visual-node layout. Rendered screens were inspected; this is not a live multiplayer playthrough.

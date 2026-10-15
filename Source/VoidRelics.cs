@@ -1,4 +1,5 @@
 using HarmonyLib;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.Models.RelicPools;
@@ -51,7 +52,18 @@ public abstract class VoidRelic:ModRelicTemplate
     private CardModel? mothCard;
     private bool pendingFloat;
     public override bool ShowCounter=>this is MoldyCookie or OverdriveGearbox;
-    public override int DisplayAmount=>VoidCount;
+    public override int DisplayAmount=>this is MoldyCookie?VoidCount%2:VoidCount;
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips
+    {
+        get
+        {
+            if(this is FaceborrowMembrane)yield return HoverTipFactory.FromPower<StrengthPower>();
+            if(this is FaceborrowMembrane or GymnospermPendant)yield return HoverTipFactory.FromPower<DexterityPower>();
+            if(this is MemorySlough or LightMothCocoon)yield return HoverTipFactory.FromKeyword(CardKeyword.Exhaust);
+            if(this is MirrorParasite or LighthouseJelly)yield return HoverTipFactory.Static(StaticHoverTip.Block);
+            if(this is OverdriveGearbox)yield return HoverTipFactory.FromPower<VigorPower>();
+        }
+    }
     public override Task AfterObtained()
     {
         VoidFloor=Owner.RunState.TotalFloor;
@@ -207,5 +219,6 @@ public abstract class VoidFadingPower:ModPowerTemplate
 }
 [HarmonyPatch(typeof(RelicModel),nameof(RelicModel.Status),MethodType.Getter)]public static class VoidStatusPatch
 {static void Postfix(RelicModel __instance,ref RelicStatus __result){if(VoidRelics.Suppressed(__instance))__result=RelicStatus.Disabled;}}
+
 
 
