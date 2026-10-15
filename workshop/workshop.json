@@ -10,6 +10,6 @@
   "dependencies": [
     3747602295
   ],
-  "changeNote": "0.9.0 虚空摇篮\n新增全角色事件“虚空摇篮”、16件虚空遗物与诅咒“虚空侵染”。探入摇篮和随机腐化已有遗物均获得诅咒，无可腐化遗物时锁定选项。\n新增虚空稀有度（#B780B0），适配图鉴分类和逐件详情；遗物仅由此事件获取，永久排除对应原遗物的本局奖励，同时持有时使原版失效。\n接入提供的美术及中英文文本，完成牌效、随机候选、奖励隔离、原遗物失效、存档往返与实际图鉴节点测试。联机玩家请全部更新。\nAdds Void Cradle, 16 event-exclusive Void relics, and the 1-energy Exhaust/Eternal Curse Void Infection. Both acquisition choices grant the Curse. Includes custom purple rarity, compendium support, counterpart reward exclusion and suppression, art, localization, and focused engine tests. All multiplayer peers must update.",
-  "title": "霜誓者 Frostsworn｜冰霜法师与日食挑战"
+  "changeNote": "0.9.0 工坊标题更新 / Workshop title update\n中英文标题增加“虚空遗物+事件更新”前缀；游戏内容与0.9.0保持一致。\nAdded the Void Relics + Event Update prefix to both localized Workshop titles. Game content remains unchanged from 0.9.0.",
+  "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战"
 }

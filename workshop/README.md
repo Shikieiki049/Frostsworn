@@ -87,3 +87,10 @@ multiplayer playthrough.
 Attack animation prototypes remain excluded by the author's request.
 Statuses without supplied replacement artwork retain their mod-specific icons.
 Native effects and sounds are reused from the installed game.
+
+## Current localized Workshop titles
+
+- Default / schinese: 【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战
+- english: [Void Relics + Event Update] Frostsworn | Ice Mage & Eclipse Challenges
+
+Always explicitly include the appropriate nonempty title for each language on updates.
