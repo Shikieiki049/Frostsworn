@@ -1,10 +1,10 @@
 # 虚空摇篮（0.9.0）
 
 - 事件加入全角色共享事件集合，各玩家独立选择；随机使用事件自身的原版确定性随机数。
-- 探入摇篮：获得1张虚空侵染和1件尚未持有的随机虚空遗物。
-- 献出遗物：获得1张虚空侵染，随机把自己持有且存在对应关系的1件原遗物替换为虚空版本。无候选时锁定。
+- 探入摇篮：获得1张朽败和1件尚未持有的随机虚空遗物。
+- 献出遗物：获得1张朽败，随机把自己持有且存在对应关系的1件原遗物替换为虚空版本。无候选时锁定。
 - 离开：无代价。
-- 虚空侵染：诅咒，1费；被任何方式消耗时失去5点生命；消耗、永恒。不能升级。
+- 朽败：诅咒，1费；被任何方式消耗时失去5点生命；消耗、永恒。不能升级。
 - 虚空为独立动态稀有度，字体 #B780B0。所有虚空遗物拒绝普通奖励、商店和原版奖励抓取。
 - 获取虚空版本时，从全队及共享奖励袋移除原遗物，并把排除记录写入本局附加存档；之后失去虚空版本也不会重新掉落原遗物。
 - 同一玩家同时持有原版与虚空版本时，仅禁用对应原版的战斗和非战斗钩子；原遗物保留在栏内并显示失效。其他玩家持有的原版仍正常生效。
@@ -44,7 +44,7 @@ Tests/Void090.cs 在独立Godot测试宿主验证全部16件遗物注册、图�
 
 - Slice whole alpha components before centering; do not clip icons at regular grid edges. Regenerate with `tools/prepare_void_art.py`.
 - Native 28px bold collection header, explanatory text, purple rarity only, default name color, native stat/keyword hover tips, separate counterpart suppression line.
-- Void Infection keeps automatic Exhaust/Eternal keyword lines; the rules sentence highlights Exhaust.
+- Putrefaction keeps automatic Exhaust/Eternal keyword lines; the rules sentence highlights Exhaust.
 - Event artwork occupies the left panel; it retains its aspect ratio and cannot overlap the native text/options column.
 - Moldy Cookie displays completed combats modulo 2 (0 → 1 → 0), preserving saved combat totals and every-second-combat rewards.
 - Focused engine tests cover all 16 inspection entries, final native Curse text, keyword tips, repeat counter cycles and native event visual-node layout. Rendered screens were inspected; this is not a live multiplayer playthrough.

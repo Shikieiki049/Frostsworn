@@ -385,6 +385,6 @@
   "FROSTSWORN_CARD_PHASE_SHIFT.upgradeDescription.combat": "[gold]碎冰[/gold]10，获得等于所[gold]碎冰[/gold]层数{Amount:diff()}倍的[gold]冰甲[/gold]。\n当前目标可提供{LiveAmount:diff()}层[gold]冰甲[/gold]。",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.description.combat": "造成{Damage:diff()}点[gold]伤害[/gold]，给予{BeamFrost:diff()}层[gold]寒霜[/gold]。",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.upgradeDescription.combat": "造成{Damage:diff()}点[gold]伤害[/gold]，给予{BeamFrost:diff()}层[gold]寒霜[/gold]。",
-  "FROSTSWORN_CARD_VOID_INFECTION.title": "虚空侵染",
+  "FROSTSWORN_CARD_VOID_INFECTION.title": "朽败",
   "FROSTSWORN_CARD_VOID_INFECTION.description": "这张牌被[gold]消耗[/gold]时，失去5点生命。"
 }

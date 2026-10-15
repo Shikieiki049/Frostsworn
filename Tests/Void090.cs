@@ -75,8 +75,8 @@ public static partial class Suite
   var nativeSave=SaveNative(run);var payload=(string)registry.GetMethod("BuildPayload")!.Invoke(null,new object[]{run})!;registry.GetMethod("AttachDocumentFromJson")!.Invoke(null,new object[]{nativeSave,payload});
   var loadedRun=RunState.FromSerializable(nativeSave);Assert(VoidRelics.OriginalBlocked(typeof(BloodVial),loadedRun),"run-level original reward exclusions survive native save/load");
   await Clear();var armor=await Card<VoidInfection>(PileType.Hand);int hp=player.Creature.CurrentHp;
-  Assert(armor.Type==CardType.Curse && armor.EnergyCost.GetWithModifiers(CostModifiers.None)==1 && armor.Keywords.Contains(CardKeyword.Exhaust) && armor.Keywords.Contains(CardKeyword.Eternal),"Void Infection is a playable 1-energy Exhaust/Eternal Curse");
-  await CardCmd.Exhaust(ctx,armor);Assert(player.Creature.CurrentHp==hp-5,"exhausting Void Infection through a real native command loses exactly 5 HP");
+  Assert(armor.Type==CardType.Curse && armor.EnergyCost.GetWithModifiers(CostModifiers.None)==1 && armor.Keywords.Contains(CardKeyword.Exhaust) && armor.Keywords.Contains(CardKeyword.Eternal),"Putrefaction is a playable 1-energy Exhaust/Eternal Curse");
+  await CardCmd.Exhaust(ctx,armor);Assert(player.Creature.CurrentHp==hp-5,"exhausting Putrefaction through a real native command loses exactly 5 HP");
   await Clear();var f=Relic<DrownedFloat>();
   Assert(f.ModifyHpLostAfterOstyLate(player.Creature,12,ValueProp.Move,enemy,null)==0,"Drowner's Float absorbs up to 15 damage after Block");await f.AfterModifyingHpLostAfterOsty();
   Assert(f.ModifyHpLostAfterOstyLate(player.Creature,12,ValueProp.Move,enemy,null)==12,"Drowner's Float only absorbs once per combat");
@@ -122,7 +122,7 @@ public static partial class Suite
   await Clear();var pendant=Relic<GymnospermPendant>();var potion=ModelDb.AllPotions.First().ToMutable();potion.Owner=player;await pendant.AfterPotionUsed(potion,null);
   Assert(player.Creature.GetPowerAmount<DexterityPower>()==2 && player.Creature.GetPowerAmount<VoidFadingDexterityPower>()==2,"Gymnosperm Pendant grants two decaying Dexterity after a Potion");
   await Clear();var ev=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev.BeginEvent(player,null,false);
-  Assert(ev.Title.GetFormattedText()=="虚空摇篮" && ev.CurrentOptions[1].Description.GetFormattedText().Contains("虚空侵染"),"event title and both Curse-priced option descriptions resolve");
+  Assert(ev.Title.GetFormattedText()=="虚空摇篮" && ev.CurrentOptions[1].Description.GetFormattedText().Contains("朽败"),"event title and both Curse-priced option descriptions resolve");
   Assert(ev.CurrentOptions.Count==3 && ev.CurrentOptions[1].IsLocked,"Cradle always has three options and locks corruption without an eligible relic");
   var blood=Relic<BloodVial>();var ev2=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev2.BeginEvent(player,null,false);await ev2.Corrupt();
   Assert(player.Relics.OfType<BloodlessCord>().Any() && !player.Relics.OfType<BloodVial>().Any() && player.Deck.Cards.OfType<VoidInfection>().Count()==1,"random corruption transforms only an eligible owned relic and adds the Curse");
@@ -182,10 +182,12 @@ public static partial class Suite
    var text=Godot.FileAccess.GetFileAsString($"res://Frostsworn/localization/eng/{table}.json");locTables[table]=new MegaCrit.Sts2.Core.Localization.LocTable(table,System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string>>(text)!,locTables.GetValueOrDefault(table));
   }
   Assert(all.All(r=>!System.Text.RegularExpressions.Regex.IsMatch(r.Title.GetFormattedText()+r.DynamicDescription.GetFormattedText(),"[\\u4e00-\\u9fff]")),"all 16 Void relics have complete English names and rules");
-  Assert(ModelDb.Card<VoidInfection>().Title=="Void Infection" && ev.Title.GetFormattedText()=="Void Cradle","new Curse and event have English localization");
+  Assert(!ModelDb.AllCards.Any(c=>c is not VoidInfection && c.Title=="Putrefaction"),"new English Curse title does not duplicate another registered card");
+  Assert(ModelDb.Card<VoidInfection>().Title=="Putrefaction" && ev.Title.GetFormattedText()=="Void Cradle","new Curse and event have English localization");
   inspect.Free();category.Free();collection.Free();TestMode.IsOn=true;
  }
 }
+
 
 
 

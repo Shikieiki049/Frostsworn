@@ -385,6 +385,6 @@
   "FROSTSWORN_CARD_PHASE_SHIFT.upgradeDescription.combat": "[gold]Shatter[/gold] 10. Gain [gold]Ice Armor[/gold] equal to {Amount:diff()} times the [gold]Frost[/gold] removed.\nThis target currently provides {LiveAmount:diff()} [gold]Ice Armor[/gold].",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.description.combat": "Deal {Damage:diff()} damage. Apply {BeamFrost:diff()} [gold]Frost[/gold].",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.upgradeDescription.combat": "Deal {Damage:diff()} damage. Apply {BeamFrost:diff()} [gold]Frost[/gold].",
-  "FROSTSWORN_CARD_VOID_INFECTION.title": "Void Infection",
+  "FROSTSWORN_CARD_VOID_INFECTION.title": "Putrefaction",
   "FROSTSWORN_CARD_VOID_INFECTION.description": "When this card is [gold]Exhausted[/gold], lose 5 HP."
 }

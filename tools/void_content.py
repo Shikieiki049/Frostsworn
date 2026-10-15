@@ -35,9 +35,9 @@ def apply(zh,en):
   'title':('Void Cradle','虚空摇篮'),
   'pages.INITIAL.description':('A violet-black pod hangs above the ground, slowly contracting and opening. An unfamiliar relic glimmers inside.\n\nAs you approach, one of your own relics begins to tremble. A slender tendril reaches from the cradle and curls around it, waiting.\n\nThere is something here to take. And something here willing to take what you carry. Neither exchange will leave you unchanged.','一枚紫黑色的茧悬在半空，外壳缓慢地收缩、舒张。壳缝里，一件陌生的遗物正散发着微光。\n\n你刚靠近，随身的遗物便轻轻震颤起来。细长的紫色触须从茧中探出，像是在等待你的允许。\n\n摇篮里有东西可以取走。它也愿意接纳你带来的东西。只是，无论哪一种交换，都不会原样归还。'),
   'pages.INITIAL.options.TAKE.title':('Reach Inside','探入摇篮'),
-  'pages.INITIAL.options.TAKE.description':('Obtain Void Infection. Obtain a random [color=#B780B0]Void Relic[/color].','获得一张[red]虚空侵染[/red]。获得一件随机的[color=#B780B0]虚空遗物[/color]。'),
+  'pages.INITIAL.options.TAKE.description':('Obtain Putrefaction. Obtain a random [color=#B780B0]Void Relic[/color].','获得一张[red]朽败[/red]。获得一件随机的[color=#B780B0]虚空遗物[/color]。'),
   'pages.INITIAL.options.CORRUPT.title':('Offer a Relic','献出遗物'),
-  'pages.INITIAL.options.CORRUPT.description':('Obtain Void Infection. Corrupt a random eligible relic you own into its corresponding [color=#B780B0]Void Relic[/color]. Requires an eligible relic.','获得一张[red]虚空侵染[/red]。随机选择一件已拥有且有对应虚空版本的遗物，将其腐化为对应的[color=#B780B0]虚空遗物[/color]。'),
+  'pages.INITIAL.options.CORRUPT.description':('Obtain Putrefaction. Corrupt a random eligible relic you own into its corresponding [color=#B780B0]Void Relic[/color]. Requires an eligible relic.','获得一张[red]朽败[/red]。随机选择一件已拥有且有对应虚空版本的遗物，将其腐化为对应的[color=#B780B0]虚空遗物[/color]。'),
   'pages.INITIAL.options.LEAVE.title':('Leave','离开'),
   'pages.INITIAL.options.LEAVE.description':('Leave the cradle untouched.','不触碰摇篮。'),
   'pages.TAKE.description':('The shell parts without a sound. You take the relic. Something cold slips up your arm and vanishes beneath your skin.\n\nThe cradle is empty. Its slow pulse continues inside your chest.','外壳在你的指尖下无声裂开。\n\n你握住了那件遗物。一缕冰冷的触感顺着手臂钻入身体，等你松开手时，已经找不到它去了哪里。\n\n摇篮空了。那缓慢的搏动声，却还在你的胸腔里继续。'),
@@ -45,7 +45,7 @@ def apply(zh,en):
   'pages.LEAVE.description':('You step away. The tendrils linger, then withdraw.\n\nOnly after you have walked some distance do your relics stop trembling.','你收回了手。触须在空中停留片刻，慢慢缩回茧中。\n\n走出很远后，你随身的遗物才终于停止震颤。')}
   tables['events'].update({ev+'.'+k:v[0 if eng else 1] for k,v in text.items()})
   card='FROSTSWORN_CARD_VOID_INFECTION'
-  tables['cards'].update({card+'.title':'Void Infection' if eng else '虚空侵染',card+'.description':'When this card is [gold]Exhausted[/gold], lose 5 HP.' if eng else '这张牌被[gold]消耗[/gold]时，失去5点生命。'})
+  tables['cards'].update({card+'.title':'Putrefaction' if eng else '朽败',card+'.description':'When this card is [gold]Exhausted[/gold], lose 5 HP.' if eng else '这张牌被[gold]消耗[/gold]时，失去5点生命。'})
   tips=tables['static_hover_tips'];tips['FROSTSWORN_VOID_RARITY.title']='Void Relic' if eng else '虚空遗物';tips['FROSTSWORN_VOID_COLLECTION.title']='[color=#B780B0][font_size=28][b]Void:[/b][/font_size][/color] Corrupted relics obtainable only through special means.' if eng else '[color=#B780B0][font_size=28][b]虚空：[/b][/font_size][/color]只能通过特殊途径获得的腐化遗物。';tips['FROSTSWORN_VOID_PICK.prompt']='Choose a card.' if eng else '选择一张牌。'
   for power,stat in [('STRENGTH','力量'),('DEXTERITY','敏捷')]:
    k='FROSTSWORN_POWER_VOID_FADING_'+power+'_POWER'
