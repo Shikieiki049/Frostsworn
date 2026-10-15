@@ -82,22 +82,3 @@ public static class VoidCollectionNavigationPatch
     {if(__instance.GetNodeOrNull<NRelicCollectionCategory>("FrostswornVoidRelics") is {} section)__result.AddRange(section.GetGridItems());}
 }
 
-// Only adjust this event's native portrait slot; leave the text/options layout intact.
-[HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout),"SetPortrait")]
-public static class VoidEventPortraitPatch
-{
-    public static void Fit(TextureRect portrait)
-    {
-        portrait.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.Center);
-        portrait.OffsetLeft=-920;portrait.OffsetRight=-60;
-        portrait.OffsetTop=-300;portrait.OffsetBottom=350;
-        portrait.Scale=Vector2.One;portrait.PivotOffset=Vector2.Zero;
-        portrait.ExpandMode=TextureRect.ExpandModeEnum.IgnoreSize;
-        portrait.StretchMode=TextureRect.StretchModeEnum.KeepAspectCentered;
-    }
-    static void Postfix(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout __instance)
-    {
-        if(AccessTools.Field(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout),"_event").GetValue(__instance) is VoidCradle &&
-           __instance.GetNodeOrNull<TextureRect>("%Portrait") is {} portrait)Fit(portrait);
-    }
-}

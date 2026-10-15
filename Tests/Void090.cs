@@ -29,6 +29,7 @@ using HarmonyLib;
 namespace Frostsworn.Tests;
 public static partial class Suite
 {
+ static bool HideVoidTestVotes(ref bool __result){__result=false;return false;}
  static async Task CheckVoid090()
  {
   var initialTree=(SceneTree)Engine.GetMainLoop();await initialTree.ToSignal(initialTree,SceneTree.SignalName.ProcessFrame);
@@ -132,7 +133,11 @@ public static partial class Suite
   Assert(ModelDb.Relic<FaceborrowMembrane>().DynamicDescription.GetRawText().Contains("[gold]力量[/gold]") && ModelDb.Relic<FaceborrowMembrane>().HoverTipsExcludingRelic.Count()==2,"Void relics highlight and expose native Strength/Dexterity tips");
   Assert(!ModelDb.Card<VoidInfection>().Description.GetRawText().Contains("永恒") && ModelDb.Card<VoidInfection>().Description.GetRawText().Contains("[gold]消耗[/gold]"),"Curse highlights Exhaust without manually duplicating automatic keywords");
   Assert(all.All(r=>r.DynamicDescription.GetRawText().Contains("\n使")),"counterpart suppression is always on a new line");
-  var fit=new TextureRect();VoidEventPortraitPatch.Fit(fit);Assert(fit.Size.X==860 && fit.StretchMode==TextureRect.StretchModeEnum.KeepAspectCentered && fit.OffsetRight<0,"event art fits in the left panel without overlapping the native option column");fit.Free();
+  Assert(ModelDb.Relic<LighthouseJelly>().DynamicDescription.GetRawText().Contains("[green]15%[/green]") && ModelDb.Relic<LighthouseJelly>().DynamicDescription.GetRawText().Contains("[blue]16[/blue]") && ModelDb.Relic<LighthouseJelly>().DynamicDescription.GetRawText().Contains("[green]11[/green]"),"healing and Max HP values are green while Block remains blue");
+  Assert(ModelDb.Relic<IceKey>().DynamicDescription.GetRawText().Contains("[blue]12[/blue]"),"original character relic damage values use native blue");
+  var intro=new LocString("events","FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description").GetFormattedText();
+  Assert(intro.Contains("[purple][jitter]虚空摇篮[/jitter][/purple]") && intro.Contains("[red][jitter]虫子[/jitter][/red]"),"event narrative uses requested native purple/red jitter effects");
+  Assert(ev.CurrentOptions[0].Title.GetFormattedText()=="触碰" && ev.CurrentOptions[2].Title.GetFormattedText()=="无视并离开","new touch and leave option titles resolve");
   var curseText=ModelDb.Card<VoidInfection>().GetDescriptionForPile(PileType.None);
   Assert(System.Text.RegularExpressions.Regex.Matches(curseText,"永恒").Count==1 && System.Text.RegularExpressions.Regex.Matches(curseText,"消耗").Count==2,"native final Curse description includes one Exhaust rule and one Eternal rule");
   var tree=(SceneTree)Engine.GetMainLoop();
@@ -157,12 +162,12 @@ public static partial class Suite
   inspect.Visible=false;
   if(DisplayServer.GetName()!="headless"){
    await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-collection-091.png");
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-collection-093.png");
   }
   inspect.Visible=true;inspect.GetNode<Control>("%Popup").Modulate=Colors.White;
   if(DisplayServer.GetName()!="headless"){
    await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-compendium-091.png");
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-compendium-093.png");
   }
   if(DisplayServer.GetName()!="headless"){
    inspect.Visible=false;category.Visible=false;
@@ -170,12 +175,35 @@ public static partial class Suite
    var nativeLayout=ResourceLoader.Load<PackedScene>("res://scenes/events/default_event_layout.tscn").Instantiate<Control>();
    var canvas=new Control {Size=new Vector2(1920,1080)};tree.Root.AddChild(canvas);
    foreach(var child in nativeLayout.GetChildren().ToArray()){nativeLayout.RemoveChild(child);canvas.AddChild(child);}
-   var portrait=canvas.GetNode<TextureRect>("Portrait");portrait.Texture=ev.CreateInitialPortrait();VoidEventPortraitPatch.Fit(portrait);
+   var portrait=canvas.GetNode<TextureRect>("Portrait");portrait.Texture=ev.CreateInitialPortrait();
+   Assert(portrait.Size.X==2560 && portrait.StretchMode==TextureRect.StretchModeEnum.KeepAspectCentered,"event keeps the full native 2560px backdrop without custom panel scaling");
    var title=canvas.GetNode<MegaLabel>("VBoxContainer/Title");title.SetTextAutoSize(ev.Title.GetFormattedText());title.Modulate=Colors.White;
    var desc=canvas.GetNode<MegaRichTextLabel>("VBoxContainer/EventDescription");desc.SetTextAutoSize(new LocString("events","FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description").GetFormattedText());desc.Modulate=Colors.White;
    canvas.GetNode<Control>("VBoxContainer/SharedEventLabel").Visible=false;
+   var options=canvas.GetNode<VBoxContainer>("VBoxContainer/OptionsContainer");
+   var votesMethod=AccessTools.Method(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton),"ShouldDisplayPlayerVote");
+   var uiTestHarmony=new Harmony("Frostsworn.tests.event-render");
+   uiTestHarmony.Patch(votesMethod,prefix:new HarmonyMethod(typeof(Suite),nameof(HideVoidTestVotes)));
+   for(int i=0;i<ev.CurrentOptions.Count;i++){
+    var button=MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.Create(ev,ev.CurrentOptions[i],i);options.AddChild(button);button.Modulate=Colors.White;
+   }
+
    await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-event-091.png");canvas.Free();nativeLayout.Free();
+   Assert(options.GetGlobalRect().End.Y<=1080,"all three native event option buttons fit on screen with the new narrative");
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-event-093.png");
+   options.Visible=false;
+   foreach(var page in new[]{"TAKE","CORRUPT","LEAVE"}){
+    desc.SetTextAutoSize(new LocString("events",$"FROSTSWORN_EVENT_VOID_CRADLE.pages.{page}.description").GetFormattedText());
+    await tree.ToSignal(tree.CreateTimer(.15),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+    tree.Root.GetTexture().GetImage().SavePng($"C:/fz/sts2mod/outputs/void-event-{page.ToLowerInvariant()}-093.png");
+   }
+   canvas.Free();nativeLayout.Free();uiTestHarmony.UnpatchAll("Frostsworn.tests.event-render");
+  }
+  if(DisplayServer.GetName()!="headless"){
+   category.Visible=true;inspect.Visible=true;
+   AccessTools.Method(typeof(NInspectRelicScreen),"SetRelic").Invoke(inspect,new object[]{Array.FindIndex(all,r=>r is LighthouseJelly)});
+   await tree.ToSignal(tree.CreateTimer(.2),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-relic-health-093.png");
   }
   var locTables=(Dictionary<string,MegaCrit.Sts2.Core.Localization.LocTable>)typeof(MegaCrit.Sts2.Core.Localization.LocManager).GetField("_tables",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(MegaCrit.Sts2.Core.Localization.LocManager.Instance)!;
   foreach(var table in new[]{"cards","relics","powers","events","static_hover_tips"}){
@@ -184,9 +212,40 @@ public static partial class Suite
   Assert(all.All(r=>!System.Text.RegularExpressions.Regex.IsMatch(r.Title.GetFormattedText()+r.DynamicDescription.GetFormattedText(),"[\\u4e00-\\u9fff]")),"all 16 Void relics have complete English names and rules");
   Assert(!ModelDb.AllCards.Any(c=>c is not VoidInfection && c.Title=="Putrefaction"),"new English Curse title does not duplicate another registered card");
   Assert(ModelDb.Card<VoidInfection>().Title=="Putrefaction" && ev.Title.GetFormattedText()=="Void Cradle","new Curse and event have English localization");
+  if(DisplayServer.GetName()!="headless"){
+   inspect.Visible=false;category.Visible=false;
+   // Move native visual nodes into a neutral canvas: the test host has no room synchronizer.
+   var nativeLayout=ResourceLoader.Load<PackedScene>("res://scenes/events/default_event_layout.tscn").Instantiate<Control>();
+   var canvas=new Control {Size=new Vector2(1920,1080)};tree.Root.AddChild(canvas);
+   foreach(var child in nativeLayout.GetChildren().ToArray()){nativeLayout.RemoveChild(child);canvas.AddChild(child);}
+   var portrait=canvas.GetNode<TextureRect>("Portrait");portrait.Texture=ev.CreateInitialPortrait();
+   Assert(portrait.Size.X==2560 && portrait.StretchMode==TextureRect.StretchModeEnum.KeepAspectCentered,"event keeps the full native 2560px backdrop without custom panel scaling");
+   var title=canvas.GetNode<MegaLabel>("VBoxContainer/Title");title.SetTextAutoSize(ev.Title.GetFormattedText());title.Modulate=Colors.White;
+   var desc=canvas.GetNode<MegaRichTextLabel>("VBoxContainer/EventDescription");desc.SetTextAutoSize(new LocString("events","FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description").GetFormattedText());desc.Modulate=Colors.White;
+   canvas.GetNode<Control>("VBoxContainer/SharedEventLabel").Visible=false;
+   var options=canvas.GetNode<VBoxContainer>("VBoxContainer/OptionsContainer");
+   var votesMethod=AccessTools.Method(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton),"ShouldDisplayPlayerVote");
+   var uiTestHarmony=new Harmony("Frostsworn.tests.event-render");
+   uiTestHarmony.Patch(votesMethod,prefix:new HarmonyMethod(typeof(Suite),nameof(HideVoidTestVotes)));
+   for(int i=0;i<ev.CurrentOptions.Count;i++){
+    var button=MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.Create(ev,ev.CurrentOptions[i],i);options.AddChild(button);button.Modulate=Colors.White;
+   }
+
+   await tree.ToSignal(tree.CreateTimer(.25),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+   Assert(options.GetGlobalRect().End.Y<=1080,"all three native event option buttons fit on screen with the new narrative");
+   tree.Root.GetTexture().GetImage().SavePng("C:/fz/sts2mod/outputs/void-event-eng-093.png");
+   options.Visible=false;
+   foreach(var page in new[]{"TAKE","CORRUPT","LEAVE"}){
+    desc.SetTextAutoSize(new LocString("events",$"FROSTSWORN_EVENT_VOID_CRADLE.pages.{page}.description").GetFormattedText());
+    await tree.ToSignal(tree.CreateTimer(.15),SceneTreeTimer.SignalName.Timeout);await tree.ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+    tree.Root.GetTexture().GetImage().SavePng($"C:/fz/sts2mod/outputs/void-event-{page.ToLowerInvariant()}-eng-093.png");
+   }
+   canvas.Free();nativeLayout.Free();uiTestHarmony.UnpatchAll("Frostsworn.tests.event-render");
+  }
   inspect.Free();category.Free();collection.Free();TestMode.IsOn=true;
  }
 }
+
 
 
 

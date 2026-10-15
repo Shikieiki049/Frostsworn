@@ -1,13 +1,13 @@
 {
   "FROSTSWORN_EVENT_VOID_CRADLE.title": "虚空摇篮",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description": "一枚紫黑色的茧悬在半空，外壳缓慢地收缩、舒张。壳缝里，一件陌生的遗物正散发着微光。\n\n你刚靠近，随身的遗物便轻轻震颤起来。细长的紫色触须从茧中探出，像是在等待你的允许。\n\n摇篮里有东西可以取走。它也愿意接纳你带来的东西。只是，无论哪一种交换，都不会原样归还。",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.title": "探入摇篮",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description": "在穿过一个幽暗的洞穴时，你瞥见暗处散发的深紫色神秘光芒。\n\n当你靠近时，发现这居然是一个[purple][jitter]虚空摇篮[/jitter][/purple]！\n\n你注意到其上方有个黑洞般的球体，里面似乎有些[purple][jitter]珍奇之物[/jitter][/purple]。\n\n但同时你也看到摇篮内部沉睡的[red][jitter]虫子[/jitter][/red]，你可不想唤醒它们。",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.title": "触碰",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.description": "获得一张[red]朽败[/red]。获得一件随机的[color=#B780B0]虚空遗物[/color]。",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.CORRUPT.title": "献出遗物",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.CORRUPT.description": "获得一张[red]朽败[/red]。随机选择一件已拥有且有对应虚空版本的遗物，将其腐化为对应的[color=#B780B0]虚空遗物[/color]。",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.title": "离开",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.title": "无视并离开",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.description": "不触碰摇篮。",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.TAKE.description": "外壳在你的指尖下无声裂开。\n\n你握住了那件遗物。一缕冰冷的触感顺着手臂钻入身体，等你松开手时，已经找不到它去了哪里。\n\n摇篮空了。那缓慢的搏动声，却还在你的胸腔里继续。",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.CORRUPT.description": "触须替你作出了选择，卷住你随身的一件遗物，将它拖进壳缝。\n\n片刻后，它被送回了你的掌心。形状依稀熟悉，表面却多出了几道不该存在的纹路。\n\n你试着转动它。那些纹路迟了一瞬，才跟着转过来。你的身体深处，也有什么随之转动。",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.LEAVE.description": "你收回了手。触须在空中停留片刻，慢慢缩回茧中。\n\n走出很远后，你随身的遗物才终于停止震颤。"
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.TAKE.description": "你将手伸进球体，拿出了[purple][jitter]什么东西[/jitter][/purple]！\n\n[red]好痛[/red]！似乎有虫子钻到你的身上了。",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.CORRUPT.description": "球体吞噬了你的遗物。片刻之后[purple]崭新的遗物[/purple]掉在地上。\n\n你伸手去拿，躲在底下的[red][jitter]虫子[/jitter][/red]立刻爬到了你的身上！",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.LEAVE.description": "你悄悄离开了。你认识这些[red]虫子[/red]，它们可不好处理。"
 }

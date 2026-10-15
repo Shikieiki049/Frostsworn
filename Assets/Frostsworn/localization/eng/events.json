@@ -1,13 +1,13 @@
 {
   "FROSTSWORN_EVENT_VOID_CRADLE.title": "Void Cradle",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description": "A violet-black pod hangs above the ground, slowly contracting and opening. An unfamiliar relic glimmers inside.\n\nAs you approach, one of your own relics begins to tremble. A slender tendril reaches from the cradle and curls around it, waiting.\n\nThere is something here to take. And something here willing to take what you carry. Neither exchange will leave you unchanged.",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.title": "Reach Inside",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.description": "Obtain Putrefaction. Obtain a random [color=#B780B0]Void Relic[/color].",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.description": "As you pass through a dim cave, you glimpse a mysterious deep-purple glow in the darkness.\n\nDrawing closer, you discover a [purple][jitter]Void Cradle[/jitter][/purple]!\n\nA black-hole-like orb floats above it. There seem to be [purple][jitter]rare treasures[/jitter][/purple] inside.\n\nBut you also notice [red][jitter]insects[/jitter][/red] sleeping within the cradle. You would rather not wake them.",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.title": "Touch",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.TAKE.description": "Obtain [red]Putrefaction[/red]. Obtain a random [color=#B780B0]Void Relic[/color].",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.CORRUPT.title": "Offer a Relic",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.CORRUPT.description": "Obtain Putrefaction. Corrupt a random eligible relic you own into its corresponding [color=#B780B0]Void Relic[/color]. Requires an eligible relic.",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.title": "Leave",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.CORRUPT.description": "Obtain [red]Putrefaction[/red]. Corrupt a random eligible relic you own into its corresponding [color=#B780B0]Void Relic[/color]. Requires an eligible relic.",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.title": "Ignore and Leave",
   "FROSTSWORN_EVENT_VOID_CRADLE.pages.INITIAL.options.LEAVE.description": "Leave the cradle untouched.",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.TAKE.description": "The shell parts without a sound. You take the relic. Something cold slips up your arm and vanishes beneath your skin.\n\nThe cradle is empty. Its slow pulse continues inside your chest.",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.CORRUPT.description": "The cradle chooses. A tendril plucks a relic from your belongings and draws it inside.\n\nIt returns to your palm, familiar in outline, marked with impossible patterns. You turn it over. The patterns follow a moment later.\n\nSomething inside you turns with them.",
-  "FROSTSWORN_EVENT_VOID_CRADLE.pages.LEAVE.description": "You step away. The tendrils linger, then withdraw.\n\nOnly after you have walked some distance do your relics stop trembling."
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.TAKE.description": "You reach into the orb and pull out [purple][jitter]something[/jitter][/purple]!\n\n[red]Ouch[/red]! It feels like insects have crawled onto you.",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.CORRUPT.description": "The orb swallows your relic. Moments later, a [purple]brand-new relic[/purple] falls to the ground.\n\nAs you reach for it, the [red][jitter]insects hiding underneath[/jitter][/red] immediately crawl onto you!",
+  "FROSTSWORN_EVENT_VOID_CRADLE.pages.LEAVE.description": "You quietly walk away. You recognize those [red]insects[/red]. They are not easy to deal with."
 }

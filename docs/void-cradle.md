@@ -48,3 +48,10 @@ Tests/Void090.cs 在独立Godot测试宿主验证全部16件遗物注册、图�
 - Event artwork occupies the left panel; it retains its aspect ratio and cannot overlap the native text/options column.
 - Moldy Cookie displays completed combats modulo 2 (0 → 1 → 0), preserving saved combat totals and every-second-combat rewards.
 - Focused engine tests cover all 16 inspection entries, final native Curse text, keyword tips, repeat counter cycles and native event visual-node layout. Rendered screens were inspected; this is not a live multiplayer playthrough.
+
+
+## 0.9.3 event presentation and relic numeric colors
+
+Removes the incorrect 0.9.1 portrait-panel override. The native full-screen event portrait dimensions, scaling and text/option layout are preserved; the backdrop is recomposed with the cradle/orb on the left and a dark continuous cave on the right. Uses the requested rewritten Chinese narrative, matching English, and native purple/red jitter tags. Three choices retain their existing costs/effects.
+
+`tools/relic_numbers.py` applies native blue numeric tags to all 25 relic descriptions after localization generation; healing and Max HP amounts/thresholds use native green, including mixed green healing and blue Block in Lighthouse Jellyfish. BBCode parameter digits and localization placeholders remain untouched. Native UI render checks include all three option buttons and result pages; network vote display is mocked only within the test host.
