@@ -1,14 +1,14 @@
-# 虚空摇篮（0.9.0）
+# 虚空摇篮（当前0.9.4）
 
 - 事件加入全角色共享事件集合，各玩家独立选择；随机使用事件自身的原版确定性随机数。
-- 探入摇篮：获得1张朽败和1件尚未持有的随机虚空遗物。
+- 触碰：获得1张朽败和1件尚未持有的随机虚空遗物。
 - 献出遗物：获得1张朽败，随机把自己持有且存在对应关系的1件原遗物替换为虚空版本。无候选时锁定。
-- 离开：无代价。
-- 朽败：诅咒，1费；被任何方式消耗时失去5点生命；消耗、永恒。不能升级。
+- 无视并离开：无代价。
+- 朽败：诅咒，1费；被任何方式消耗时失去3点生命；消耗、永恒。不能升级。
 - 虚空为独立动态稀有度，字体 #B780B0。所有虚空遗物拒绝普通奖励、商店和原版奖励抓取。
 - 获取虚空版本时，从全队及共享奖励袋移除原遗物，并把排除记录写入本局附加存档；之后失去虚空版本也不会重新掉落原遗物。
 - 同一玩家同时持有原版与虚空版本时，仅禁用对应原版的战斗和非战斗钩子；原遗物保留在栏内并显示失效。其他玩家持有的原版仍正常生效。
-- 所有角色都可获得。联机双方均需更新到0.9.0；测试使用双玩家RunState及原版/RitsuLib存档流程，不等同于完整真人联机实测。
+- 所有角色都可获得。联机双方均需更新到相同版本；测试使用双玩家RunState及原版/RitsuLib存档流程，不等同于完整真人联机实测。
 - 衰减力量/敏捷在自己的回合结束时各减少1，直至相应临时加成耗尽。
 - 发霉曲奇按获取之后的战斗胜利计数，第2、4、6…场的卡牌奖励升级；不会因进入房间或SL反复累加。
 
@@ -55,3 +55,8 @@ Tests/Void090.cs 在独立Godot测试宿主验证全部16件遗物注册、图�
 Removes the incorrect 0.9.1 portrait-panel override. The native full-screen event portrait dimensions, scaling and text/option layout are preserved; the backdrop is recomposed with the cradle/orb on the left and a dark continuous cave on the right. Uses the requested rewritten Chinese narrative, matching English, and native purple/red jitter tags. Three choices retain their existing costs/effects.
 
 `tools/relic_numbers.py` applies native blue numeric tags to all 25 relic descriptions after localization generation; healing and Max HP amounts/thresholds use native green, including mixed green healing and blue Block in Lighthouse Jellyfish. BBCode parameter digits and localization placeholders remain untouched. Native UI render checks include all three option buttons and result pages; network vote display is mocked only within the test host.
+
+
+## 0.9.4 fading icons and Curse adjustment
+
+The supplied two-icon sheet maps left to Fading Dexterity and right to Fading Strength. Cutouts preserve aspect ratio and fragments; each is centered on a physical 128px transparent canvas with a 115px maximum visible footprint, consistent with existing buff art. Both status icons and native particle/detail textures use these bounded assets. Rebuild with `tools/prepare_fading_icons.py`. Putrefaction now loses 3 HP when Exhausted; cost and keywords remain unchanged.

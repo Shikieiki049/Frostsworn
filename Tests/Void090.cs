@@ -77,7 +77,7 @@ public static partial class Suite
   var loadedRun=RunState.FromSerializable(nativeSave);Assert(VoidRelics.OriginalBlocked(typeof(BloodVial),loadedRun),"run-level original reward exclusions survive native save/load");
   await Clear();var armor=await Card<VoidInfection>(PileType.Hand);int hp=player.Creature.CurrentHp;
   Assert(armor.Type==CardType.Curse && armor.EnergyCost.GetWithModifiers(CostModifiers.None)==1 && armor.Keywords.Contains(CardKeyword.Exhaust) && armor.Keywords.Contains(CardKeyword.Eternal),"Putrefaction is a playable 1-energy Exhaust/Eternal Curse");
-  await CardCmd.Exhaust(ctx,armor);Assert(player.Creature.CurrentHp==hp-5,"exhausting Putrefaction through a real native command loses exactly 5 HP");
+  await CardCmd.Exhaust(ctx,armor);Assert(player.Creature.CurrentHp==hp-3,"exhausting Putrefaction through a real native command loses exactly 3 HP");
   await Clear();var f=Relic<DrownedFloat>();
   Assert(f.ModifyHpLostAfterOstyLate(player.Creature,12,ValueProp.Move,enemy,null)==0,"Drowner's Float absorbs up to 15 damage after Block");await f.AfterModifyingHpLostAfterOsty();
   Assert(f.ModifyHpLostAfterOstyLate(player.Creature,12,ValueProp.Move,enemy,null)==12,"Drowner's Float only absorbs once per combat");

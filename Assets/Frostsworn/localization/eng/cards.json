@@ -386,5 +386,5 @@
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.description.combat": "Deal {Damage:diff()} damage. Apply {BeamFrost:diff()} [gold]Frost[/gold].",
   "FROSTSWORN_CARD_ABSOLUTE_BEAM.upgradeDescription.combat": "Deal {Damage:diff()} damage. Apply {BeamFrost:diff()} [gold]Frost[/gold].",
   "FROSTSWORN_CARD_VOID_INFECTION.title": "Putrefaction",
-  "FROSTSWORN_CARD_VOID_INFECTION.description": "When this card is [gold]Exhausted[/gold], lose 5 HP."
+  "FROSTSWORN_CARD_VOID_INFECTION.description": "When this card is [gold]Exhausted[/gold], lose 3 HP."
 }

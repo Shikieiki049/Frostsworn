@@ -28,7 +28,7 @@
 [/list]
 
 [h2]虚空摇篮与虚空遗物[/h2]
-新增全角色可遇到的事件[b]虚空摇篮[/b]。触碰球体可获得随机虚空遗物；献出遗物会随机腐化一件已持有且有对应虚空版本的遗物。[b]两种选择都会获得诅咒“朽败”[/b]：1费，被消耗时失去5点生命，消耗、永恒。也可以直接离开。
+新增全角色可遇到的事件[b]虚空摇篮[/b]。触碰球体可获得随机虚空遗物；献出遗物会随机腐化一件已持有且有对应虚空版本的遗物。[b]两种选择都会获得诅咒“朽败”[/b]：1费，被消耗时失去3点生命，消耗、永恒。也可以直接离开。
 
 16件虚空遗物使用独立的[b]虚空[/b]稀有度，并在图鉴中单独列出。它们不会进入普通奖励或商店；获取后，对应原遗物永久退出本局奖励池，同时持有时原遗物失效。
 
@@ -115,7 +115,7 @@ Frostsworn is an ice mage built around control, preparation, and bursts of frost
 [/list]
 
 [h2]Void Cradle and Void Relics[/h2]
-A new event available to all characters: [b]Void Cradle[/b]. Touch the orb for a random Void relic, or offer a random eligible relic you own to corrupt it into its Void counterpart. [b]Both choices grant Putrefaction[/b], a 1-energy Curse that loses you 5 HP when Exhausted, with Exhaust and Eternal. You may also leave.
+A new event available to all characters: [b]Void Cradle[/b]. Touch the orb for a random Void relic, or offer a random eligible relic you own to corrupt it into its Void counterpart. [b]Both choices grant Putrefaction[/b], a 1-energy Curse that loses you 3 HP when Exhausted, with Exhaust and Eternal. You may also leave.
 
 16 Void relics have their own [b]Void[/b] rarity and compendium section. They never appear in ordinary rewards or shops. Obtaining one permanently removes its original counterpart from the run reward pools, and disables that original while you hold both.
 

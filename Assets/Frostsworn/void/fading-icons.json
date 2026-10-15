@@ -1,0 +1,16 @@
+[
+  {
+    "power": "VoidFadingDexterityPower",
+    "source_width": 675,
+    "source_height": 675,
+    "scaled_width": 115,
+    "scaled_height": 115
+  },
+  {
+    "power": "VoidFadingStrengthPower",
+    "source_width": 717,
+    "source_height": 685,
+    "scaled_width": 115,
+    "scaled_height": 110
+  }
+]

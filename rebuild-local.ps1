@@ -16,6 +16,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Card generation failed' }
 if ($LASTEXITCODE -ne 0) { throw 'Localization generation failed' }
 & $PythonPath (Join-Path $PSScriptRoot 'tools/relic_small_icons.py')
 if ($LASTEXITCODE -ne 0) { throw 'Relic icon generation failed' }
+& $PythonPath (Join-Path $PSScriptRoot 'tools/prepare_fading_icons.py')
+if ($LASTEXITCODE -ne 0) { throw 'Fading icon generation failed' }
 & (Join-Path $PSScriptRoot 'build.ps1') -GamePath $GamePath -RitsuPath $RitsuPath -ReferencePath $ReferencePath -PythonPath $PythonPath
 $assetPath = Join-Path $PSScriptRoot 'Assets'
 $logPath = Join-Path $PSScriptRoot 'rebuild-import.log'

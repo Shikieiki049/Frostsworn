@@ -14,7 +14,7 @@ public sealed class VoidInfection:ModCardTemplate
     public override async Task AfterCardExhausted(PlayerChoiceContext context,CardModel card,bool causedByEthereal)
     {
         if(card==this && !Owner.Creature.IsDead)
-            await CreatureCmd.Damage(context,Owner.Creature,5,ValueProp.Unpowered|ValueProp.Unblockable,Owner.Creature);
+            await CreatureCmd.Damage(context,Owner.Creature,3,ValueProp.Unpowered|ValueProp.Unblockable,Owner.Creature);
     }
 }
 

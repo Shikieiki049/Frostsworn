@@ -10,6 +10,6 @@
   "dependencies": [
     3747602295
   ],
-  "changeNote": "0.9.3 虚空摇篮场景与文本 / Void Cradle scene and text\n撤销错误的小面板缩放，恢复原版整屏场景布局，重构背景为左侧摇篮与球体、右侧暗色文字区，无矩形图片边框。\n按新文案重写事件初始页、触碰/献出遗物/无视并离开三个选项及结果页，补全英文；指定词语使用原版紫色、红色与抖动特效。获取规则与诅咒代价不变。\n全部25件模组遗物的描述数值统一使用原版蓝色；回复和最大生命值相关数值使用绿色，混合效果分别着色。\n已检查中英文完整原版事件按钮布局、三个结果页及生命数值详情截图；通过相关引擎回归与75条本地化遗物描述检查。\nRestore the native full-screen event backdrop and recompose the cradle/orb on the left with a dark reading area on the right. Rewrite the event narrative and all three choice outcomes in Chinese and English with native purple/red jitter effects. Color numeric values across all 25 relic descriptions in native blue, using green for healing and Max HP. Rules and Curse costs are unchanged. Focused engine tests and native UI render checks passed.",
+  "changeNote": "0.9.4 衰减图标与朽败调整 / Fading icons and Putrefaction adjustment\n接入提供的衰减敏捷、衰减力量图标，去除背景，保留碎片和飘带，等比缩放并居中。状态图标与粒子/详情纹理均使用原版128像素规格，对照原版状态节点检查比例。\n朽败被消耗时失去生命从5点改为3点，中英文卡牌、事件说明和工坊介绍同步，费用与关键词不变。\n通过原版实际消耗命令验证扣3血，以及图标加载、透明度、居中、显示比例和原版状态节点截图检查。\nAdds the supplied Fading Dexterity and Fading Strength icons with transparent backgrounds, preserved aspect ratio and centered native-size 128px textures. Putrefaction now loses 3 HP when Exhausted (previously 5); cost and keywords are unchanged. Chinese/English descriptions and Workshop references updated. Verified the native Exhaust command and rendered native status widgets against Dexterity/Strength.",
   "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战"
 }

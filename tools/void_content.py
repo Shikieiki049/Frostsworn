@@ -45,7 +45,7 @@ def apply(zh,en):
   'pages.LEAVE.description':('You quietly walk away. You recognize those [red]insects[/red]. They are not easy to deal with.','你悄悄离开了。你认识这些[red]虫子[/red]，它们可不好处理。')}
   tables['events'].update({ev+'.'+k:v[0 if eng else 1] for k,v in text.items()})
   card='FROSTSWORN_CARD_VOID_INFECTION'
-  tables['cards'].update({card+'.title':'Putrefaction' if eng else '朽败',card+'.description':'When this card is [gold]Exhausted[/gold], lose 5 HP.' if eng else '这张牌被[gold]消耗[/gold]时，失去5点生命。'})
+  tables['cards'].update({card+'.title':'Putrefaction' if eng else '朽败',card+'.description':'When this card is [gold]Exhausted[/gold], lose 3 HP.' if eng else '这张牌被[gold]消耗[/gold]时，失去3点生命。'})
   tips=tables['static_hover_tips'];tips['FROSTSWORN_VOID_RARITY.title']='Void Relic' if eng else '虚空遗物';tips['FROSTSWORN_VOID_COLLECTION.title']='[color=#B780B0][font_size=28][b]Void:[/b][/font_size][/color] Corrupted relics obtainable only through special means.' if eng else '[color=#B780B0][font_size=28][b]虚空：[/b][/font_size][/color]只能通过特殊途径获得的腐化遗物。';tips['FROSTSWORN_VOID_PICK.prompt']='Choose a card.' if eng else '选择一张牌。'
   for power,stat in [('STRENGTH','力量'),('DEXTERITY','敏捷')]:
    k='FROSTSWORN_POWER_VOID_FADING_'+power+'_POWER'

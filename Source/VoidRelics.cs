@@ -193,7 +193,7 @@ public abstract class VoidFadingPower:ModPowerTemplate
 {
     public override PowerType Type=>PowerType.Buff;
     public override PowerStackType StackType=>PowerStackType.Counter;
-    public override string CustomIconPath=>"res://images/powers/"+(this is VoidFadingStrengthPower?"strength":"dexterity")+"_power.png";
+    public override string CustomIconPath=>$"res://Frostsworn/void/{GetType().Name}.png";
     public override string CustomBigIconPath=>CustomIconPath;
     public override async Task AfterSideTurnEnd(PlayerChoiceContext context,CombatSide side,IEnumerable<Creature> participants)
     {
