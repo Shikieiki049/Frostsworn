@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Modding;
 using STS2RitsuLib.Interop;
@@ -26,12 +26,14 @@ public static class Entry
             VisibleWhen = c => c.Player?.Character is FrostswornCharacter || (c.Pile?.Cards.Count ?? 0) > 0,
             OnOpen = c => c.ShowDefaultPileScreen()
         }).PileType;
+        VoidRelics.Initialize();
         Eclipse.Initialize();
         FrostErrorReports.Initialize();
         new Harmony("Frostsworn.mechanics").PatchAll(Assembly.GetExecutingAssembly());
-        RitsuLibFramework.CreateLogger(ModId).Info($"Frostsworn {FrostVersion.Value}: 93 card definitions, 3 character potions, 9 relics, ancient mappings, Eclipse 0-8 and dynamic cold capacity registered.");
+        RitsuLibFramework.CreateLogger(ModId).Info($"Frostsworn {FrostVersion.Value}: 93 character cards plus Void Infection, 3 character potions, 25 relics including 16 Void relics, Void Cradle, ancient mappings, Eclipse 0-8 and dynamic cold capacity registered.");
     }
 }
+
 
 
 

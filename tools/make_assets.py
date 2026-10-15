@@ -143,6 +143,8 @@ tables['static_hover_tips'].update({
     'FROSTSWORN_FROST_STATUS.description':'当前寒霜：{Frost}\n当前冰封门槛：{Threshold}\n{Status}\n本场已冰封 {Count} 次；每次冰封后门槛增加12。',
 })
 english = build_english(tables)
+from void_content import apply as apply_void_content
+apply_void_content(tables,english)
 for lang in ('zhs','eng','zht'):
     path=assets/'localization'/lang; path.mkdir(parents=True,exist_ok=True)
     for name,table in (english if lang=='eng' else tables).items(): (path/(name+'.json')).write_text(json.dumps(table,ensure_ascii=False,indent=2),encoding='utf-8')

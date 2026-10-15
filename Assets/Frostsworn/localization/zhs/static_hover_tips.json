@@ -40,5 +40,7 @@
   "FROSTSWORN_FROST_RECOVERY.description": "恢复期：正常行动一次后才能再次冰封。",
   "FROSTSWORN_FROST_UNINTERRUPTIBLE.description": "当前动作不可打断。",
   "FROSTSWORN_FROST_READY.description": "达到门槛后，在出牌结算结束时冰封。",
-  "FROSTSWORN_FROST_STATUS.description": "当前寒霜：{Frost}\n当前冰封门槛：{Threshold}\n{Status}\n本场已冰封 {Count} 次；每次冰封后门槛增加12。"
+  "FROSTSWORN_FROST_STATUS.description": "当前寒霜：{Frost}\n当前冰封门槛：{Threshold}\n{Status}\n本场已冰封 {Count} 次；每次冰封后门槛增加12。",
+  "FROSTSWORN_VOID_RARITY.title": "虚空",
+  "FROSTSWORN_VOID_PICK.prompt": "选择一张牌。"
 }

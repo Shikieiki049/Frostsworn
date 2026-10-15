@@ -97,5 +97,9 @@
   "FROSTSWORN_POWER_FRACTAL_SNOW_POWER.smartDescription": "[gold]Ice Crystals[/gold] created this combat gain [gold]Sharp[/gold].",
   "FROSTSWORN_POWER_ECLIPSE_STRENGTH_POWER.title": "Eclipse: Temporary Strength",
   "FROSTSWORN_POWER_ECLIPSE_STRENGTH_POWER.description": "Gain {Amount} [gold]Strength[/gold] this turn. Removed at the end of the turn. Cannot be negated by [gold]Artifact[/gold].",
-  "FROSTSWORN_POWER_ECLIPSE_STRENGTH_POWER.smartDescription": "Gain {Amount} [gold]Strength[/gold] this turn. Removed at the end of the turn. Cannot be negated by [gold]Artifact[/gold]."
+  "FROSTSWORN_POWER_ECLIPSE_STRENGTH_POWER.smartDescription": "Gain {Amount} [gold]Strength[/gold] this turn. Removed at the end of the turn. Cannot be negated by [gold]Artifact[/gold].",
+  "FROSTSWORN_POWER_VOID_FADING_STRENGTH_POWER.title": "Fading Strength",
+  "FROSTSWORN_POWER_VOID_FADING_STRENGTH_POWER.description": "At the end of your turn, lose 1 Strength from this bonus, then reduce this by 1.",
+  "FROSTSWORN_POWER_VOID_FADING_DEXTERITY_POWER.title": "Fading Dexterity",
+  "FROSTSWORN_POWER_VOID_FADING_DEXTERITY_POWER.description": "At the end of your turn, lose 1 Dexterity from this bonus, then reduce this by 1."
 }

@@ -19,13 +19,18 @@
 
 [h2]模组内容[/h2]
 [list]
-[*][b]93张卡牌[/b]，包含基础牌、衍生牌与先古牌。
-[*][b]9件遗物[/b]、[b]3种专属药水[/b]。
+[*][b]94张卡牌[/b]，包含基础牌、衍生牌、先古牌与新增诅咒。
+[*][b]25件遗物[/b]（含16件事件专属虚空遗物）、[b]3种专属药水[/b]。
 [*]中文与英文本地化。
 [*]角色待机动画、静态死亡立绘、多人宝箱手势，以及自定义头像、卡图和状态图标。
 [*]与卡名和牌效相配的战斗特效及音效。
 [*]单人和多人模式支持。
 [/list]
+
+[h2]虚空摇篮与虚空遗物[/h2]
+新增全角色可遇到的事件[b]虚空摇篮[/b]。探入摇篮可获得随机虚空遗物；献出遗物会随机腐化一件已持有且有对应虚空版本的遗物。[b]两种选择都会获得诅咒“虚空侵染”[/b]：1费，被消耗时失去5点生命，消耗、永恒。也可以直接离开。
+
+16件虚空遗物使用独立的[b]虚空[/b]稀有度，并在图鉴中单独列出。它们不会进入普通奖励或商店；获取后，对应原遗物永久退出本局奖励池，同时持有时原遗物失效。
 
 [h2]日食挑战[/h2]
 除了霜誓者，本模组还为[b]所有角色[/b]提供日食0–8挑战。各级效果逐步叠加，改变恢复、资源与战斗条件。
@@ -101,13 +106,18 @@ Frostsworn is an ice mage built around control, preparation, and bursts of frost
 
 [h2]Content[/h2]
 [list]
-[*][b]93 cards[/b], including starter, generated, and Ancient cards.
-[*][b]9 relics[/b] and [b]3 character-specific potions[/b].
+[*][b]94 cards[/b], including starter, generated, Ancient cards, and the new Curse.
+[*][b]25 relics[/b], including 16 event-exclusive Void relics, and [b]3 character-specific potions[/b].
 [*]Chinese and English localization.
 [*]Animated idle visuals, static death artwork, multiplayer treasure gestures, and custom portraits, card art, and status icons.
 [*]Card effects and sounds matched to their themes and mechanics.
 [*]Single-player and multiplayer support.
 [/list]
+
+[h2]Void Cradle and Void Relics[/h2]
+A new event available to all characters: [b]Void Cradle[/b]. Reach inside for a random Void relic, or offer a random eligible relic you own to corrupt it into its Void counterpart. [b]Both choices grant Void Infection[/b], a 1-energy Curse that loses you 5 HP when Exhausted, with Exhaust and Eternal. You may also leave.
+
+16 Void relics have their own [b]Void[/b] rarity and compendium section. They never appear in ordinary rewards or shops. Obtaining one permanently removes its original counterpart from the run reward pools, and disables that original while you hold both.
 
 [h2]Eclipse Challenge[/h2]
 Adds [b]Eclipse 0–8 for ALL characters[/b], with cumulative modifiers to healing, resources, and combat.

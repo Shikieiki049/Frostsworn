@@ -45,7 +45,7 @@ public static partial class Suite
         ModelDb.Init(ModelDb.AllAbstractModelSubtypes.Concat(typeof(FrostCard).Assembly.GetTypes().Where(t=>!t.IsAbstract && typeof(AbstractModel).IsAssignableFrom(t))).Distinct().ToArray());
         LocManager.Initialize();
         var tables=(Dictionary<string,LocTable>)typeof(LocManager).GetField("_tables",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(LocManager.Instance)!;
-        foreach(var table in new[]{"cards","powers","relics","characters","epochs","static_hover_tips","enchantments","ancients","potions"})
+        foreach(var table in new[]{"cards","powers","relics","characters","epochs","static_hover_tips","enchantments","ancients","potions","events"})
         {
             var text=Godot.FileAccess.GetFileAsString($"res://Frostsworn/localization/zhs/{table}.json");
             tables[table]=new LocTable(table,JsonSerializer.Deserialize<Dictionary<string,string>>(text)!,tables.GetValueOrDefault(table));
@@ -61,7 +61,8 @@ public static partial class Suite
             var manifest=ModManifest.ReadFromStream(manifestStream,out var errors);
             Assert(manifest!=null && (errors?.Count ?? 0)==0 && manifest.id=="Frostsworn" && manifest.dependencies!.Single().id=="STS2-RitsuLib","native game manifest reader accepts package and dependency");
         }
-        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0833") { await CheckVfx0823(); CheckVfxMissing0833(); }
+        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "090") await CheckVoid090();
+        else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0833") { await CheckVfx0823(); CheckVfxMissing0833(); }
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0832") { await CheckCrystals0832(); await CheckErrorReports0829(); }
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0829") await CheckErrorReports0829();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0828") await CheckHands0828();
@@ -101,5 +102,6 @@ public static partial class Suite
     public static CardPlay Play(CardModel card,MegaCrit.Sts2.Core.Entities.Creatures.Creature? target=null)=>new()
     { Card=card,Player=card.Owner,Target=target,ResultPile=PileType.Discard,Resources=default,IsAutoPlay=false,PlayIndex=0,PlayCount=1 };
 }
+
 
 
