@@ -61,7 +61,8 @@ public static partial class Suite
             var manifest=ModManifest.ReadFromStream(manifestStream,out var errors);
             Assert(manifest!=null && (errors?.Count ?? 0)==0 && manifest.id=="Frostsworn" && manifest.dependencies!.Single().id=="STS2-RitsuLib","native game manifest reader accepts package and dependency");
         }
-        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "094") await CheckPowerIcons094();
+        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "095") await CheckResourceGuards095();
+        else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "094") await CheckPowerIcons094();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "090") await CheckVoid090();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0833") { await CheckVfx0823(); CheckVfxMissing0833(); }
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0832") { await CheckCrystals0832(); await CheckErrorReports0829(); }

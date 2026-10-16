@@ -14,11 +14,35 @@ public static class EclipseUi
     public static Texture2D Icon(int level)
     {
         level=Math.Clamp(level,0,8);
-        if(Icons.TryGetValue(level,out var icon))return icon;
-        var source=ResourceLoader.Load<Texture2D>($"res://Frostsworn/eclipse084/Eclipse{level}.png");
-        // Trim transparent margins at draw time so the visible emblem stays centered.
-        var used=source.GetImage().GetUsedRect();
-        return Icons[level]=new AtlasTexture {Atlas=source,Region=new Rect2(used.Position,used.Size)};
+        if(Icons.TryGetValue(level,out var icon) && GodotObject.IsInstanceValid(icon))return icon;
+        string path=$"res://Frostsworn/eclipse084/Eclipse{level}.png";
+        Texture2D? source=null;
+        try { if(ResourceLoader.Exists(path))source=ResourceLoader.Load<Texture2D>(path); }
+        catch(InvalidOperationException) { /* A failed optional texture must not stop the lobby. */ }
+        return Icons[level]=BuildIcon(source);
+    }
+    private static Texture2D BuildIcon(Texture2D? source)
+    {
+        if(source!=null && GodotObject.IsInstanceValid(source))
+        {
+            using var image=source.GetImage();
+            if(image!=null && !image.IsEmpty())
+            {
+                var used=image.GetUsedRect();
+                if(used.HasArea())return new AtlasTexture {Atlas=source,Region=new Rect2(used.Position,used.Size)};
+            }
+        }
+        // A small neutral eclipse ring remains usable even if the art pack is unavailable.
+        // Cache it per level in Icon so the UI timers do not repeatedly reload a broken asset.
+        using var fallback=Image.CreateEmpty(64,64,false,Image.Format.Rgba8);
+        fallback.Fill(Colors.Transparent);
+        for(int y=0;y<64;y++)for(int x=0;x<64;x++)
+        {
+            float distance=new Vector2(x-31.5f,y-31.5f).Length();
+            float alpha=Math.Clamp(3f-Math.Abs(distance-25f),0f,1f);
+            if(alpha>0)fallback.SetPixel(x,y,new Color(0.94f,0.78f,0.35f,alpha));
+        }
+        return ImageTexture.CreateFromImage(fallback);
     }
     public static TextureRect Badge(Control parent,Func<int> level,Vector2 size)
     {

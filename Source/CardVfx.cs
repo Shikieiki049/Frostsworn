@@ -362,14 +362,33 @@ public static class FrostCardVfx
         return root;
     }
     // Optional art must not interrupt a card's effect when native resources change.
+    private static readonly HashSet<string> FailedNativeScenes=new();
     private static T? NativeScene<T>(string scene) where T:Node
     {
         string path=Vfx+scene+".tscn";
-        if(!ResourceLoader.Exists(path))return null;
-        if(ResourceLoader.Load(path) is not PackedScene packed)return null;
-        var node=packed.Instantiate();
-        if(node is T typed)return typed;
-        node.Free();return null;
+        return OptionalScene<T>(()=>
+        {
+            if(!ResourceLoader.Exists(path))return null;
+            if(ResourceLoader.Load(path) is not PackedScene packed)return null;
+            return packed.Instantiate();
+        },path);
+    }
+    private static T? OptionalScene<T>(Func<Node?> instantiate,string path) where T:Node
+    {
+        try
+        {
+            var node=instantiate();
+            if(node==null || !GodotObject.IsInstanceValid(node))return null;
+            if(node is T typed)return typed;
+            node.Free();return null;
+        }
+        catch(InvalidOperationException ex)when(ex is ObjectDisposedException || ex.Message.Contains("Handle is not initialized",StringComparison.Ordinal))
+        {
+            // Includes disposed/uninitialized Godot handles during resource load or instantiation.
+            // Optional visuals must not cancel an otherwise valid card action.
+            if(FailedNativeScenes.Add(path))GD.Print("[Frostsworn] Optional VFX unavailable: "+path);
+            return null;
+        }
     }
     private static Texture2D? NativeTexture()
     {
