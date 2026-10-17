@@ -61,7 +61,8 @@ public static partial class Suite
             var manifest=ModManifest.ReadFromStream(manifestStream,out var errors);
             Assert(manifest!=null && (errors?.Count ?? 0)==0 && manifest.id=="Frostsworn" && manifest.dependencies!.Single().id=="STS2-RitsuLib","native game manifest reader accepts package and dependency");
         }
-        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "095") await CheckResourceGuards095();
+        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "096") await CheckVfxCache096();
+        else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "095") await CheckResourceGuards095();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "094") await CheckPowerIcons094();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "090") await CheckVoid090();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0833") { await CheckVfx0823(); CheckVfxMissing0833(); }
@@ -104,6 +105,7 @@ public static partial class Suite
     public static CardPlay Play(CardModel card,MegaCrit.Sts2.Core.Entities.Creatures.Creature? target=null)=>new()
     { Card=card,Player=card.Owner,Target=target,ResultPile=PileType.Discard,Resources=default,IsAutoPlay=false,PlayIndex=0,PlayCount=1 };
 }
+
 
 
 

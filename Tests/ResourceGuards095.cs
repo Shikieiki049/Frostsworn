@@ -8,7 +8,7 @@ using Frostsworn;
 namespace Frostsworn.Tests;
 public static partial class Suite
 {
- static async Task CheckResourceGuards095()
+ static async Task CheckResourceGuards095(bool scriptsRegistered=false)
  {
   var build=typeof(EclipseUi).GetMethod("BuildIcon",BindingFlags.NonPublic|BindingFlags.Static)!;
   Texture2D Build(Texture2D? source)=>(Texture2D)build.Invoke(null,new object?[]{source})!;
@@ -55,6 +55,6 @@ public static partial class Suite
   }
   Scan("res://Frostsworn");
   Assert(count>=531 && failures.Count==0,"all "+count+" packaged textures and atlases load and decode in native engine; failures: "+string.Join(", ",failures));
-  await CheckVfx0823();CheckVfxMissing0833();
+  await CheckVfx0823(scriptsRegistered);CheckVfxMissing0833();
  }
 }

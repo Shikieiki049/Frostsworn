@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Commands.Builders;
+using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.TestSupport;
 namespace Frostsworn;
 
@@ -369,7 +370,7 @@ public static class FrostCardVfx
         return OptionalScene<T>(()=>
         {
             if(!ResourceLoader.Exists(path))return null;
-            if(ResourceLoader.Load(path) is not PackedScene packed)return null;
+            if(PreloadManager.Cache.GetAsset<Resource>(path) is not PackedScene packed)return null;
             return packed.Instantiate();
         },path);
     }
@@ -382,7 +383,7 @@ public static class FrostCardVfx
             if(node is T typed)return typed;
             node.Free();return null;
         }
-        catch(InvalidOperationException ex)when(ex is ObjectDisposedException || ex.Message.Contains("Handle is not initialized",StringComparison.Ordinal))
+        catch(Exception ex)when(ex is AssetLoadException or ObjectDisposedException || ex is InvalidOperationException && ex.Message.Contains("Handle is not initialized",StringComparison.Ordinal))
         {
             // Includes disposed/uninitialized Godot handles during resource load or instantiation.
             // Optional visuals must not cancel an otherwise valid card action.
@@ -393,7 +394,9 @@ public static class FrostCardVfx
     private static Texture2D? NativeTexture()
     {
         const string path="res://images/vfx/orbs/frost_orb_particle.png";
-        return ResourceLoader.Exists(path)?ResourceLoader.Load(path) as Texture2D:null;
+        if(!ResourceLoader.Exists(path))return null;
+        try {return PreloadManager.Cache.GetAsset<Resource>(path) as Texture2D;}
+        catch(AssetLoadException) {return null;}
     }
     private static void IceShield(Node2D root,float size)
     {

@@ -13,9 +13,9 @@ using MegaCrit.Sts2.Core.Unlocks;
 namespace Frostsworn.Tests;
 public static partial class Suite
 {
-    static async Task CheckVfx0823()
+    static async Task CheckVfx0823(bool scriptsRegistered=false)
     {
-        typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(NMerchantRoom).Assembly});
+        if(!scriptsRegistered)typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(NMerchantRoom).Assembly});
         var tree=(SceneTree)Engine.GetMainLoop();await tree.ToSignal(tree,SceneTree.SignalName.ProcessFrame);
         var visual=new Node2D {Position=new(300,500)};tree.Root.AddChild(visual);
         Assert(FrostCardVfx.BeamOrigin(visual,new(7,9))==new Vector2(7,9),"other characters retain their native beam origin");

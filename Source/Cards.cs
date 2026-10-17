@@ -8,6 +8,11 @@ public sealed record CardSpec(int Cost, CardType Type, CardRarity Rarity, Target
 public abstract class FrostCard(CardSpec spec):ModCardTemplate(spec.Cost,spec.Type,spec.Rarity,spec.Target)
 {
     public CardSpec Spec=>spec;
+    // Keep optional native VFX alive for the run, including cards generated for other characters.
+    protected override IEnumerable<string> ExtraRunAssetPaths => base.ExtraRunAssetPaths
+        .Concat(FrostCardVfx.AssetPaths.Where(path=>ResourceLoader.Exists(path)))
+        .Append(ModelDb.CardPool<FrostCardPool>().TextEnergyIconPath);
+
     public override CardPoolModel VisualCardPool => this is IceCrystal or Depleted or FatedStory or AbsoluteBeam ? ModelDb.CardPool<FrostCardPool>() : base.VisualCardPool;
     protected override bool HasEnergyCostX=>spec.CostsX;
     public override int MaxUpgradeLevel=>this is Depleted?0:base.MaxUpgradeLevel;
