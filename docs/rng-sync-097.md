@@ -1,6 +1,6 @@
 # 0.9.7 multiplayer RNG snapshot compatibility candidate
 
-Status: local engine tests passed; two-machine reproduction is pending. Do not describe this as a confirmed universal multiplayer black-screen fix. Workshop remains at 0.9.6 until the reported session is retested.
+Status: local engine tests passed; two-machine reproduction is pending. Do not describe this as a confirmed universal multiplayer black-screen fix. Published to Workshop as a compatibility candidate at the user's request so both peers can update through Steam. Public 0.9.7 change note verified on 2026-10-19; two-PC confirmation remains pending.
 
 Both reproduced client logs fail inside SyncRngMessage -> SerializableRelicGrabBag.Deserialize, with out-of-range model IDs (2386/2197 and 4020/2438). In the second session, the peers report equal initial model counts and gameplay hashes, while their initialization order differs. The exact third-party interaction remains unproven.
 
