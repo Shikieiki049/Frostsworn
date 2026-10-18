@@ -91,10 +91,21 @@ public static class FrostRngRead097
     { __instance = FrostRngWire097.Read(reader); return false; }
 }
 
-// The native handshake already rejects different model hashes. Include this
-// wire revision so an old client cannot join and then misread the new body.
-[HarmonyPatch(typeof(ModelIdSerializationCache), nameof(ModelIdSerializationCache.Hash), MethodType.Getter)]
+// Finalize the actual stored hash after every Init postfix. Patching only the
+// getter is unsafe: callers can inline it or read the backing field directly.
+[HarmonyPatch(typeof(ModelIdSerializationCache), nameof(ModelIdSerializationCache.Init))]
 public static class FrostRngProtocol097
 {
-    static void Postfix(ref uint __result) => __result ^= FrostRngWire097.ProtocolHash;
+    static uint? appliedHash;
+    public static void Apply()
+    {
+        uint current = ModelIdSerializationCache.Hash;
+        if (appliedHash == current) return;
+        uint salted = current ^ FrostRngWire097.ProtocolHash;
+        typeof(ModelIdSerializationCache).GetProperty(nameof(ModelIdSerializationCache.Hash))!.SetValue(null, salted);
+        appliedHash = salted;
+        GD.Print($"[Frostsworn] RNG protocol FSR1 stored hash finalized: {current} -> {salted}.");
+    }
+    static void Finalizer(Exception? __exception)
+    { if (__exception == null) Apply(); }
 }

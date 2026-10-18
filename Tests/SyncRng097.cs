@@ -16,6 +16,8 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 namespace Frostsworn.Tests;
 public static partial class Suite
 {
+    static uint rawInitHash098;
+    public static void CaptureRawInitHash098() => rawInitHash098=ModelIdSerializationCache.Hash;
     static Task CheckSyncRng097()
     {
         var rng = new SerializableRunRngSet { Seed = "NETWORK097" };
@@ -72,7 +74,27 @@ public static partial class Suite
         Assert(rejected && ReferenceEquals(unchanged.sharedRelicGrabBag,input.sharedRelicGrabBag),"unknown relic is explicitly rejected, never dropped or substituted");
         var hashField=typeof(ModelIdSerializationCache).GetField("<Hash>k__BackingField",BindingFlags.NonPublic|BindingFlags.Static)!;
         uint native=(uint)hashField.GetValue(null)!;
-        Assert(ModelIdSerializationCache.Hash==(native^FrostRngWire097.ProtocolHash) && ModelIdSerializationCache.Hash!=native,"native handshake hash distinguishes previous wire protocol");
+        var method=new System.Reflection.Emit.DynamicMethod("EarlyCompiledHashReader",typeof(uint),Type.EmptyTypes,typeof(ModelIdSerializationCache),true);
+        var il=method.GetILGenerator();il.Emit(System.Reflection.Emit.OpCodes.Ldsfld,hashField);il.Emit(System.Reflection.Emit.OpCodes.Ret);
+        var earlyReader=(Func<uint>)method.CreateDelegate(typeof(Func<uint>));
+        Assert(earlyReader()==native,"precompiled field reader observes original native hash");
+        FrostRngProtocol097.Apply();
+        uint expected=native^FrostRngWire097.ProtocolHash;
+        Assert(ModelIdSerializationCache.Hash==expected && earlyReader()==expected,"getter and previously compiled direct field read agree on protocol hash");
+        FrostRngProtocol097.Apply();
+        Assert(ModelIdSerializationCache.Hash==expected && earlyReader()==expected,"repeated finalization does not toggle protocol salt");
+        hashField.SetValue(null,native);
+        FrostRngProtocol097.Apply();
+        Assert(ModelIdSerializationCache.Hash==expected && earlyReader()==expected,"native hash rebuilt after reset receives protocol salt again");
+        MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
+        using(var stream=System.IO.File.OpenRead(ProjectSettings.GlobalizePath("res://../../dist/Frostsworn/mod_manifest.json")))
+            MegaCrit.Sts2.Core.Modding.AssemblyInfo.ModMap![typeof(Entry).Assembly]=new MegaCrit.Sts2.Core.Modding.Mod {path="test/Frostsworn",state=MegaCrit.Sts2.Core.Modding.ModLoadState.Loaded,manifest=MegaCrit.Sts2.Core.Modding.ModManifest.ReadFromStream(stream,out _)};
+        new HarmonyLib.Harmony("Frostsworn.Tests098").Patch(typeof(ModelIdSerializationCache).GetMethod("Init")!,postfix:new HarmonyLib.HarmonyMethod(typeof(Suite).GetMethod(nameof(CaptureRawInitHash098))!));
+        ModelIdSerializationCache.Init();
+        uint initialized=ModelIdSerializationCache.Hash;
+        Assert(initialized==earlyReader() && initialized==(rawInitHash098^FrostRngWire097.ProtocolHash),"native Init finalizer stores a hash visible to inlined readers");
+        ModelIdSerializationCache.Init();
+        Assert(ModelIdSerializationCache.Hash==earlyReader() && earlyReader()==(rawInitHash098^FrostRngWire097.ProtocolHash),"native repeated Init applies exactly one salt to its newly computed hash");
         GD.Print($"PASS: RNG097 snapshot {bytes.Length} bytes, {ids.Count} relics, all RNG streams preserved");
         return Task.CompletedTask;
     }
