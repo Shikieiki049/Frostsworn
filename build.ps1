@@ -47,7 +47,10 @@ Get-ChildItem (Join-Path $projectRoot 'Source') -Filter *.cs -Recurse | ForEach-
 & dotnet $compiler.FullName @arguments
 if ($LASTEXITCODE -ne 0) { throw 'Compilation failed' }
 $manifest = Get-Content -LiteralPath (Join-Path $projectRoot 'mod_manifest.json') -Raw | ConvertFrom-Json
-$manifest.min_game_version = $apiVersion
+# Let the common startup guard run on both supported releases. Gameplay still
+# requires the exact compile target in FrostVersionGuard, before registration.
+$manifest.min_game_version = '0.107.1'
+$manifest.description += " Build target: game $apiVersion; other game versions show a startup warning and do not initialize gameplay."
 $manifest | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $output 'mod_manifest.json') -Encoding utf8
 Set-Content -LiteralPath (Join-Path $output 'build-target.txt') -Value $apiVersion -Encoding utf8
 Write-Output "Built $output/Frostsworn.dll"

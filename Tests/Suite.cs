@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -88,6 +88,7 @@ public static partial class Suite
 #else
         if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "097") await CheckSyncRng097();
 #endif
+        else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0911") await CheckVersionGuard0911();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "096") await CheckVfxCache096();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "095") await CheckResourceGuards095();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "094") await CheckPowerIcons094();

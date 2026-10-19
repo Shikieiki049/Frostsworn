@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -12,7 +12,7 @@ public partial class Probe : Node
         try
         {
             string root = ProjectSettings.GlobalizePath("res://../..");
-            string game = "C:/fz/steam/steamapps/common/Slay the Spire 2/data_sts2_windows_x86_64";
+            string game = System.Environment.GetEnvironmentVariable("FROSTSWORN_TEST_GAME_DLLS") ?? "C:/fz/steam/steamapps/common/Slay the Spire 2/data_sts2_windows_x86_64";
             string ritsu = System.Environment.GetEnvironmentVariable("FROSTSWORN_TEST_RITSU_PATH") ?? Path.GetFullPath(Path.Combine(root, "../work/ritsulib-package/lib/net9.0"));
             var engineContext = AssemblyLoadContext.GetLoadContext(typeof(Probe).Assembly)!;
             engineContext.Resolving += (context, name) =>
@@ -24,6 +24,26 @@ public partial class Probe : Node
                 }
                 return null;
             };
+            string? crossDll=System.Environment.GetEnvironmentVariable("FROSTSWORN_CROSS_DLL");
+            if(!string.IsNullOrEmpty(crossDll))
+            {
+                var mod=engineContext.LoadFromAssemblyPath(crossDll);
+                if(mod.GetTypes().Length==0)throw new Exception("Wrong-target assembly types failed discovery");
+                bool refused=false;
+                try {mod.GetType("Frostsworn.Entry")!.GetMethod("Initialize")!.Invoke(null,null);}
+                catch(TargetInvocationException e) when(e.InnerException is InvalidOperationException && e.InnerException.Message.Contains("Frostsworn version mismatch")){refused=true;}
+                if(!refused)throw new Exception("Mismatched initializer did not signal controlled failure to the native mod loader");
+                for(int i=0;i<3;i++)await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);
+                AcceptDialog? warning=null;int count=0;
+                foreach(var child in GetTree().Root.GetChildren())if(child is AcceptDialog d && d.Name=="FrostswornVersionMismatch"){warning=d;count++;}
+                if(count!=1 || warning==null || !warning.Visible || !(warning.DialogText.Contains("subscribe again") || warning.DialogText.Contains("重新订阅")))throw new Exception("Wrong-target native startup did not display one resubscription warning");
+                var pile=mod.GetType("Frostsworn.Entry")!.GetProperty("ColdPileType")!.GetValue(null);
+                if(Convert.ToInt32(pile)!=0)throw new Exception("Wrong-target gameplay initializer ran");
+                GD.Print("PASS: opposite-target assembly discovered, actual Entry.Initialize skips gameplay and shows one warning before Ritsu initialization");
+                warning.Free();warning=null;
+                for(int i=0;i<3;i++){GC.Collect();GC.WaitForPendingFinalizers();await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);}
+                GD.Print("FROSTSWORN_TESTS_PASS");GetTree().Quit(0);return;
+            }
             string tests = Path.GetFullPath(Path.Combine(root, "Tests/Frostsworn.Tests.dll"));
             var asm = engineContext.LoadFromAssemblyPath(tests);
             var task = (Task)asm.GetType("Frostsworn.Tests.Suite")!.GetMethod("Run")!.Invoke(null, null)!;

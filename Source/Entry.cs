@@ -14,6 +14,14 @@ public static class Entry
 
     public static void Initialize()
     {
+        if (!FrostVersionGuard.CheckStartup())
+            throw new InvalidOperationException("Frostsworn version mismatch. Unsubscribe and resubscribe in Steam Workshop, then restart with the matching game/mod version.");
+        InitializeCompatible();
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    static void InitializeCompatible()
+    {
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, Assembly.GetExecutingAssembly());
         RitsuLibFramework.RegisterDustyTomeCard<FrostswornCharacter,FatedStory>(ModId);
         RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<FreezeRay,AbsoluteBeam>(ModId);

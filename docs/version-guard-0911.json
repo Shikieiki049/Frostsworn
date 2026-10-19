@@ -1,0 +1,28 @@
+{
+  "stable": {
+    "modVersion": "0.9.11",
+    "gameTarget": "0.107.1",
+    "startupMinimum": "0.107.1",
+    "dllSha256": "e8514953064eaa92813016e2c94835532dc42d0ae9a4b633591e248e055e7b69"
+  },
+  "beta": {
+    "modVersion": "0.9.11",
+    "gameTarget": "0.111.0",
+    "startupMinimum": "0.107.1",
+    "dllSha256": "4aac540f49deb455dbde4c09265f89db0c9a66fddbf01391fc964b3bdc43ebbe"
+  },
+  "checks": {
+    "matchingAndMismatchChecks": [
+      "0.107.1",
+      "0.111.0"
+    ],
+    "wrongAssemblyStartupBothDirections": true,
+    "localizedDialogRendering": [
+      "zh",
+      "en"
+    ],
+    "singlePopupAndDismissal": true,
+    "publishedToWorkshop": false,
+    "note": "Local engine tests with real game assemblies; not two-PC gameplay testing. Original loader may also show its normal failed-mod notice after mismatch is rejected."
+  }
+}
