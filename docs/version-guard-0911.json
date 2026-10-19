@@ -22,7 +22,8 @@
       "en"
     ],
     "singlePopupAndDismissal": true,
-    "publishedToWorkshop": false,
-    "note": "Local engine tests with real game assemblies; not two-PC gameplay testing. Original loader may also show its normal failed-mod notice after mismatch is rejected."
+    "publishedToWorkshop": true,
+    "note": "Local engine tests with real game assemblies; not two-PC gameplay testing. Original loader may also show its normal failed-mod notice after mismatch is rejected.",
+    "publicationResult": "Both public notes and ranges stored; SDK submit Timeout on both builds; stable download verified, beta download not re-tested."
   }
 }

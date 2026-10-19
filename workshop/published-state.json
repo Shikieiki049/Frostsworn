@@ -7,13 +7,13 @@
     {
       "min": "public-beta",
       "max": "public-beta",
-      "modVersion": "0.9.8",
+      "modVersion": "0.9.11",
       "gameVersion": "0.111.0"
     },
     {
       "min": "public",
       "max": "public",
-      "modVersion": "0.9.10",
+      "modVersion": "0.9.11",
       "gameVersion": "0.107.1"
     }
   ],
@@ -21,8 +21,8 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "Actual approved branch switch completed to public game 0.107.1, but Steam DownloadItem still installed beta 0.9.8. Automatic branch routing is confirmed NOT fixed. Native support panel was transient and final checks failed. Historical range rows and public change notes do not establish effective branch routing. All versioned content uploads returned Timeout; content bytes were stored but full versioning completion is unproven. Stop repeated uploads; inspect author-side Associate with game versions UI after browser login. Restoring original public-beta branch.",
-  "recordedRangeRevisionCount": 7,
+  "note": "0.9.11 stable and beta content submitted with strict public/public-beta ranges; both public bilingual changelog entries visible (12:51 stable, 12:52 beta), titles and dependency verified. Both SubmitItemUpdate calls returned Timeout after uploading all changed bytes. Actual public DownloadItem now returns OK and installs stable 0.9.11 with matching hash even after beta was uploaded last. Beta automatic download has not been re-tested on the new release. Historical routing failures remain documented; do not claim complete two-way routing repair.",
+  "recordedRangeRevisionCount": 9,
   "automaticBranchDownloadVerified": false,
   "nativeSupportPanelVerifiedAfterBetaRepublish": true,
   "nativeSupportPanelFinalVerified": false,
@@ -37,8 +37,19 @@
     "gameVersion": "0.107.1",
     "branch": "public",
     "downloadResult": "OK",
-    "installedModVersion": "0.9.8",
-    "targetGameVersion": "0.111.0",
-    "passed": false
+    "installedModVersion": "0.9.11",
+    "targetGameVersion": "0.107.1",
+    "passed": true,
+    "dllSha256": "e8514953064eaa92813016e2c94835532dc42d0ae9a4b633591e248e055e7b69"
+  },
+  "chineseTitleVerifiedViaSteamApi": true,
+  "lastSubmission": {
+    "version": "0.9.11",
+    "stableResult": "k_EResultTimeout",
+    "betaResult": "k_EResultTimeout",
+    "stablePublicChangelog": "1792385482",
+    "betaPublicChangelog": "1792385546",
+    "allChangedBytesUploaded": true,
+    "beta0911DownloadVerified": false
   }
 }
