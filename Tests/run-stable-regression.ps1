@@ -15,7 +15,7 @@ $oldPhase=$env:FROSTSWORN_STABLE_PHASE
 $results=@()
 try {
  $env:FROSTSWORN_TEST_RITSU_PATH=$RitsuPath
- $cases=@(@('package','107','package'),@('debug-summon','107','summon'),@('cards','107','cards'),@('void','107','void'),@('network','107','network'),@('load','107','load'),@('mend','107','mend'),@('english','107','english'),@('audio','107','audio'),@('assets','095',''),@('vfx-cache','096',''),@('vfx','0833',''),@('shop','0821',''),@('idle','0813',''),@('hands','0828',''),@('icons','094',''),@('multiplayer-effects','0817',''),@('crystals-reports','0832',''),@('eclipse-rules','086',''),@('eclipse-damage','089',''),@('event-previews','087',''),@('event-options','088',''),@('relics-armor','083',''),@('eclipse-lobby','084',''),@('eclipse-progress','085',''),@('rebuild','0819',''),@('visual','0814',''),@('portraits','0811',''))
+ $cases=@(@('version-guard','0911',''),@('package','107','package'),@('debug-summon','107','summon'),@('cards','107','cards'),@('void','107','void'),@('network','107','network'),@('load','107','load'),@('mend','107','mend'),@('english','107','english'),@('audio','107','audio'),@('assets','095',''),@('vfx-cache','096',''),@('vfx','0833',''),@('shop','0821',''),@('idle','0813',''),@('hands','0828',''),@('icons','094',''),@('multiplayer-effects','0817',''),@('crystals-reports','0832',''),@('eclipse-rules','086',''),@('eclipse-damage','089',''),@('event-previews','087',''),@('event-options','088',''),@('relics-armor','083',''),@('eclipse-lobby','084',''),@('eclipse-progress','085',''),@('rebuild','0819',''),@('visual','0814',''),@('portraits','0811',''))
  foreach($case in $cases){
   $env:FROSTSWORN_FOCUSED_TEST=$case[1];$env:FROSTSWORN_STABLE_PHASE=$case[2]
   $ok=$true
