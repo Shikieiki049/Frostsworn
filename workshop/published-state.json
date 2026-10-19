@@ -21,6 +21,16 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "Both 0.9.10 stable and 0.9.8 beta-cleanup content callbacks timed out; read-only Steam API and public changelog confirmed their new entries. API lists four historical range revisions; the latest public and public-beta revisions are separate. Both metadata-only localization updates returned OK. Beta DLL/PCK hashes remain unchanged. Stable regression: 28 groups, 5849 assertions, zero engine errors. Two-PC verification remains pending.",
-  "recordedRangeRevisionCount": 4
+  "note": "Approved branch repair resubmitted beta, stable, then localized beta; all callbacks timed out but content/change notes were stored. Seven historical ranges are visible in API. Steam DownloadItem returned OK and public-beta installation now matches unchanged 0.9.8 DLL. Native support panel appeared temporarily after the first beta resubmission but remains absent after final desktop checks; root cause unresolved. Do not infer the cause is metadata-only updates or responsive layout. Stable reverse-switch download is not tested while game is running. No further uploads pending investigation.",
+  "recordedRangeRevisionCount": 7,
+  "automaticBranchDownloadVerified": false,
+  "nativeSupportPanelVerifiedAfterBetaRepublish": true,
+  "nativeSupportPanelFinalVerified": false,
+  "betaDownloadVerified": {
+    "branch": "public-beta",
+    "modVersion": "0.9.8",
+    "gameVersion": "0.111.0",
+    "steamDownloadResult": "OK",
+    "dllSha256": "a9a5b3938d5070d6acb8215b8dd78342d955d918536092626a81ba1a474574b4"
+  }
 }

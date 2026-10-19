@@ -18,3 +18,11 @@ SetRequiredGameVersions 只在实际内容改变时记录；首次为旧版建�
 官方机制：https://partner.steamgames.com/doc/features/workshop/itemversioning
 
 发布前运行 `python tools/validate_workshop_content.py <content目录> --branch public`（测试版使用 public-beta），检查所有子目录，不允许额外 JSON 混入。
+
+## 2026-10-19 分发关联复核
+
+不能仅凭 GetNumSupportedGameVersions / GetSupportedGameVersionData 的历史范围列表宣称当前分发已生效。本次发现 public-beta 游戏下仍安装 public 的 DLL，且首页缺少“已知游戏版本支持”原生面板。重新提交测试版内容快照并设置范围后，首页面板恢复。
+
+后续不要在版本化内容发布后直接使用不携带内容/范围的独立元数据更新流程。本次恢复与此前本地化元数据更新相关的假设尚未完全隔离证明，但发布流程应保守处理：任何标题/描述更新后都必须重新检查原生面板、最新改动说明和客户端下载文件。范围查询、面板存在和实际下载是三个独立验证项；未做实际切换下载测试时明确写“待验证”。不要重复提交已经成功的超时上传。
+
+后续实测补充：正式版再次提交后面板消失；最后提交带英文语言的测试版后，固定1280px桌面布局下首页仍未显示该面板。因此不能将根因归为匿名访问、窄屏或元数据更新，面板显示问题仍未解决。停止重复发布。最后一次测试版 Steam DownloadItem 返回 OK，当前 public-beta 实际安装已恢复为0.9.8/目标0.111.0，DLL与原测试版SHA256相同。正式版双向切换下载尚未验证，不能称为双向自动分发修复完成。
