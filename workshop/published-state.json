@@ -21,7 +21,7 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "Approved branch repair resubmitted beta, stable, then localized beta; all callbacks timed out but content/change notes were stored. Seven historical ranges are visible in API. Steam DownloadItem returned OK and public-beta installation now matches unchanged 0.9.8 DLL. Native support panel appeared temporarily after the first beta resubmission but remains absent after final desktop checks; root cause unresolved. Do not infer the cause is metadata-only updates or responsive layout. Stable reverse-switch download is not tested while game is running. No further uploads pending investigation.",
+  "note": "Actual approved branch switch completed to public game 0.107.1, but Steam DownloadItem still installed beta 0.9.8. Automatic branch routing is confirmed NOT fixed. Native support panel was transient and final checks failed. Historical range rows and public change notes do not establish effective branch routing. All versioned content uploads returned Timeout; content bytes were stored but full versioning completion is unproven. Stop repeated uploads; inspect author-side Associate with game versions UI after browser login. Restoring original public-beta branch.",
   "recordedRangeRevisionCount": 7,
   "automaticBranchDownloadVerified": false,
   "nativeSupportPanelVerifiedAfterBetaRepublish": true,
@@ -32,5 +32,13 @@
     "gameVersion": "0.111.0",
     "steamDownloadResult": "OK",
     "dllSha256": "a9a5b3938d5070d6acb8215b8dd78342d955d918536092626a81ba1a474574b4"
+  },
+  "stableBranchDownloadCheck": {
+    "gameVersion": "0.107.1",
+    "branch": "public",
+    "downloadResult": "OK",
+    "installedModVersion": "0.9.8",
+    "targetGameVersion": "0.111.0",
+    "passed": false
   }
 }
