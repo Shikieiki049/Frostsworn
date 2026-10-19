@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-19",
+  "modVersion": "0.9.9",
+  "gameVersion": "0.107.1",
+  "ritsuVersion": "0.6.7",
+  "groups": 26,
+  "assertions": 5802,
+  "engineErrors": 0,
+  "twoComputerMultiplayerTested": false,
+  "results": [
+    {
+      "assertions": 2836,
+      "engineErrors": 0,
+      "name": "cards",
+      "passed": true
+    },
+    {
+      "assertions": 106,
+      "engineErrors": 0,
+      "name": "void",
+      "passed": true
+    },
+    {
+      "assertions": 24,
+      "engineErrors": 0,
+      "name": "network",
+      "passed": true
+    },
+    {
+      "assertions": 95,
+      "engineErrors": 0,
+      "name": "load",
+      "passed": true
+    },
+    {
+      "assertions": 55,
+      "engineErrors": 0,
+      "name": "mend",
+      "passed": true
+    },
+    {
+      "assertions": 277,
+      "engineErrors": 0,
+      "name": "english",
+      "passed": true
+    },
+    {
+      "assertions": 169,
+      "engineErrors": 0,
+      "name": "audio",
+      "passed": true
+    },
+    {
+      "assertions": 438,
+      "engineErrors": 0,
+      "name": "assets",
+      "passed": true
+    },
+    {
+      "assertions": 453,
+      "engineErrors": 0,
+      "name": "vfx-cache",
+      "passed": true
+    },
+    {
+      "assertions": 397,
+      "engineErrors": 0,
+      "name": "vfx",
+      "passed": true
+    },
+    {
+      "assertions": 32,
+      "engineErrors": 0,
+      "name": "shop",
+      "passed": true
+    },
+    {
+      "assertions": 33,
+      "engineErrors": 0,
+      "name": "idle",
+      "passed": true
+    },
+    {
+      "assertions": 34,
+      "engineErrors": 0,
+      "name": "hands",
+      "passed": true
+    },
+    {
+      "assertions": 113,
+      "engineErrors": 0,
+      "name": "icons",
+      "passed": true
+    },
+    {
+      "assertions": 29,
+      "engineErrors": 0,
+      "name": "multiplayer-effects",
+      "passed": true
+    },
+    {
+      "assertions": 50,
+      "engineErrors": 0,
+      "name": "crystals-reports",
+      "passed": true
+    },
+    {
+      "assertions": 32,
+      "engineErrors": 0,
+      "name": "eclipse-rules",
+      "passed": true
+    },
+    {
+      "assertions": 18,
+      "engineErrors": 0,
+      "name": "eclipse-damage",
+      "passed": true
+    },
+    {
+      "assertions": 95,
+      "engineErrors": 0,
+      "name": "event-previews",
+      "passed": true
+    },
+    {
+      "assertions": 100,
+      "engineErrors": 0,
+      "name": "event-options",
+      "passed": true
+    },
+    {
+      "assertions": 38,
+      "engineErrors": 0,
+      "name": "relics-armor",
+      "passed": true
+    },
+    {
+      "assertions": 44,
+      "engineErrors": 0,
+      "name": "eclipse-lobby",
+      "passed": true
+    },
+    {
+      "assertions": 54,
+      "engineErrors": 0,
+      "name": "eclipse-progress",
+      "passed": true
+    },
+    {
+      "assertions": 40,
+      "engineErrors": 0,
+      "name": "rebuild",
+      "passed": true
+    },
+    {
+      "assertions": 70,
+      "engineErrors": 0,
+      "name": "visual",
+      "passed": true
+    },
+    {
+      "assertions": 170,
+      "engineErrors": 0,
+      "name": "portraits",
+      "passed": true
+    }
+  ]
+}

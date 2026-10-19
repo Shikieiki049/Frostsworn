@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -13,7 +13,7 @@ public partial class Probe : Node
         {
             string root = ProjectSettings.GlobalizePath("res://../..");
             string game = "C:/fz/steam/steamapps/common/Slay the Spire 2/data_sts2_windows_x86_64";
-            string ritsu = Path.GetFullPath(Path.Combine(root, "../work/ritsulib-package/lib/net9.0"));
+            string ritsu = System.Environment.GetEnvironmentVariable("FROSTSWORN_TEST_RITSU_PATH") ?? Path.GetFullPath(Path.Combine(root, "../work/ritsulib-package/lib/net9.0"));
             var engineContext = AssemblyLoadContext.GetLoadContext(typeof(Probe).Assembly)!;
             engineContext.Resolving += (context, name) =>
             {
@@ -28,6 +28,15 @@ public partial class Probe : Node
             var asm = engineContext.LoadFromAssemblyPath(tests);
             var task = (Task)asm.GetType("Frostsworn.Tests.Suite")!.GetMethod("Run")!.Invoke(null, null)!;
             await task;
+            task=null!;
+            // Let deferred frees and managed Godot wrappers finish before the
+            // standalone engine shuts down, particularly card/tooltip fonts.
+            foreach(var child in GetTree().Root.GetChildren())if(child!=this)child.QueueFree();
+            for(int i=0;i<3;i++)
+            {
+                GC.Collect();GC.WaitForPendingFinalizers();
+                await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);
+            }
             GD.Print("FROSTSWORN_TESTS_PASS");
             GetTree().Quit(0);
         }

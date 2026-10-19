@@ -1,6 +1,6 @@
 # 构建与同步
 
-源码对应游戏 0.111.0、.NET 9、Godot 4.5.1 Mono、RitsuLib 0.6.7。
+源码分别支持游戏 0.107.1（正式版）与 0.111.0（测试版）、.NET 9、Godot 4.5.1 Mono、RitsuLib 0.6.7。构建读取安装目录的 release_info.json，选择对应接口分支；其他版本立即中止。两个目标的 DLL 不通用，输出 manifest 和 build-target.txt 会标记实际目标，发布时不能混装。
 
 ## 一次性配置
 
@@ -46,3 +46,14 @@ GitHub Actions 运行源码与生成文件一致性检查，不在公共运行�
 上传使用 Git Credential Manager 或 GitHub CLI 的正常登录，不把密码或令牌写入仓库。
 首次登录可运行 `git credential-manager github login --username Shikieiki049 --device`。
 源码同步与发布游戏 ZIP 是两件事：源码每次更新提交；ZIP 可另放 GitHub Releases。
+
+## 正式版历史回归
+
+为本地引擎测试准备独立的 Ritsu 运行时目录：放入 RitsuLib 的 `shared/*.dll`、`compat/0.107.1/*.dll` 以及根目录 `assets.zip`。不要把引导器或 0.111 的兼容 DLL 混入。依赖只留在本机，不分发。
+
+```powershell
+./build.ps1 -RitsuPath 'D:/Dependencies/ritsu-107'
+./Tests/run-stable-regression.ps1 -Build -RitsuPath 'D:/Dependencies/ritsu-107' -GodotPath 'D:/Tools/Godot/Godot_v4.5.1-stable_mono_win64_console.exe'
+```
+
+测试需先准备上文的本地开发宿主与 PCK。汇总及每组日志写入仓库旁的 `work/stable-regression`。任一断言失败或出现引擎 ERROR 都算失败。使用隔离测试档案，不使用玩家的实际存档；详见验证报告。测试脚本仍包含维护者开发环境路径，换电脑需要配置运行时。

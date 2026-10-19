@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -54,7 +54,7 @@ public static partial class Suite
         var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"084");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
         var context=new ThrowingPlayerChoiceContext();var own=player.Creature;
@@ -66,11 +66,11 @@ public static partial class Suite
         Assert(Eclipse.Level(run)==0,"old/default run starts at Eclipse zero");
         for(int n=0;n<=8;n++)Assert(EclipseUi.Icon(n)!=null && Eclipse.Description(n).Split('\n').Length==(n==0?1:n==8?9:n),"Eclipse icon and cumulative tooltip "+n);
         Assert(Eclipse.Description(8).StartsWith(Eclipse.Quote) && !Eclipse.Description(8).Contains("无特殊效果"),"level eight preserves quoted introduction without zero rule");
-        var store=RitsuLibFramework.GetDataStore(Entry.ModId);store.InitializeProfileScoped();int initial=Eclipse.Unlocked;
-        store.Modify<EclipseProgress>("eclipse_progress",p=>p.Unlocked=0);
-        Eclipse.Victory(run);Assert(Eclipse.Unlocked==1,"winning zero unlocks one");
-        Eclipse.Data.Set(run,new EclipseRunData{Level=4});Eclipse.Victory(run);Assert(Eclipse.Unlocked==5,"winning four unlocks five");
-        store.Modify<EclipseProgress>("eclipse_progress",p=>p.Unlocked=initial);store.Save("eclipse_progress");
+        var store=RitsuLibFramework.GetDataStore(Entry.ModId);store.InitializeProfileScoped();string initial=System.Text.Json.JsonSerializer.Serialize(Eclipse.Progress);
+        store.Modify<EclipseProgress>("eclipse_progress",p=>{p.Multiplayer=0;p.AllUnlocked=false;p.SplitProgress=true;});
+        Eclipse.Victory(run);Assert(Eclipse.Progress.Multiplayer==1,"winning zero unlocks one");
+        Eclipse.Data.Set(run,new EclipseRunData{Level=4});Eclipse.Victory(run);Assert(Eclipse.Progress.Multiplayer==5,"winning four unlocks five");
+        var savedProgress084=System.Text.Json.JsonSerializer.Deserialize<EclipseProgress>(initial)!;store.Modify<EclipseProgress>("eclipse_progress",p=>{p.Unlocked=savedProgress084.Unlocked;p.SplitProgress=savedProgress084.SplitProgress;p.AllUnlocked=savedProgress084.AllUnlocked;p.Singleplayer=savedProgress084.Singleplayer;p.Multiplayer=savedProgress084.Multiplayer;p.History=savedProgress084.History;});store.Save("eclipse_progress");
         int gold=player.Gold,otherGold=second.Gold;Eclipse.InitializeRun(run);Eclipse.InitializeRun(run);
         Assert(player.Gold==gold-20 && second.Gold==otherGold-20,"initial gold penalty applies once to both players");
         own.SetCurrentHpInternal(30);run.PushRoom(new EventRoom(ModelDb.Event<Neow>()));
@@ -99,7 +99,7 @@ public static partial class Suite
         var lobby=new StartRunLobby(GameMode.Standard,net,screen,2);proxy.Kind=NetGameType.Host;
         lobby.Players.Add(new StartRunLobbyPlayer{id=net.NetId,character=player.Character,isReady=false});
         ulong peer=net.NetId+1;lobby.Players.Add(new StartRunLobbyPlayer{id=peer,character=second.Character,isReady=false});
-        store.Modify<EclipseProgress>("eclipse_progress",p=>p.Unlocked=4);
+        store.Modify<EclipseProgress>("eclipse_progress",p=>{p.Multiplayer=4;p.AllUnlocked=false;p.SplitProgress=true;});
         Assert(Eclipse.Choose(lobby,8) && Eclipse.LobbyLevel(lobby)==4,"host selection capped to unlocked difficulty");
         proxy.Kind=NetGameType.Client;
         Assert(!Eclipse.Choose(lobby,1) && Eclipse.LobbyLevel(lobby)==4,"client cannot change shared difficulty");
@@ -110,7 +110,7 @@ public static partial class Suite
         registry.GetMethod("ImportPayloadIntoRun")!.Invoke(null,new object[]{run,staging});
         Assert(Eclipse.Level(run)==4,"lobby selection transfers through native new-run payload");
         Eclipse.Data.Modify(run,d=>{d.Level=8;d.MaxHpLost[1]=1;d.MaxHpLost[2]=1;});
-        store.Modify<EclipseProgress>("eclipse_progress",p=>p.Unlocked=initial);store.Save("eclipse_progress");
+        savedProgress084=System.Text.Json.JsonSerializer.Deserialize<EclipseProgress>(initial)!;store.Modify<EclipseProgress>("eclipse_progress",p=>{p.Unlocked=savedProgress084.Unlocked;p.SplitProgress=savedProgress084.SplitProgress;p.AllUnlocked=savedProgress084.AllUnlocked;p.Singleplayer=savedProgress084.Singleplayer;p.Multiplayer=savedProgress084.Multiplayer;p.History=savedProgress084.History;});store.Save("eclipse_progress");
         for(int n=0;n<80;n++)Eclipse.Scar(own,1);
         Assert(own.MaxHp==35,"scar capped at half original maximum");
         int hp=own.CurrentHp;run.CurrentActIndex=1;
@@ -133,9 +133,3 @@ public static partial class Suite
         health.Free();GD.Print("REVISION084_COMPLETE");
     }
 }
-
-
-
-
-
-

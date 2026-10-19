@@ -61,7 +61,7 @@ public abstract class LimitedTurnPower:FrostPowerBase
     protected override IEnumerable<DynamicVar> CanonicalVars=>[new PowerGainVar(false)];
     public override async Task AfterCardPlayed(PlayerChoiceContext context,CardPlay play)
     {
-        if(play.Player.Creature==Owner && play.Card is IceCrystal && !Owner.IsDead)
+        if(FrostCompat.PlayOwner(play).Creature==Owner && play.Card is IceCrystal && !Owner.IsDead)
             await PowerCmd.Apply<SnowPower>(context,Owner,Amount,Owner,play.Card);
     }
 }

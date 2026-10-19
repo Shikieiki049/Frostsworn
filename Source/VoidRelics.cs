@@ -149,7 +149,7 @@ public abstract class VoidRelic:ModRelicTemplate
     {await PowerCmd.Apply<TStat>(context,Owner.Creature,n,Owner.Creature,null);await PowerCmd.Apply<TDecay>(context,Owner.Creature,n,Owner.Creature,null);}
     public override async Task AfterCardPlayed(PlayerChoiceContext context,CardPlay play)
     {
-        if(this is not OverdriveGearbox || play.Player!=Owner)return;
+        if(this is not OverdriveGearbox || FrostCompat.PlayOwner(play)!=Owner)return;
         VoidCount++;if(VoidCount>=7){VoidCount-=7;Flash();await PowerCmd.Apply<VigorPower>(context,Owner.Creature,Math.Min(20,Owner.PlayerCombatState!.TurnNumber*2),Owner.Creature,null);}InvokeDisplayAmountChanged();
     }
     public override async Task AfterCombatVictory(MegaCrit.Sts2.Core.Rooms.CombatRoom room)

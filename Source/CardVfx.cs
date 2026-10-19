@@ -1,4 +1,4 @@
-using MegaCrit.Sts2.Core.Commands.Builders;
+﻿using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.TestSupport;
 namespace Frostsworn;
@@ -116,9 +116,17 @@ public static class FrostCardVfx
     };
 
     public static readonly string[] NativeScenes={
+#if STS2_STABLE_107
+        // 0.107.1 predates the orb particle scenes. Use its native particle
+        // components; snow motion, color and size are configured below.
+        "common/vfx_common_specks", "common/vfx_common_ring_polar_a",
+        "common/vfx_common_round_smoke", "common/vfx_common_hit_flare",
+        "common/vfx_common_specks", "common/vfx_common_round_smoke", "common/vfx_common_ring_polar_a",
+#else
         "orbs/frost/vfx_frost_orb_snow", "orbs/frost/vfx_frost_orb_evoke_shield",
         "orbs/frost/vfx_frost_orb_passive_shield", "orbs/glass/vfx_glass_orb_evoke_impact",
         "common/vfx_common_specks", "common/vfx_common_clouds", "common/vfx_common_ring_polar_a",
+#endif
         "common/vfx_common_hit_flare", "slash/vfx_slash_core", "vfx_rock_shatter"
     };
     public static IEnumerable<string> AssetPaths=>NativeScenes.Select(p=>Vfx+p+".tscn").Concat(new[]{
@@ -288,12 +296,17 @@ public static class FrostCardVfx
             else snow?.Free();
             if(storm)Part(NativeScenes[5],.45f,new Color(Ice,.3f));
         }
+#if STS2_STABLE_107
+        if(motifs.HasFlag(FrostMotif.Armor))
+        {IceShield(root,size);Part(NativeScenes[1],.35f);}
+#else
         if(motifs.HasFlag(FrostMotif.Armor) && !Part(NativeScenes[1],.85f))
         {
             // Some game versions omit the evoke shield. Prefer the native passive shield;
             // retain a small ice shield even when neither scene is available.
             if(!Part(NativeScenes[2],.85f))IceShield(root,size);
         }
+#endif
         if(motifs.HasFlag(FrostMotif.Shards))
         {
             // The original rock-shatter motion with ice pieces instead of stones

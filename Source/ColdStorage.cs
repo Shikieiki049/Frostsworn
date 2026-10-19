@@ -129,7 +129,7 @@ public sealed class ThawDiscount : CardCapability, ICardEnergyCostContributor, I
                 return;
             }
             bool thawed=state.Pending;
-            if(thawed && !cardPlay.Card.EnergyCost.CostsX && cardPlay.Player.Creature.GetPower<IceReleasePower>() is {} release)await PowerCmd.Decrement(release);
+            if(thawed && !cardPlay.Card.EnergyCost.CostsX && FrostCompat.PlayOwner(cardPlay).Creature.GetPower<IceReleasePower>() is {} release)await PowerCmd.Decrement(release);
             state.Pending = false;
             state.ActivePlay=null;
             state.AttackBonus=0;

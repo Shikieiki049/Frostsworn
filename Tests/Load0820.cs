@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -28,10 +28,14 @@ public static partial class Suite
     };
     static async Task CheckLoad0820()
     {
-        MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
+
+#if !STS2_STABLE_107
+MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
         using(var stream=System.IO.File.OpenRead(Godot.ProjectSettings.GlobalizePath("res://../../dist/Frostsworn/mod_manifest.json")))
             MegaCrit.Sts2.Core.Modding.AssemblyInfo.ModMap![typeof(Entry).Assembly]=new MegaCrit.Sts2.Core.Modding.Mod {path="test/Frostsworn",state=MegaCrit.Sts2.Core.Modding.ModLoadState.Loaded,manifest=MegaCrit.Sts2.Core.Modding.ModManifest.ReadFromStream(stream,out _)};
-        MegaCrit.Sts2.Core.Multiplayer.Serialization.ModelIdSerializationCache.Init();
+
+#endif
+MegaCrit.Sts2.Core.Multiplayer.Serialization.ModelIdSerializationCache.Init();
         foreach(bool multiplayer in new[]{false,true})
         {
             var players=Enumerable.Range(1,multiplayer?2:1).Select(i=>Player.CreateForNewRun<FrostswornCharacter>(UnlockState.all,(ulong)i)).ToArray();
@@ -70,7 +74,7 @@ public static partial class Suite
         var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"SL0820");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
         LocalContext.NetId=run.Players.Last().NetId;
@@ -79,6 +83,6 @@ public static partial class Suite
         combat.RoundNumber=2;await Hook.AfterSideTurnStart(combat,CombatSide.Player,combat.PlayerCreatures);
         Assert(enemy.Block==3,"next combat after SL has Eclipse4 Block");
         turn.GetType().GetMethod("Cancel")!.Invoke(turn,null);
-        typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.SetValue(CombatManager.Instance,null);
+        ClearTestTurn107();
     }
 }

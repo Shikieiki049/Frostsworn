@@ -1,3 +1,4 @@
+#if !STS2_STABLE_107
 using System.IO;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Rngs;
@@ -109,3 +110,4 @@ public static class FrostRngProtocol097
     static void Finalizer(Exception? __exception)
     { if (__exception == null) Apply(); }
 }
+#endif

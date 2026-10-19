@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ public static partial class Suite
         var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"083");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
         var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
@@ -50,9 +50,9 @@ public static partial class Suite
         Assert(ColdStorage.Pile(player).Cards.SequenceEqual(new[]{stored}) && pcs.Hand.Cards.Count==0,"bottle stores one card before first draw and only once");
         var bookmark=Relic<SnowBookmark>();await bookmark.BeforeSideTurnEnd(context,CombatSide.Player,new[]{own});
         Assert(own.GetPowerAmount<IceArmorPower>()==1,"bookmark counts stored cards at turn end");
-        var soil=Relic<FrozenSoil>();await soil.BeforeCombatStart();await own.GetPower<IceArmorPower>()!.BeforeHandDrawLate(player,context,combat);
-        Assert(own.GetPowerAmount<IceArmorPower>()==7,"soil restores seven after first melt removes last armor");
-        await own.GetPower<IceArmorPower>()!.BeforeHandDrawLate(player,context,combat);Assert(own.GetPowerAmount<IceArmorPower>()==3,"soil does not restore twice");
+        var soil=Relic<FrozenSoil>();await soil.BeforeCombatStart();await PowerCmd.Apply<IceArmorPower>(context,own,1,own,null);await own.GetPower<IceArmorPower>()!.BeforeHandDrawLate(player,context,combat);
+        Assert(own.GetPowerAmount<IceArmorPower>()==8,"soil adds seven after first actual melt; one armor remains by round-up rule");
+        await own.GetPower<IceArmorPower>()!.BeforeHandDrawLate(player,context,combat);Assert(own.GetPowerAmount<IceArmorPower>()==4,"soil does not restore twice");
         await ClearCards();var globe=Relic<PolarGlobe>();
         for(int i=0;i<2;i++){var c=await Card<FrostStrike>(PileType.Hand);selector.PrepareToSelect(new[]{c});await ColdStorage.Store(context,player,bottle,1);}
         Assert(globe.StoredCount==2,"globe counts each stored card");
@@ -84,7 +84,7 @@ public static partial class Suite
         Assert(badge.Visible && health.GetNode<Control>("%HpForeground").SelfModulate==IceArmorDisplay.ArmorColor,"armor icon visible and HP fill blue-white without block");
         await CreatureCmd.GainBlock(own,5,ValueProp.Unpowered,null);health.RefreshValues();
         Assert(badge.Visible && health.GetNode<Control>("%HpForeground").SelfModulate==new Color("3B6FA3"),"block overrides armor color while armor number remains visible");
-        Assert(badge.GetNode<Label>("Amount").Text=="3","right-side badge displays current armor");
+        Assert(badge.GetNode<Label>("Amount").Text=="4","right-side badge displays current armor");
         own.LoseBlockInternal(own.Block);health.RefreshValues();
         var card=ResourceLoader.Load<PackedScene>("res://scenes/cards/card.tscn").Instantiate<Control>();
         var cost=card.GetNode<TextureRect>("%EnergyIcon");var slash=cost.GetNode<Control>("UnplayableEnergyIcon");

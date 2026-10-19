@@ -57,7 +57,7 @@ public static partial class Suite
         var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"084");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
         var context=new ThrowingPlayerChoiceContext();var own=player.Creature;

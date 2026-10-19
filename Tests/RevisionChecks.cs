@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ public static partial class Suite
         var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"revision");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
         var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
@@ -458,6 +458,9 @@ public static partial class Suite
                     Assert(last==(line==dialogue.Lines.Count-1),ancient.Id.Entry+" native layout reaches option transition only on final line "+line);
                     Assert(last?!nextLabel.Visible:nextLabel.Text=="继续",ancient.Id.Entry+" native next-button renderer succeeds on line "+line);
                 }
+                // Dispose releases managed wrappers; detached Nodes also need
+                // Free to release their CanvasItems and font handles.
+                nextLabel.Free();layout.Free();
             }
             foreach(int visits in new[]{0,1,4,20})
             {

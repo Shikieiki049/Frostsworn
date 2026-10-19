@@ -29,7 +29,7 @@ public static partial class Suite
             var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
             var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"0817");combat.AddCreature(enemy);
             CombatManager.Instance.SetUpCombat(combat);
-            var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+            var turn=TestTurn107();
             turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
             if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
             var context=new ThrowingPlayerChoiceContext();
@@ -56,7 +56,7 @@ public static partial class Suite
             // Standalone harness has no lobby action synchronizer. Drop the test
             // turn state directly instead of invoking UI/network teardown.
             turn.GetType().GetMethod("Cancel")!.Invoke(turn,null);
-            typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.SetValue(CombatManager.Instance,null);
+            ClearTestTurn107();
         }
         LocalContext.NetId=null;
     }

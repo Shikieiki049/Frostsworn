@@ -175,7 +175,11 @@ public static class FrostSelectionRefreshPatch
     }
 }
 
+#if STS2_STABLE_107
+[HarmonyPatch(typeof(NCard),"UpdateVisuals")]
+#else
 [HarmonyPatch(typeof(NCard),"UpdatePortrait")]
+#endif
 public static class FrostCardPortraitFitPatch
 {
     public static void Postfix(NCard __instance)

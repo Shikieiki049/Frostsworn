@@ -11,7 +11,11 @@ namespace Frostsworn;
             SetDamageProps.Invoke(command, new object[] { command.DamageProps | ValueProp.Unblockable });
         return Task.CompletedTask;
     }
+#if STS2_STABLE_107
+    public override decimal ModifyDamageAdditive(Creature? target,decimal amount,ValueProp props,Creature? dealer,CardModel? cardSource)
+#else
     public override decimal ModifyDamageAdditive(Creature? target,decimal amount,ValueProp props,Creature? dealer,CardModel? cardSource,CardPlay? cardPlay)
+#endif
         => dealer==Owner && cardSource is IceCrystal && props.IsPoweredAttack() ? Amount : 0;
 }
 [RegisterPower] public sealed class CrystalAmuletPower:FrostPowerBase

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -11,6 +11,7 @@ public static partial class Suite
     private static async Task CheckVisual0814()
     {
         await CheckIdle0813();
+        typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NMerchantRoom).Assembly});
         var tree = (SceneTree)Engine.GetMainLoop();
         var canvas = new Node2D(); tree.Root.AddChild(canvas);
         int index = 0;

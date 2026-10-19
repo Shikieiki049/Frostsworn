@@ -1,3 +1,4 @@
+#if !STS2_STABLE_107
 using System;
 using System.Linq;
 using System.Reflection;
@@ -99,3 +100,5 @@ public static partial class Suite
         return Task.CompletedTask;
     }
 }
+
+#endif

@@ -33,7 +33,7 @@ public static class FinalEvents
         var state=ColdStorage.State(play.Card);
         state.ActivePlay=play;
         state.AttackBonus=0;
-        if(play.Card.Type==CardType.Attack && play.Player.Creature.GetPower<HiddenBladePower>() is {} blade) state.AttackBonus=blade.Amount;
+        if(play.Card.Type==CardType.Attack && FrostCompat.PlayOwner(play).Creature.GetPower<HiddenBladePower>() is {} blade) state.AttackBonus=blade.Amount;
         return Task.CompletedTask;
     }
     public static async Task Thawed(PlayerChoiceContext context,Player player,CardModel card)
@@ -56,6 +56,16 @@ public static class FinalEvents
 [HarmonyPatch(typeof(CardCmd),nameof(CardCmd.Exhaust))]
 internal static class CrystalExhaustLedgerPatch
 {
+#if STS2_STABLE_107
+    public static void Prefix(CardModel card,out bool __state)=>__state=card.Pile?.Type!=PileType.Exhaust;
+    public static void Postfix(CardModel card,bool __state,ref Task __result)
+    { if(card is IceCrystal && __state) __result=ObserveStable(__result,card); }
+    static async Task ObserveStable(Task original,CardModel card)
+    {
+        await original;
+        if(card.Owner.PlayerCombatState!=null && card.Pile?.Type==PileType.Exhaust)FinalEvents.Ledger(card.Owner).CrystalExhausted=true;
+    }
+#else
     public static void Postfix(CardModel card,ref Task<CardPileAddResult?> __result)
     {
         if(card is IceCrystal) __result=Observe(__result,card);
@@ -66,6 +76,7 @@ internal static class CrystalExhaustLedgerPatch
         if(result!=null && card.Owner.PlayerCombatState!=null && card.Pile?.Type==PileType.Exhaust) FinalEvents.Ledger(card.Owner).CrystalExhausted=true;
         return result;
     }
+#endif
 }
 
 [RegisterPower] public sealed class CrystalResonancePower:FrostPowerBase;
@@ -74,8 +85,15 @@ internal static class CrystalExhaustLedgerPatch
 [RegisterPower] public sealed class ColdBloodEchoPower:LimitedTurnPower;
 [RegisterPower] public sealed class HiddenBladePower:FrostPowerBase
 {
+#if STS2_STABLE_107
+    public override decimal ModifyDamageAdditive(Creature? target,decimal amount,ValueProp props,Creature? dealer,CardModel? cardSource)
+#else
     public override decimal ModifyDamageAdditive(Creature? target,decimal amount,ValueProp props,Creature? dealer,CardModel? cardSource,CardPlay? cardPlay)
+#endif
     {
+#if STS2_STABLE_107
+        CardPlay? cardPlay=cardSource==null ? null : ColdStorage.State(cardSource).ActivePlay;
+#endif
         if(dealer!=Owner || cardSource==null || cardPlay==null || !props.IsPoweredAttack()) return 0;
         var state=ColdStorage.State(cardSource);
         return ReferenceEquals(state.ActivePlay,cardPlay) ? state.AttackBonus : 0;

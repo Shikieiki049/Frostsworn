@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -32,6 +32,11 @@ public static partial class Suite
     {
         TestMode.IsOn = true;
         typeof(ModManager).GetProperty("State")!.SetValue(null,ModManagerState.Initialized);
+#if STS2_STABLE_107
+        using(var stream=System.IO.File.OpenRead(ProjectSettings.GlobalizePath("res://../../dist/Frostsworn/mod_manifest.json")))
+            ((List<Mod>)typeof(ModManager).GetField("_mods",BindingFlags.Static|BindingFlags.NonPublic)!.GetValue(null)!).Add(new Mod {assembly=typeof(Entry).Assembly,path="test/Frostsworn",state=ModLoadState.Loaded,manifest=ModManifest.ReadFromStream(stream,out _)});
+        typeof(MegaCrit.Sts2.Core.Helpers.ReflectionHelper).GetField("_modTypes",BindingFlags.Static|BindingFlags.NonPublic)!.SetValue(null,typeof(Entry).Assembly.GetTypes());
+#endif
         GD.Print("TEST_BOOT: Godot + game + RitsuLib assemblies loaded");
         GD.Print("TEST_USER_DIR=" + OS.GetUserDataDir());
         SaveManager.Instance.InitSettingsDataForTest();
@@ -42,13 +47,30 @@ public static partial class Suite
         Entry.Initialize();
         typeof(RitsuLibFramework).Assembly.GetType("STS2RitsuLib.Interop.Patches.ModTypeDiscoveryPatch")!
             .GetMethod("Prefix",BindingFlags.Public|BindingFlags.Static)!.Invoke(null,null);
+#if STS2_STABLE_107
+
+
+        ModelDb.Init();
+        MegaCrit.Sts2.Core.Multiplayer.Serialization.ModelIdSerializationCache.Init();
+        ModelDb.InitIds();
+#else
         ModelDb.Init(ModelDb.AllAbstractModelSubtypes.Concat(typeof(FrostCard).Assembly.GetTypes().Where(t=>!t.IsAbstract && typeof(AbstractModel).IsAssignableFrom(t))).Distinct().ToArray());
+#endif
         LocManager.Initialize();
         var tables=(Dictionary<string,LocTable>)typeof(LocManager).GetField("_tables",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(LocManager.Instance)!;
         foreach(var table in new[]{"cards","powers","relics","characters","epochs","static_hover_tips","enchantments","ancients","potions","events"})
         {
             var text=Godot.FileAccess.GetFileAsString($"res://Frostsworn/localization/zhs/{table}.json");
+#if STS2_STABLE_107
+            // Stable Keys enumerates this table only, not its fallback. Keep native
+            // keys visible to the exhaustive event scan just as in a loaded game.
+            var previous=tables.GetValueOrDefault(table);
+            var entries=previous?.Keys.ToDictionary(k=>k,k=>previous.GetRawText(k)) ?? new Dictionary<string,string>();
+            foreach(var pair in JsonSerializer.Deserialize<Dictionary<string,string>>(text)!)entries[pair.Key]=pair.Value;
+            tables[table]=new LocTable(table,entries,previous);
+#else
             tables[table]=new LocTable(table,JsonSerializer.Deserialize<Dictionary<string,string>>(text)!,tables.GetValueOrDefault(table));
+#endif
         }
         Assert(Rules.FreezeThreshold(72,0)==12&&Rules.FreezeThreshold(72,1)==21,"72 HP threshold starts at twelve and rises by nine");
         Assert(Rules.FreezeThreshold(300,0)==36&&Rules.FreezeThreshold(300,1)==48,"300 HP threshold starts at thirty-six and rises by twelve");
@@ -61,7 +83,11 @@ public static partial class Suite
             var manifest=ModManifest.ReadFromStream(manifestStream,out var errors);
             Assert(manifest!=null && (errors?.Count ?? 0)==0 && manifest.id=="Frostsworn" && manifest.dependencies!.Single().id=="STS2-RitsuLib","native game manifest reader accepts package and dependency");
         }
+#if STS2_STABLE_107
+        if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "107") await CheckStable107();
+#else
         if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "097") await CheckSyncRng097();
+#endif
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "096") await CheckVfxCache096();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "095") await CheckResourceGuards095();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "094") await CheckPowerIcons094();
@@ -104,7 +130,11 @@ public static partial class Suite
         GD.Print("PASS: "+message);
     }
     public static CardPlay Play(CardModel card,MegaCrit.Sts2.Core.Entities.Creatures.Creature? target=null)=>new()
-    { Card=card,Player=card.Owner,Target=target,ResultPile=PileType.Discard,Resources=default,IsAutoPlay=false,PlayIndex=0,PlayCount=1 };
+    { Card=card,
+#if !STS2_STABLE_107
+      Player=card.Owner,
+#endif
+      Target=target,ResultPile=PileType.Discard,Resources=default,IsAutoPlay=false,PlayIndex=0,PlayCount=1 };
 }
 
 

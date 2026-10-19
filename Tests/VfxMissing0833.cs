@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Godot;
 using Frostsworn;
@@ -12,7 +12,11 @@ public static partial class Suite
         {
             FrostCardVfx.NativeScenes[1]="missing-test-shield";
             var shield=FrostCardVfx.CreateAt(FrostMotif.Armor,Vector2.Zero,Vector2.Zero);
+#if STS2_STABLE_107
+            Assert(shield.HasNode("IceShieldFallback"),"stable ice shield remains visible when optional native ring is missing");
+#else
             Assert(shield.GetChildCount()>0 && !shield.HasNode("IceShieldFallback"),"missing evoke shield uses native passive shield without interrupting card VFX");
+#endif
             shield.Free();
             FrostCardVfx.NativeScenes[2]="missing-test-passive";
             shield=FrostCardVfx.CreateAt(FrostMotif.Armor,Vector2.Zero,Vector2.Zero);

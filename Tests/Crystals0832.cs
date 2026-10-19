@@ -20,7 +20,7 @@ public static partial class Suite
         var monster=(MegaCrit.Sts2.Core.Models.Monsters.Mocks.MockAttackMonster)MegaCrit.Sts2.Core.Models.ModelDb.Monster<MegaCrit.Sts2.Core.Models.Monsters.Mocks.MockAttackMonster>().ToMutable();
         var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"crystals-test");combat.AddCreature(enemy);
         CombatManager.Instance.SetUpCombat(combat);
-        var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+        var turn=TestTurn107();
         var progress=turn.GetType().GetProperty("IsInProgress")!;
         progress.SetValue(turn,true);
         await FrostActions.Crystals(player,2,true,true);

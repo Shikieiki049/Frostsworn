@@ -22,7 +22,11 @@ public static class RevisedEffects
         }
         async Task<int> Hit(decimal d,int hits=1,Creature? victim=null,bool all=false,bool random=false)
         {
+#if STS2_STABLE_107
+            var command=DamageCmd.Attack(d).FromCard(card).WithHitCount(hits);
+#else
             var command=DamageCmd.Attack(d).FromCard(card,play).WithHitCount(hits);
+#endif
             if(random)command.TargetingRandomOpponents(own.CombatState!,true);
             else if(all)command.TargetingAllOpponents(own.CombatState!);
             else if((victim??target) is {} t)command.Targeting(t);else return 0;

@@ -30,7 +30,11 @@ public static class Entry
         Eclipse.Initialize();
         FrostErrorReports.Initialize();
         new Harmony("Frostsworn.mechanics").PatchAll(Assembly.GetExecutingAssembly());
+#if !STS2_STABLE_107
         RitsuLibFramework.CreateLogger(ModId).Info("Named RNG/relic snapshot protocol FSR1 enabled; all peers require Frostsworn 0.9.8 or compatible.");
+#else
+        RitsuLibFramework.CreateLogger(ModId).Info("Stable 0.107.1 compatibility build; native RNG synchronization retained.");
+#endif
         RitsuLibFramework.CreateLogger(ModId).Info($"Frostsworn {FrostVersion.Value}: 93 character cards plus Putrefaction, 3 character potions, 25 relics including 16 Void relics, Void Cradle, ancient mappings, Eclipse 0-8 and dynamic cold capacity registered.");
     }
 }

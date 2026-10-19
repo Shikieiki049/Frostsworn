@@ -4,11 +4,11 @@
   "name": "Frostsworn / 霜誓者",
   "author": "Shikieiki",
   "description": "Ice mage with 93 character cards, Void Cradle event, 16 event-exclusive Void relics and Putrefaction curse; 25 total relics, 3 potions, English/Chinese, and Eclipse 0-8 for all characters.",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,
-  "min_game_version": "0.111.0",
+  "min_game_version": "0.107.1",
   "dependencies": [
     {
       "id": "STS2-RitsuLib"

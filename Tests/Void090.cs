@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using MegaCrit.Sts2.Core.Localization;
 using System.Linq;
 using System.Reflection;
@@ -51,14 +51,14 @@ public static partial class Suite
   var monster=(MockAttackMonster)ModelDb.Monster<MockAttackMonster>().ToMutable();
   var enemy=combat.CreateCreature(monster,CombatSide.Enemy,"void-test");combat.AddCreature(enemy);
   CombatManager.Instance.SetUpCombat(combat);
-  var turn=typeof(CombatManager).GetField("_turnState",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(CombatManager.Instance)!;
+  var turn=TestTurn107();
   turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
   if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
   var ctx=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
   MegaCrit.Sts2.Core.Context.LocalContext.NetId=null;
   T Relic<T>() where T:RelicModel {var r=(T)ModelDb.Relic<T>().ToMutable();player.AddRelicInternal(r);return r;}
   void Turn(int n){typeof(PlayerCombatState).GetField("<TurnNumber>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic)!.SetValue(player.PlayerCombatState,n);}
-  async Task Clear(){selector.Cleanup();foreach(var c in player.PlayerCombatState!.AllPiles.SelectMany(p=>p.Cards).ToArray())await CardPileCmd.RemoveFromCombat(c);foreach(var r in player.Relics.ToArray())player.RemoveRelicInternal(r);foreach(var p in player.Creature.Powers.ToArray())await PowerCmd.Remove(p);await CreatureCmd.SetMaxAndCurrentHp(player.Creature,100);if(player.Creature.Block>0)await CreatureCmd.LoseBlock(ctx,player.Creature,player.Creature.Block,null);await CreatureCmd.SetMaxAndCurrentHp(enemy,1000);}
+  async Task Clear(){selector.Cleanup();foreach(var c in player.PlayerCombatState!.AllPiles.SelectMany(p=>p.Cards).ToArray())await CardPileCmd.RemoveFromCombat(c);foreach(var r in player.Relics.ToArray())player.RemoveRelicInternal(r);foreach(var p in player.Creature.Powers.ToArray())await PowerCmd.Remove(p);await CreatureCmd.SetMaxAndCurrentHp(player.Creature,100);if(player.Creature.Block>0)await LoseTestBlock107(ctx,player.Creature);await CreatureCmd.SetMaxAndCurrentHp(enemy,1000);}
   async Task<CardModel> Card<T>(PileType p)where T:CardModel {var c=combat.CreateCard<T>(player);await CardPileCmd.Add(c,p);return c;}
   var origin=Relic<BloodVial>();var cord=Relic<BloodlessCord>();
   await cord.AfterObtained();
@@ -67,9 +67,13 @@ public static partial class Suite
   player.RemoveRelicInternal(cord);await cord.AfterRemoved();Assert(!VoidRelics.Suppressed(origin) && combat.IterateHookListeners().Contains(origin),"removing Void relic restores the original's hook eligibility");
   Assert(!origin.IsAllowed(run),"original remains permanently excluded from this run rewards even after Void relic removal");
   foreach(var type in VoidRelics.Types){var v=(VoidRelic)VoidRelics.Canonical(type).ToMutable();player.AddRelicInternal(v);Assert(!VoidRelics.Canonical(v.OriginalType).IsAllowed(run),"counterpart reward veto covers overridden native IsAllowed: "+v.OriginalType.Name);player.RemoveRelicInternal(v);}
-  MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
+
+#if !STS2_STABLE_107
+MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
   using(var stream=System.IO.File.OpenRead(ProjectSettings.GlobalizePath("res://../../dist/Frostsworn/mod_manifest.json")))MegaCrit.Sts2.Core.Modding.AssemblyInfo.ModMap![typeof(Entry).Assembly]=new MegaCrit.Sts2.Core.Modding.Mod {path="test/Frostsworn",state=MegaCrit.Sts2.Core.Modding.ModLoadState.Loaded,manifest=MegaCrit.Sts2.Core.Modding.ModManifest.ReadFromStream(stream,out _)};
-  MegaCrit.Sts2.Core.Multiplayer.Serialization.ModelIdSerializationCache.Init();
+
+#endif
+MegaCrit.Sts2.Core.Multiplayer.Serialization.ModelIdSerializationCache.Init();
   var savedVoid=(OverdriveGearbox)ModelDb.Relic<OverdriveGearbox>().ToMutable();savedVoid.VoidCount=6;savedVoid.VoidFloor=18;savedVoid.VoidUsed=true;
   var restoredVoid=(OverdriveGearbox)RelicModel.FromSerializable(savedVoid.ToSerializable());Assert(restoredVoid.VoidCount==6 && restoredVoid.VoidFloor==18 && restoredVoid.VoidUsed && restoredVoid.Rarity==VoidRelics.Rarity,"Void identity and saved counters survive native relic serialization");
   var registry=typeof(STS2RitsuLib.RitsuLibFramework).Assembly.GetType("STS2RitsuLib.RunData.RunSavedDataRegistry")!;
@@ -122,12 +126,12 @@ public static partial class Suite
   await Clear();marrow=Relic<MarrowTouch>();await CreatureCmd.SetCurrentHp(player.Creature,49);await marrow.AfterCombatVictory(null!);Assert(player.Creature.MaxHp==100,"Marrow Touch does not trigger below half health");
   await Clear();var pendant=Relic<GymnospermPendant>();var potion=ModelDb.AllPotions.First().ToMutable();potion.Owner=player;await pendant.AfterPotionUsed(potion,null);
   Assert(player.Creature.GetPowerAmount<DexterityPower>()==2 && player.Creature.GetPowerAmount<VoidFadingDexterityPower>()==2,"Gymnosperm Pendant grants two decaying Dexterity after a Potion");
-  await Clear();var ev=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev.BeginEvent(player,null,false);
+  await Clear();var ev=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev.BeginEventForTest107(player);
   Assert(ev.Title.GetFormattedText()=="虚空摇篮" && ev.CurrentOptions[1].Description.GetFormattedText().Contains("朽败"),"event title and both Curse-priced option descriptions resolve");
   Assert(ev.CurrentOptions.Count==3 && ev.CurrentOptions[1].IsLocked,"Cradle always has three options and locks corruption without an eligible relic");
-  var blood=Relic<BloodVial>();var ev2=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev2.BeginEvent(player,null,false);await ev2.Corrupt();
+  var blood=Relic<BloodVial>();var ev2=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev2.BeginEventForTest107(player);await ev2.Corrupt();
   Assert(player.Relics.OfType<BloodlessCord>().Any() && !player.Relics.OfType<BloodVial>().Any() && player.Deck.Cards.OfType<VoidInfection>().Count()==1,"random corruption transforms only an eligible owned relic and adds the Curse");
-  var ev3=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev3.BeginEvent(player,null,false);await ev3.Take();Assert(player.Relics.OfType<VoidRelic>().Count()==2 && player.Deck.Cards.OfType<VoidInfection>().Count()==2,"taking a new Void relic also adds the Curse");
+  var ev3=(VoidCradle)ModelDb.Event<VoidCradle>().ToMutable();await ev3.BeginEventForTest107(player);await ev3.Take();Assert(player.Relics.OfType<VoidRelic>().Count()==2 && player.Deck.Cards.OfType<VoidInfection>().Count()==2,"taking a new Void relic also adds the Curse");
   Assert(ev.CreateInitialPortrait().GetWidth()>1000,"event uses supplied Void Cradle artwork");
   for(int i=0;i<4;i++){await cookie.AfterCombatVictory(null!);Assert(cookie.DisplayAmount==(i+1)%2,"Cookie counter stays in the 0/1 cycle across repeated combats");}
   Assert(ModelDb.Relic<FaceborrowMembrane>().DynamicDescription.GetRawText().Contains("[gold]力量[/gold]") && ModelDb.Relic<FaceborrowMembrane>().HoverTipsExcludingRelic.Count()==2,"Void relics highlight and expose native Strength/Dexterity tips");
@@ -245,16 +249,3 @@ public static partial class Suite
   inspect.Free();category.Free();collection.Free();TestMode.IsOn=true;
  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

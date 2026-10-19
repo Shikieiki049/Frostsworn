@@ -87,7 +87,7 @@ public sealed class FrostPower : FrostPowerBase
     protected override bool IsVisibleInternal => false;
     public override PowerType Type => PowerType.Debuff;
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Threshold", 12)];
-    public override Task AfterCardPlayedLate(PlayerChoiceContext context, CardPlay cardPlay)=>ResolveFreeze(context,cardPlay.Player);
+    public override Task AfterCardPlayedLate(PlayerChoiceContext context, CardPlay cardPlay)=>ResolveFreeze(context,FrostCompat.PlayOwner(cardPlay));
     public async Task ResolveFreeze(PlayerChoiceContext context,Player player)
     {
         if (Owner.IsDead) return;
