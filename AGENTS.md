@@ -12,3 +12,5 @@
 - 工坊发布配置必须显式保留完整非空标题“霜誓者 Frostsworn｜冰霜法师与日食挑战”，默认语言及每次本地化更新都携带标题；不能依赖省略 title 自动保留。发布后同时检查页面标题与改动说明。
 
 - 当前工坊标题按语言保留：默认/简中“【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战”；英文“[Void Relics + Event Update] Frostsworn | Ice Mage & Eclipse Challenges”。这是用户要求的新标题，优先于前面的旧标题文字；后续发布不要还原旧标题。
+
+- 用户要求工坊正式版/测试版隔离：同一条目使用 Steam 工坊多版本范围。正式版 minBranch=maxBranch=public，测试版 minBranch=maxBranch=public-beta；每套 content 使用各自目标 DLL 和 manifest。不可省略范围，不能把单个版本伪装成兼容全部分支。上传前后核对哈希、Steam 已保存范围及公开改动说明。配置见 workshop/README.md。

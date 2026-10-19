@@ -1,0 +1,25 @@
+{
+  "workshopId": "3816906546",
+  "verifiedDate": "2026-10-19",
+  "steamVisibility": "Public",
+  "banned": false,
+  "supportedRanges": [
+    {
+      "min": "public-beta",
+      "max": "public-beta",
+      "modVersion": "0.9.8",
+      "gameVersion": "0.111.0"
+    },
+    {
+      "min": "public",
+      "max": "public",
+      "modVersion": "0.9.9",
+      "gameVersion": "0.107.1"
+    }
+  ],
+  "changelog": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3816906546",
+  "publicChangelogVerified": true,
+  "englishTitleVerifiedViaSteamApi": true,
+  "requiredItem": "3747602295",
+  "note": "Both content submissions timed out at the callback; subsequent read-only Steam API queries and public change-note records confirmed successful storage. Metadata-only bilingual updates returned OK and did not modify content or required version ranges."
+}

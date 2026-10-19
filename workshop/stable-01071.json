@@ -1,0 +1,17 @@
+{
+  "visibility": "public",
+  "tags": [
+    "Characters",
+    "Cards",
+    "Relics",
+    "English",
+    "schinese"
+  ],
+  "dependencies": [
+    3747602295
+  ],
+  "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战",
+  "minBranch": "public",
+  "maxBranch": "public",
+  "changeNote": "0.9.9 正式版适配 / Stable 0.107.1 support\n仅适用于游戏 0.107.1 public。正式版与测试版按 Steam 工坊支持的游戏版本范围分别分发；测试版 0.111.0 保留 0.9.8，不会收到正式版 DLL。\n适配出牌、伤害、消耗和卡图刷新接口，替换正式版缺少的冰霜/玻璃球特效组件。正式版保留原生 RNG 与 hash 同步，不加载 0.111 专用协议补丁。\n完成 26 组、5802 项本地游戏引擎断言，覆盖历史愈合/跨幕血上限、SL、多人商店、冷藏/冰晶、虚空遗物/事件/图鉴、关键词翻译、特效缓存和错误报告脱敏，并检查渲染截图。双机真实联机仍待验证。RitsuLib 0.6.7 前置保持必需。\nFor game 0.107.1 public only. Steam distributes stable and beta content by supported game version; 0.111.0 public-beta retains 0.9.8. Adapts card play, damage, Exhaust and portrait APIs; replaces unavailable native orb VFX components. Stable retains native RNG/hash synchronization and excludes beta-specific wire patches. Passed 26 local engine regression groups / 5802 assertions and rendered UI checks. Real two-PC multiplayer still needs confirmation. Requires RitsuLib 0.6.7. Use matching builds on all peers."
+}

@@ -1,0 +1,17 @@
+{
+  "visibility": "public",
+  "tags": [
+    "Characters",
+    "Cards",
+    "Relics",
+    "English",
+    "schinese"
+  ],
+  "dependencies": [
+    3747602295
+  ],
+  "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战",
+  "minBranch": "public-beta",
+  "maxBranch": "public-beta",
+  "changeNote": "0.9.8 测试版独立分发 / Beta-only distribution\n仅适用于游戏 0.111.0 public-beta。保留已发布 0.9.8 的 DLL、资源和联机修复，牌效与协议不变。本次为测试版建立独立兼容范围；正式版适配另行分发，避免两种 DLL 混用。\nFor game 0.111.0 public-beta only. Keeps the previously released 0.9.8 DLL, assets and multiplayer fixes unchanged. This upload isolates beta compatibility; the stable build is delivered separately. All multiplayer peers must use matching versions."
+}

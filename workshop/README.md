@@ -1,96 +1,18 @@
-# Steam Workshop
+# 工坊双版本发布
 
-Published item: https://steamcommunity.com/sharedfiles/filedetails/?id=3816906546
+工坊条目固定为 3816906546，不新建第二个条目。两个内容目录分别暂存并核对 DLL、PCK、manifest 的 SHA256，配置分别使用本目录的 JSON。
 
-First release: 0.8.31, published publicly on 2026-10-10. Steam API returned
-result 1, visibility 0, content size 375657645 bytes. RitsuLib dependency:
-3747602295.
+| 游戏 | Steam 分支 | 模组文件 |
+| --- | --- | --- |
+| 0.107.1 正式版 | public → public | 0.9.9 正式版 DLL |
+| 0.111.0 测试版 | public-beta → public-beta | 已发布的 0.9.8 DLL |
 
-`initial-workshop.json` records the first uploaded metadata. Do not use it for
-routine updates: the author may change the title and description on Steam.
-`workshop.json` deliberately omits title and description, preserving
-those fields during future uploads, and explicitly keeps this release public.
-`mod_id.txt` identifies the existing item;
-always use it to avoid creating another listing.
+上传配置的 minBranch 与 maxBranch 必须同时填写同一目标分支。不可为空，不可跨 public 与 public-beta，不要把两个 DLL 放在同一 content。Steam 按玩家游戏分支下载该分支范围内最新的兼容内容。
 
-`description.bbcode.txt` records the bilingual description revision requested
-by the author. It uses Steam headings and lists. Only add it as the JSON
-`description` field when an explicit description update is requested; ordinary
-mod updates must leave description omitted. Keep `dependencies` and `tags` in
-every upload configuration: the uploader treats omitted dependency lists as
-empty and removes existing dependencies.
+SetRequiredGameVersions 只在实际内容改变时记录；首次为旧版建立范围时附带 build-target.txt 与 release-target.json，使这次上传有内容变更，同时保持旧版 DLL/PCK 字节不变。已有未限定范围的历史条目不作为最新发布流程使用。
 
-### Language-specific descriptions and cover
+先确认测试版范围已保存，再上传正式版。版本 API 设置失败应立即中止，不能仅警告后继续上传。使用 SteamUGC.GetNumSupportedGameVersions 和 GetSupportedGameVersionData 读回范围，并打开工坊改动说明，确认正式版和测试版各自条目及版本标记。若 SubmitItemUpdate 超时，先只读查询服务器与公开页面，不立即重复上传。
 
-Steam stores localized descriptions separately. The first description revision
-updated the English entry while the Simplified Chinese page retained its old
-text; this was a language mismatch, not a browser cache issue.
-English and Simplified Chinese entries now contain their respective language
-sections of `description.bbcode.txt`, split at `[hr][/hr]`. The expanded Eclipse
-0–8 modifiers and credits exceed Steam's 8000-byte limit when combined: upload
-each language separately and check each section is under 8000 UTF-8 bytes.
-Both descriptions explicitly disclose AI use in code and artwork near the top.
-Both localized public pages were checked for the added modifiers and credits,
-and removal of the author's specified disclaimer, on 2026-10-10.
-For another explicit description change, update both `english` and `schinese`
-using `SteamUGC.SetItemUpdateLanguage` before setting the description.
-`uploader-language.patch` adds a `language` field to the official uploader's
-config and fails if Steam rejects the requested language. Apply it to a clone
-of https://github.com/megacrit/sts2-mod-uploader and build the uploader locally.
-The local build is `../work/WorkshopUploaderLocalized`; executables and Steam
-libraries are not committed here.
+每次上传填写对应版本中英改动说明，保留双语标题、首页描述、预览和 RitsuLib 依赖 3747602295。不要用旧的不含 minBranch/maxBranch 的工作区再次上传；不能把新正式版 DLL 覆盖到 beta 工作区。后续版本分别构建并更新对应范围。
 
-`cover.png` is the author's requested upper-body close-up of the character
-artwork, formatted as a 512x512 PNG (592430 bytes), replacing the full-body
-thumbnail. It was produced through an image edit of `art075/selection.png`, then
-resized to meet the Workshop preview limit. Copy it to the uploader workspace
-as `image.png`. The wide preview image is unchanged. The Chinese Workshop page
-was visually verified with the new cover and description on 2026-10-10.
-
-The local uploader workspace is `../work/WorkshopUploader/Frostsworn`. For an
-update, copy the release's `Frostsworn.dll`, `Frostsworn.pck` and
-`mod_manifest.json` into its `content` folder and verify their hashes against
-`dist/Frostsworn`. Do not include PDBs, game libraries, logs or account data.
-Copy this directory's `workshop.json` and `mod_id.txt` into the uploader
-workspace, set the update's `changeNote`, then run the official uploader:
-
-```powershell
-./ModUploader.exe upload -w Frostsworn
-```
-
-Confirm the uploader reports success for 3816906546 and the RitsuLib dependency.
-Preview artwork stays in the local uploader workspace; it is under Steam's
-1 MiB limit. Official instructions:
-https://github.com/megacrit/sts2-mod-uploader
-
-## Release asset audit
-
-The shipped 0.8.31 package passed focused game-engine checks for:
-
-- 93 card portraits, including Strike, Defend, generated and Ancient cards.
-- Nine relic inventory/detail textures, with 64px native trigger textures.
-- Three potion textures and outlines; character selection, map and energy art.
-- 32 supplied buff icons, transparency and native icon dimensions.
-- Approved first idle loop, blinking, floor anchoring, shop and rest-site size.
-- Two- and four-player merchant creation and character visibility.
-- Four supplied treasure gestures on native 422x1200 canvases.
-- Static death artwork for all death cues and restoration after revival.
-- Small history portraits, deck summary icons and Eclipse badge alignment.
-
-Focused suites: 080, 0811, 0813, 0814, 0821, 0828, 075 and 086.
-Early 075 and 086 assertions were updated to the current card-art paths,
-native energy scene/palette and approved Ping wording. The standalone energy
-scene reports script-binding warnings for hidden stock particle nodes; resource
-replacement checks passed. These are engine checks, not a claim of a live
-multiplayer playthrough.
-
-Attack animation prototypes remain excluded by the author's request.
-Statuses without supplied replacement artwork retain their mod-specific icons.
-Native effects and sounds are reused from the installed game.
-
-## Current localized Workshop titles
-
-- Default / schinese: 【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战
-- english: [Void Relics + Event Update] Frostsworn | Ice Mage & Eclipse Challenges
-
-Always explicitly include the appropriate nonempty title for each language on updates.
+官方机制：https://partner.steamgames.com/doc/features/workshop/itemversioning
