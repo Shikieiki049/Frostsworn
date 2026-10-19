@@ -13,7 +13,7 @@
     {
       "min": "public",
       "max": "public",
-      "modVersion": "0.9.9",
+      "modVersion": "0.9.10",
       "gameVersion": "0.107.1"
     }
   ],
@@ -21,5 +21,6 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "Both content submissions timed out at the callback; subsequent read-only Steam API queries and public change-note records confirmed successful storage. Metadata-only bilingual updates returned OK and did not modify content or required version ranges."
+  "note": "Both 0.9.10 stable and 0.9.8 beta-cleanup content callbacks timed out; read-only Steam API and public changelog confirmed their new entries. API lists four historical range revisions; the latest public and public-beta revisions are separate. Both metadata-only localization updates returned OK. Beta DLL/PCK hashes remain unchanged. Stable regression: 28 groups, 5849 assertions, zero engine errors. Two-PC verification remains pending.",
+  "recordedRangeRevisionCount": 4
 }
