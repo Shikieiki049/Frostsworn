@@ -13,5 +13,5 @@
   "title": "【虚空遗物+事件更新】霜誓者 Frostsworn｜冰霜法师与日食挑战",
   "minBranch": "public-beta",
   "maxBranch": "public-beta",
-  "changeNote": "0.9.8 测试版独立分发 / Beta-only distribution\n仅适用于游戏 0.111.0 public-beta。保留已发布 0.9.8 的 DLL、资源和联机修复，牌效与协议不变。本次为测试版建立独立兼容范围；正式版适配另行分发，避免两种 DLL 混用。\nFor game 0.111.0 public-beta only. Keeps the previously released 0.9.8 DLL, assets and multiplayer fixes unchanged. This upload isolates beta compatibility; the stable build is delivered separately. All multiplayer peers must use matching versions."
+  "changeNote": "0.9.8 测试版打包清理 / Beta package cleanup\n仅 public-beta / 游戏0.111.0。移除会被游戏误读为模组清单的 release-target.json，改为 TXT 标记。0.9.8 DLL、PCK、牌效与 FSR1 协议字节保持不变；正式版 0.9.10 由 public 独立分发。\nFor public-beta / game 0.111.0 only. Removes an auxiliary JSON that the game scans as a mod manifest; uses a TXT marker. The 0.9.8 DLL, PCK and FSR1 protocol remain unchanged. Stable 0.9.10 is published separately for public."
 }

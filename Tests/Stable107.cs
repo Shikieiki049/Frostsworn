@@ -1,4 +1,4 @@
-﻿#if STS2_STABLE_107
+#if STS2_STABLE_107
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +11,12 @@ public static partial class Suite
  static async Task CheckStable107()
  {
   Assert(typeof(FrostRngProtocolMarker107).Assembly==typeof(Suite).Assembly,"stable test harness compiled for native 0.107.1 API");
-  Assert(typeof(Entry).Assembly.GetType("Frostsworn.FrostRngWrite097")==null,"stable build retains native RNG synchronization without beta-only protocol patches");
+  Assert(FrostRngWire097.Magic==0x46535232,"stable build uses FSR2 counter-based snapshot, distinct from beta FSR1");
   Assert(ModelDb.AllCards.OfType<FrostCard>().Count()==93 && ModelDb.AllRelics.OfType<VoidRelic>().Count()==16,"all character cards and Void relics registered on stable");
   switch(System.Environment.GetEnvironmentVariable("FROSTSWORN_STABLE_PHASE") ?? "cards")
   {
+   case "package": CheckReleasePackage010(); break;
+   case "summon": await CheckDebugSummon010(); break;
    case "network": CheckNativeNetwork107(); break;
    case "cards": await CheckRevision(); break;
    case "void": await CheckVoid090(); break;

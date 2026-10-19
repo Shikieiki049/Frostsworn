@@ -1,4 +1,3 @@
-#if !STS2_STABLE_107
 using System.IO;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Rngs;
@@ -12,8 +11,13 @@ namespace Frostsworn;
 // recover by dropping a relic or accepting an unresolved network model number.
 public static class FrostRngWire097
 {
+#if STS2_STABLE_107
+    public const int Magic = 0x46535232; // FSR2: stable counter-based RNG snapshot.
+    public const uint ProtocolHash = 0x46535232;
+#else
     public const int Magic = 0x46535231;
     public const uint ProtocolHash = 0x46535231;
+#endif
     const int MaxItems = 16384;
 
     public static void Write(PacketWriter writer, SyncRngMessage message)
@@ -21,12 +25,21 @@ public static class FrostRngWire097
         writer.WriteInt(Magic);
         writer.WriteBool(message.rng.Seed != null);
         if (message.rng.Seed != null) writer.WriteString(message.rng.Seed);
+#if STS2_STABLE_107
+        writer.WriteInt(message.rng.Counters.Count);
+        foreach (var pair in message.rng.Counters.OrderBy(p => (int)p.Key))
+        {
+            writer.WriteInt((int)pair.Key);
+            writer.WriteInt(pair.Value);
+        }
+#else
         writer.WriteInt(message.rng.Rngs.Count);
         foreach (var pair in message.rng.Rngs.OrderBy(p => (int)p.Key))
         {
             writer.WriteInt((int)pair.Key);
             writer.Write(pair.Value);
         }
+#endif
         writer.WriteInt(message.sharedRelicGrabBag.RelicIdLists.Count);
         foreach (var pair in message.sharedRelicGrabBag.RelicIdLists.OrderBy(p => (int)p.Key))
         {
@@ -55,7 +68,11 @@ public static class FrostRngWire097
         for (int i = 0; i < count; i++)
         {
             var key = (RunRngType)reader.ReadInt();
+#if STS2_STABLE_107
+            if (!rng.Counters.TryAdd(key, reader.ReadInt())) throw new InvalidDataException("Duplicate RNG stream in Frostsworn snapshot.");
+#else
             if (!rng.Rngs.TryAdd(key, reader.Read<SerializableRng>())) throw new InvalidDataException("Duplicate RNG stream in Frostsworn snapshot.");
+#endif
         }
         var bag = new SerializableRelicGrabBag();
         count = Count(reader);
@@ -105,9 +122,8 @@ public static class FrostRngProtocol097
         uint salted = current ^ FrostRngWire097.ProtocolHash;
         typeof(ModelIdSerializationCache).GetProperty(nameof(ModelIdSerializationCache.Hash))!.SetValue(null, salted);
         appliedHash = salted;
-        GD.Print($"[Frostsworn] RNG protocol FSR1 stored hash finalized: {current} -> {salted}.");
+        GD.Print($"[Frostsworn] RNG protocol {FrostRngWire097.Magic:X8} stored hash finalized: {current} -> {salted}.");
     }
     static void Finalizer(Exception? __exception)
     { if (__exception == null) Apply(); }
 }
-#endif
