@@ -1,7 +1,7 @@
-param([string]$RitsuPath)
+param([string]$RitsuPath, [string]$GamePath="C:/fz/steam/steamapps/common/Slay the Spire 2")
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot
-$game='C:/fz/steam/steamapps/common/Slay the Spire 2/data_sts2_windows_x86_64'
+$game=Join-Path $GamePath 'data_sts2_windows_x86_64'
 $ritsu=if ($RitsuPath) { $RitsuPath } else { Join-Path $root '../work/ritsulib-package/lib/net9.0' }
 $csc='C:/Program Files/dotnet/sdk/10.0.300/Roslyn/bincore/csc.dll'
 $refDir=Join-Path $root '../work/net9-reference/ref/net9.0'

@@ -123,6 +123,9 @@ public sealed class FrostStory : ModStoryTemplate
 public sealed class FrostEpoch : ModEpochTemplate
 {
     public override string Id => "FROSTSWORN_CHARACTER_FROSTSWORN_CHARACTER_EPOCH";
+    // Use the Ritsu epoch asset hooks for both slot and inspect-screen getters.
+    public override string CustomPackedPortraitPath => "res://Frostsworn/art075/portrait.png";
+    public override string CustomBigPortraitPath => "res://Frostsworn/art075/selection.png";
 }
 
 [RegisterRelic(typeof(FrostRelicPool)), RegisterCharacterStarterRelic(typeof(FrostswornCharacter))]

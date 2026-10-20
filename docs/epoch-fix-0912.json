@@ -1,0 +1,47 @@
+{
+  "version": "0.9.12",
+  "date": "2026-10-20",
+  "workshopPublished": false,
+  "checks": {
+    "beta-epoch": {
+      "passed": true,
+      "assertions": 21,
+      "engineErrors": 0
+    },
+    "beta-network": {
+      "passed": true,
+      "assertions": 29,
+      "engineErrors": 0
+    },
+    "stable-epoch": {
+      "passed": true,
+      "assertions": 22,
+      "engineErrors": 0
+    },
+    "stable-network": {
+      "passed": true,
+      "assertions": 33,
+      "engineErrors": 0
+    }
+  },
+  "packages": {
+    "stable": {
+      "gameTarget": "0.107.1",
+      "hashes": {
+        "build-target.txt": "396ee813f930968524a95f15d189c51589d92e8f3902aaecfa747f205a66b060",
+        "Frostsworn.dll": "b6a76f1a74f89a3da811fba13dd98fd5b8c98baa351a161074d421e479de29e1",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "0567a10dc3df6a904b046aaefa4190e2e6ed7f796be32ccf2c8e6815b8961d56"
+      }
+    },
+    "beta": {
+      "gameTarget": "0.111.0",
+      "hashes": {
+        "build-target.txt": "371a279fc35d2d124bbd9aa0d10773e7e7135906e7d73980d4b03fcd74c24c24",
+        "Frostsworn.dll": "8bad5b90c3d9bc9b889c3e6815d7fd46189caedfc936b2cb8b0e688a6219ecb3",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "f8eb97551e10a9cebef6c508b33d8a7cbc32b323e15f4cad9127dc6a061a215c"
+      }
+    }
+  }
+}

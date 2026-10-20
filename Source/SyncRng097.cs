@@ -62,7 +62,9 @@ public static class FrostRngWire097
 
     public static SyncRngMessage Read(PacketReader reader)
     {
-        if (reader.ReadInt() != Magic) throw new InvalidDataException("Frostsworn RNG protocol mismatch. All players must use the same Frostsworn version.");
+        int received = reader.ReadInt();
+        if (received != Magic)
+            throw new InvalidDataException($"Frostsworn RNG protocol mismatch: received=0x{received:X8}, expected=0x{Magic:X8}, local_mod={FrostVersion.Value}, target_game={FrostVersionGuard.RequiredGameVersion}. All players must use matching game branches and Frostsworn builds, then fully restart. Snapshot rejected before applying state.");
         var rng = new SerializableRunRngSet { Seed = reader.ReadBool() ? reader.ReadString() : null };
         int count = Count(reader);
         for (int i = 0; i < count; i++)
