@@ -1,7 +1,7 @@
 {
   "version": "0.9.12",
   "date": "2026-10-20",
-  "workshopPublished": false,
+  "workshopPublished": true,
   "checks": {
     "beta-epoch": {
       "passed": true,
@@ -43,5 +43,12 @@
         "mod_manifest.json": "f8eb97551e10a9cebef6c508b33d8a7cbc32b323e15f4cad9127dc6a061a215c"
       }
     }
+  },
+  "publicationVerification": {
+    "stableNote": "1792460849",
+    "betaNote": "1792460922",
+    "bothSdkResults": "k_EResultTimeout",
+    "betaDownloadVerified": true,
+    "stableDownloadVerified": false
   }
 }

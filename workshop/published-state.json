@@ -1,19 +1,19 @@
 {
   "workshopId": "3816906546",
-  "verifiedDate": "2026-10-19",
+  "verifiedDate": "2026-10-20",
   "steamVisibility": "Public",
   "banned": false,
   "supportedRanges": [
     {
       "min": "public-beta",
       "max": "public-beta",
-      "modVersion": "0.9.11",
+      "modVersion": "0.9.12",
       "gameVersion": "0.111.0"
     },
     {
       "min": "public",
       "max": "public",
-      "modVersion": "0.9.11",
+      "modVersion": "0.9.12",
       "gameVersion": "0.107.1"
     }
   ],
@@ -21,17 +21,19 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "0.9.11 stable and beta content submitted with strict public/public-beta ranges; both public bilingual changelog entries visible (12:51 stable, 12:52 beta), titles and dependency verified. Both SubmitItemUpdate calls returned Timeout after uploading all changed bytes. Actual public DownloadItem now returns OK and installs stable 0.9.11 with matching hash even after beta was uploaded last. Beta automatic download has not been re-tested on the new release. Historical routing failures remain documented; do not claim complete two-way routing repair.",
-  "recordedRangeRevisionCount": 9,
+  "note": "0.9.12 stable/public and beta/public-beta submitted with separate tested DLLs. Both bilingual public notes visible at 09:47/09:48 China time; ranges, titles and Ritsu dependency verified. Both SDK submissions returned Timeout after all changed bytes uploaded. Actual current public-beta DownloadItem returned OK; DLL, PCK, manifest and build-target hashes match tested beta 0.9.12, target 0.111.0. Stable 0.9.12 automatic download not re-tested; prior stable 0.9.11 evidence is historical. Do not claim complete two-way routing repair. The local install-check tool labels min_game_version as TARGET_GAME; true target verified separately from build-target.txt and description.",
+  "recordedRangeRevisionCount": 11,
   "automaticBranchDownloadVerified": false,
   "nativeSupportPanelVerifiedAfterBetaRepublish": true,
   "nativeSupportPanelFinalVerified": false,
   "betaDownloadVerified": {
     "branch": "public-beta",
-    "modVersion": "0.9.8",
+    "modVersion": "0.9.12",
     "gameVersion": "0.111.0",
     "steamDownloadResult": "OK",
-    "dllSha256": "a9a5b3938d5070d6acb8215b8dd78342d955d918536092626a81ba1a474574b4"
+    "dllSha256": "8bad5b90c3d9bc9b889c3e6815d7fd46189caedfc936b2cb8b0e688a6219ecb3",
+    "allContentHashesMatchTestedPackage": true,
+    "verifiedDate": "2026-10-20"
   },
   "stableBranchDownloadCheck": {
     "gameVersion": "0.107.1",
@@ -40,16 +42,18 @@
     "installedModVersion": "0.9.11",
     "targetGameVersion": "0.107.1",
     "passed": true,
-    "dllSha256": "e8514953064eaa92813016e2c94835532dc42d0ae9a4b633591e248e055e7b69"
+    "dllSha256": "e8514953064eaa92813016e2c94835532dc42d0ae9a4b633591e248e055e7b69",
+    "verifiedDate": "2026-10-19"
   },
   "chineseTitleVerifiedViaSteamApi": true,
   "lastSubmission": {
-    "version": "0.9.11",
+    "version": "0.9.12",
     "stableResult": "k_EResultTimeout",
     "betaResult": "k_EResultTimeout",
-    "stablePublicChangelog": "1792385482",
-    "betaPublicChangelog": "1792385546",
+    "stablePublicChangelog": "1792460849",
+    "betaPublicChangelog": "1792460922",
     "allChangedBytesUploaded": true,
-    "beta0911DownloadVerified": false
+    "betaDownloadVerified": true,
+    "stableDownloadVerified": false
   }
 }
