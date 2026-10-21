@@ -4,8 +4,8 @@
 
 | 游戏 | Steam 分支 | 模组文件 |
 | --- | --- | --- |
-| 0.107.1 正式版 | public → public | 0.9.12 正式版 DLL |
-| 0.111.0 测试版 | public-beta → public-beta | 0.9.12 测试版 DLL |
+| 0.107.1 正式版 | public → public | 0.9.13 正式版 DLL |
+| 0.111.0 测试版 | public-beta → public-beta | 0.9.13 测试版 DLL |
 
 上传配置的 minBranch 与 maxBranch 必须同时填写同一目标分支。不可为空，不可跨 public 与 public-beta，不要把两个 DLL 放在同一 content。Steam 按玩家游戏分支下载该分支范围内最新的兼容内容。
 
@@ -38,3 +38,8 @@ SetRequiredGameVersions 只在实际内容改变时记录；首次为旧版建�
 ## 0.9.12 发布核验（2026-10-20）
 
 正式版09:47、测试版09:48双语记录可见，API历史范围11条，双语标题、依赖均保留。两次SDK提交均Timeout，不重复提交。当前public-beta实际下载0.9.12包，DLL/PCK/manifest/build-target.txt的哈希均与已测试包一致，目标0.111.0。正式版0.9.12下载未切分支复测，不能称为双向自动分发已修复。install-check本地工具的TARGET_GAME实际读取min_game_version，0.107.1是启动检查下限；必须同时读取build-target.txt，不能把该输出当成真实目标。
+
+
+## 0.9.13 发布核验（2026-10-21）
+
+正式版10:14、测试版10:16双语记录公开，API范围13条，双语标题及Ritsu依赖保持。两次SDK Timeout后只读核对，不重复上传。当前public-beta实际下载0.9.13全部四文件哈希匹配测试包，目标0.111.0；正式版下载及双机联机未复核。该版升级联机校验盐，所有玩家须统一更新0.9.13并彻底重启。

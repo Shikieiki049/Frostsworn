@@ -1,0 +1,75 @@
+{
+  "version": "0.9.13",
+  "date": "2026-10-21",
+  "workshopPublished": true,
+  "checks": {
+    "beta-0912": {
+      "passed": true,
+      "assertions": 21,
+      "engineErrors": 0
+    },
+    "beta-0913": {
+      "passed": true,
+      "assertions": 32,
+      "engineErrors": 0
+    },
+    "beta-0913pre": {
+      "passed": true,
+      "assertions": 32,
+      "engineErrors": 0
+    },
+    "beta-097": {
+      "passed": true,
+      "assertions": 29,
+      "engineErrors": 0
+    },
+    "stable-0912": {
+      "passed": true,
+      "assertions": 22,
+      "engineErrors": 0
+    },
+    "stable-0913": {
+      "passed": true,
+      "assertions": 32,
+      "engineErrors": 0
+    },
+    "stable-0913pre": {
+      "passed": true,
+      "assertions": 32,
+      "engineErrors": 0
+    },
+    "stable-107": {
+      "passed": true,
+      "assertions": 33,
+      "engineErrors": 0
+    }
+  },
+  "packages": {
+    "stable": {
+      "targetGame": "0.107.1",
+      "hashes": {
+        "build-target.txt": "396ee813f930968524a95f15d189c51589d92e8f3902aaecfa747f205a66b060",
+        "Frostsworn.dll": "0a10a54bd9ab819adf01dd627af984185f75259005ddda477fd0d3f8be8fcbc9",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "1df44231fee46fa321050331c60e1ecb63a24c8d6c383f73a5833b8aec467bbe"
+      }
+    },
+    "beta": {
+      "targetGame": "0.111.0",
+      "hashes": {
+        "build-target.txt": "371a279fc35d2d124bbd9aa0d10773e7e7135906e7d73980d4b03fcd74c24c24",
+        "Frostsworn.dll": "06039774e885bc8a45e646aaf0145eddb869c84077d91643f9af9965315a2eb7",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "784813c80aa77aa87f4baa1857c1dde779078b6d4580e2ec38e05a1807616440"
+      }
+    }
+  },
+  "acheronAssemblySha256": "fca85a3c2f05d329981ae89ff9eb6e2c645ecc5c0aedfb2837be0b544066a9b5",
+  "publicationVerification": {
+    "stableNote": "1792548893",
+    "betaNote": "1792548976",
+    "bothSdkResults": "k_EResultTimeout",
+    "betaDownloadVerified": true,
+    "stableDownloadVerified": false
+  }
+}

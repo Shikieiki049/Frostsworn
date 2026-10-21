@@ -13,10 +13,10 @@ public static class FrostRngWire097
 {
 #if STS2_STABLE_107
     public const int Magic = 0x46535232; // FSR2: stable counter-based RNG snapshot.
-    public const uint ProtocolHash = 0x46535232;
+    public const uint ProtocolHash = 0x46533233; // FSR2 sender-boundary revision 0.9.13.
 #else
     public const int Magic = 0x46535231;
-    public const uint ProtocolHash = 0x46535231;
+    public const uint ProtocolHash = 0x46533133; // FSR1 sender-boundary revision 0.9.13.
 #endif
     const int MaxItems = 16384;
 
