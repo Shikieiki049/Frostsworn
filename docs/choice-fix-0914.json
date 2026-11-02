@@ -71,5 +71,15 @@
       "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
       "mod_manifest.json": "bfeebdfea27c8b2b74b918671f0f761738e008c9857a5ad121af29393f764668"
     }
+  },
+  "workshopPublished": true,
+  "publicationVerification": {
+    "date": "2026-11-02",
+    "stablePublicChangelog": "1793608430",
+    "betaPublicChangelog": "1793608352",
+    "sdkResults": "k_EResultTimeout",
+    "betaAllContentHashesVerified": true,
+    "stableDownloadVerified": false,
+    "rangeRevisionCount": 15
   }
 }

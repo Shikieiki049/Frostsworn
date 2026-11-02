@@ -33,10 +33,14 @@
 
 ## 构建与发布边界
 
-版本为 0.9.14；正式版和测试版的 DLL 不同，build-target.txt 分别为 0.107.1、0.111.0。内容校验与哈希见 choice-fix-0914.json。PCK 内容未变，不重新生成美术资源。本次准备独立安装包并同步源码，尚未发布 Steam 创意工坊。
+版本为 0.9.14；正式版和测试版的 DLL 不同，build-target.txt 分别为 0.107.1、0.111.0。内容校验与哈希见 choice-fix-0914.json。PCK 内容未变，不重新生成美术资源。独立安装包与源码已同步，2026-11-02 已提交 Steam 创意工坊，见下方核验记录。
 
 ## 可用于后续工坊发布的改动说明
 
 中文：0.9.14：修复记忆蜕片在流血等间接失去生命效果下选牌报错；使用原版同步选牌动作；补充取消选择、战斗结束及候选牌移动保护。正式版与测试版分别验证。冰晶的特定动作取消问题仍待复现。
 
 English: 0.9.14: Fixed Memory Slough failing to request a card choice after secondary HP loss such as Bleed. Uses native synchronized choice actions and guards cancelled selections, ended combat, and cards moved during selection. Stable and beta builds verified separately. The reported Ice Crystal action-cancellation issue remains under investigation.
+
+## 工坊发布核验（2026-11-02）
+
+测试版16:32、正式版16:33中英改动说明公开，分别关联public-beta与public。Steam范围记录15条，双语标题及Ritsu依赖保留。两次SDK提交返回Timeout，未重复上传。当前public-beta实际下载返回OK，四个内容文件哈希与测试版0.9.14完全一致，build-target.txt为0.111.0。正式版本次未切分支下载，双机实测和双向自动分发不据此宣称通过。
