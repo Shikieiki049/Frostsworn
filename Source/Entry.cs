@@ -40,9 +40,9 @@ public static class Entry
         FrostPreviewCompatibility0913.Initialize();
         new Harmony("Frostsworn.mechanics").PatchAll(Assembly.GetExecutingAssembly());
 #if !STS2_STABLE_107
-        RitsuLibFramework.CreateLogger(ModId).Info("Named RNG/relic snapshot protocol FSR1 enabled; all peers require Frostsworn 0.9.13 and a full restart.");
+        RitsuLibFramework.CreateLogger(ModId).Info("Named RNG/relic snapshot protocol FSR1 enabled; all peers require Frostsworn 0.9.14 and a full restart.");
 #else
-        RitsuLibFramework.CreateLogger(ModId).Info("Stable 0.107.1 named RNG/relic snapshot protocol FSR2 enabled; all peers require Frostsworn 0.9.13 and a full restart.");
+        RitsuLibFramework.CreateLogger(ModId).Info("Stable 0.107.1 named RNG/relic snapshot protocol FSR2 enabled; all peers require Frostsworn 0.9.14 and a full restart.");
 #endif
         RitsuLibFramework.CreateLogger(ModId).Info($"Frostsworn {FrostVersion.Value}: 93 character cards plus Putrefaction, 3 character potions, 25 relics including 16 Void relics, Void Cradle, ancient mappings, Eclipse 0-8 and dynamic cold capacity registered.");
     }

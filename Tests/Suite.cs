@@ -89,6 +89,7 @@ public static partial class Suite
 #else
         if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "097") await CheckSyncRng097();
 #endif
+        else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0914") await CheckChoices0914();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") ?.StartsWith("0913", StringComparison.Ordinal) == true) await CheckCompat0913();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0912") await CheckEpoch0912();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "0911") await CheckVersionGuard0911();

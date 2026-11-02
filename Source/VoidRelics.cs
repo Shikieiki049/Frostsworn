@@ -111,10 +111,30 @@ public abstract class VoidRelic:ModRelicTemplate
         if(this is MemorySlough && !VoidUsed && result.UnblockedDamage>0 && !Owner.Creature.IsDead)
         {
             VoidUsed=true;var top=PileType.Draw.GetPile(Owner).Cards.Take(3).ToArray();if(top.Length==0)return;
-            Flash();var selected=(await CardSelectCmd.FromSimpleGrid(context,top,Owner,new CardSelectorPrefs(new LocString("static_hover_tips","FROSTSWORN_VOID_PICK.prompt"),1))).FirstOrDefault();
-            if(selected!=null)await CardPileCmd.Add(selected,PileType.Hand);
-            foreach(var c in top.Where(c=>c!=selected))await CardCmd.Exhaust(context,c);
+            if(context is ThrowingPlayerChoiceContext)
+            {
+                // Secondary HP loss (e.g. another mod's Bleed) can arrive without
+                // a choice-capable context. Native hook actions synchronize the
+                // owner's choice during player turns; enemy turns must wait.
+                if(Owner.Creature.CombatState?.CurrentSide==CombatSide.Player && MegaCrit.Sts2.Core.Context.LocalContext.NetId is {} localId)
+                {
+                    var choice=new HookPlayerChoiceContext(this,localId,Owner.Creature.CombatState!,MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType.Combat);
+                    await choice.AssignTaskAndWaitForPauseOrCompletion(ResolveMemoryChoice(choice,top));
+                }
+                else await ResolveMemoryChoice(new BlockingPlayerChoiceContext(),top);
+            }
+            else await ResolveMemoryChoice(context,top);
         }
+    }
+    async Task ResolveMemoryChoice(PlayerChoiceContext context,CardModel[] top)
+    {
+        Flash();
+        var selected=(await CardSelectCmd.FromSimpleGrid(context,top,Owner,new CardSelectorPrefs(new LocString("static_hover_tips","FROSTSWORN_VOID_PICK.prompt"),1))).FirstOrDefault();
+        // An ending combat/cancelled selection is not a choice to exhaust all
+        // three. Also leave cards that another effect already moved alone.
+        if(!CombatManager.Instance.IsInProgress || CombatManager.Instance.IsEnding || Owner.Creature.IsDead || selected==null || selected.Pile?.Type!=PileType.Draw)return;
+        await CardPileCmd.Add(selected,PileType.Hand);
+        foreach(var card in top.Where(c=>c!=selected && c.Pile?.Type==PileType.Draw))await CardCmd.Exhaust(context,card);
     }
     public override async Task AfterPlayerTurnStartLate(PlayerChoiceContext context,Player player)
     {
@@ -219,6 +239,3 @@ public abstract class VoidFadingPower:ModPowerTemplate
 }
 [HarmonyPatch(typeof(RelicModel),nameof(RelicModel.Status),MethodType.Getter)]public static class VoidStatusPatch
 {static void Postfix(RelicModel __instance,ref RelicStatus __result){if(VoidRelics.Suppressed(__instance))__result=RelicStatus.Disabled;}}
-
-
-

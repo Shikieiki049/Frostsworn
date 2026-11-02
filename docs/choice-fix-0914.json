@@ -1,0 +1,75 @@
+{
+  "version": "0.9.14",
+  "groups": [
+    {
+      "focus": "0914",
+      "passed": true,
+      "assertions": 23,
+      "errors": 0,
+      "target": "stable"
+    },
+    {
+      "focus": "107",
+      "passed": true,
+      "assertions": 106,
+      "errors": 0,
+      "target": "stable"
+    },
+    {
+      "focus": "0832",
+      "passed": true,
+      "assertions": 50,
+      "errors": 0,
+      "target": "stable"
+    },
+    {
+      "focus": "0913",
+      "passed": true,
+      "assertions": 32,
+      "errors": 0,
+      "target": "stable"
+    },
+    {
+      "focus": "0914",
+      "passed": true,
+      "assertions": 27,
+      "errors": 0,
+      "target": "beta"
+    },
+    {
+      "focus": "090",
+      "passed": true,
+      "assertions": 103,
+      "errors": 0,
+      "target": "beta"
+    },
+    {
+      "focus": "0832",
+      "passed": true,
+      "assertions": 50,
+      "errors": 0,
+      "target": "beta"
+    },
+    {
+      "focus": "0913",
+      "passed": true,
+      "assertions": 32,
+      "errors": 0,
+      "target": "beta"
+    }
+  ],
+  "hashes": {
+    "stable": {
+      "build-target.txt": "396ee813f930968524a95f15d189c51589d92e8f3902aaecfa747f205a66b060",
+      "Frostsworn.dll": "ef1ebb6e75b028402f9bd1b6463bd9f482f54be1fb5ca863e5b82d447c81d6e1",
+      "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+      "mod_manifest.json": "8b3a2898b5257cd23bee1f93d607b47eef8b38eea1b97c54e742a6ed72be8b9a"
+    },
+    "beta": {
+      "build-target.txt": "371a279fc35d2d124bbd9aa0d10773e7e7135906e7d73980d4b03fcd74c24c24",
+      "Frostsworn.dll": "6ecb62f108b817f9e74fcbea64a7214301831f577ed988b83e9919b02b4bfabe",
+      "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+      "mod_manifest.json": "bfeebdfea27c8b2b74b918671f0f761738e008c9857a5ad121af29393f764668"
+    }
+  }
+}
