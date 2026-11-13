@@ -20,7 +20,12 @@ public static partial class Suite
         await tree.ToSignal(tree,SceneTree.SignalName.ProcessFrame);
         foreach(int count in new[]{1,2,4})
         {
-            var room=new NMerchantRoom();var container=new Control();tree.Root.AddChild(container);
+#if STS2_BETA_113
+            var room=new NStandardMerchantRoom();
+#else
+            var room=new NMerchantRoom();
+#endif
+            var container=new Control();tree.Root.AddChild(container);
             var players=(System.Collections.Generic.List<Player>)typeof(NMerchantRoom).GetField("_players",BindingFlags.NonPublic|BindingFlags.Instance)!.GetValue(room)!;
             players.AddRange(Enumerable.Range(1,count).Select(i=>Player.CreateForNewRun<FrostswornCharacter>(UnlockState.all,(ulong)i)));
             typeof(NMerchantRoom).GetField("_characterContainer",BindingFlags.NonPublic|BindingFlags.Instance)!.SetValue(room,container);

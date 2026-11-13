@@ -1,40 +1,31 @@
 {
   "workshopId": "3816906546",
-  "verifiedDate": "2026-11-02",
+  "verifiedDate": "2026-11-14",
   "steamVisibility": "Public",
   "banned": false,
   "supportedRanges": [
     {
       "min": "public-beta",
       "max": "public-beta",
-      "modVersion": "0.9.14",
-      "gameVersion": "0.111.0"
+      "modVersion": "0.9.15",
+      "gameVersion": "0.113.0"
     },
     {
       "min": "public",
       "max": "public",
-      "modVersion": "0.9.14",
-      "gameVersion": "0.107.1"
+      "modVersion": "0.9.15",
+      "gameVersion": "0.111.0"
     }
   ],
   "changelog": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3816906546",
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "0.9.14 separately submitted for public/game 0.107.1 and public-beta/game 0.111.0. Both SDK submissions timed out after committing; no repeat submission. Public bilingual notes and branch associations verified (beta 16:32, stable 16:33 China time). Both localized titles and Ritsu dependency preserved. Current public-beta DownloadItem returned OK and all four installed hashes match tested beta 0.9.14. Stable download and real two-PC gameplay not verified; do not infer two-way automatic delivery from historical range API entries.",
-  "recordedRangeRevisionCount": 15,
+  "note": "Both 0.9.15 branch-specific revisions and bilingual notes verified on Steam. Stable subscriber download has not been tested. Beta subscriber content verified: False",
+  "recordedRangeRevisionCount": 17,
   "automaticBranchDownloadVerified": false,
   "nativeSupportPanelVerifiedAfterBetaRepublish": true,
   "nativeSupportPanelFinalVerified": false,
-  "betaDownloadVerified": {
-    "branch": "public-beta",
-    "modVersion": "0.9.14",
-    "gameVersion": "0.111.0",
-    "steamDownloadResult": "OK",
-    "dllSha256": "6ecb62f108b817f9e74fcbea64a7214301831f577ed988b83e9919b02b4bfabe",
-    "allContentHashesMatchTestedPackage": true,
-    "verifiedDate": "2026-11-02"
-  },
   "stableBranchDownloadCheck": {
     "gameVersion": "0.107.1",
     "branch": "public",
@@ -47,13 +38,10 @@
   },
   "chineseTitleVerifiedViaSteamApi": true,
   "lastSubmission": {
-    "version": "0.9.14",
-    "stableResult": "k_EResultTimeout",
-    "betaResult": "k_EResultTimeout",
-    "stablePublicChangelog": "1793608430",
-    "betaPublicChangelog": "1793608352",
-    "allChangedBytesUploaded": true,
-    "betaDownloadVerified": true,
+    "version": "0.9.15",
+    "stablePublicChangelog": "1794601232",
+    "betaPublicChangelog": "1794601032",
+    "betaDownloadVerified": false,
     "stableDownloadVerified": false
   }
 }

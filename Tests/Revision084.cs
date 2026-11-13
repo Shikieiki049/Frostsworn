@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -96,7 +96,11 @@ public static partial class Suite
         Assert(Eclipse.Level(run)==8 && Eclipse.Data.Get(run).MaxHpLost[1]==1 && Eclipse.Data.Get(run).MaxHpLost[2]==1 && Eclipse.Data.Get(run).GoldApplied,"native Ritsu network/save payload roundtrip retains shared difficulty and separate scars");
         var screen=new NCharacterSelectScreen();
         var net=DispatchProxy.Create<INetGameService,EclipseNetProxy>();var proxy=(EclipseNetProxy)(object)net;
+#if STS2_BETA_113
+        var lobby=new StartRunLobby(GameMode.Standard,false,net,screen,2);proxy.Kind=NetGameType.Host;
+#else
         var lobby=new StartRunLobby(GameMode.Standard,net,screen,2);proxy.Kind=NetGameType.Host;
+#endif
         lobby.Players.Add(new StartRunLobbyPlayer{id=net.NetId,character=player.Character,isReady=false});
         ulong peer=net.NetId+1;lobby.Players.Add(new StartRunLobbyPlayer{id=peer,character=second.Character,isReady=false});
         store.Modify<EclipseProgress>("eclipse_progress",p=>{p.Multiplayer=4;p.AllUnlocked=false;p.SplitProgress=true;});

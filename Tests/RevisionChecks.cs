@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ public static partial class Suite
         var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
-        var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
+        var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=UseTestCardSelector(run,selector);
         var own=player.Creature;var pcs=player.PlayerCombatState!;
         Assert(player.Deck.Cards.Count==10 && player.Deck.Cards.OfType<FrostStrike>().Count()==4 && player.Deck.Cards.OfType<FrostDefend>().Count()==4 && player.Deck.Cards.OfType<FreezeRay>().Count()==1 && player.Deck.Cards.OfType<CrystalRite>().Count()==1,"starter deck has four strikes, four defends, freeze ray and crystal rite");
         var types=typeof(FrostCard).Assembly.GetTypes().Where(t=>!t.IsAbstract && typeof(FrostCard).IsAssignableFrom(t)).ToArray();

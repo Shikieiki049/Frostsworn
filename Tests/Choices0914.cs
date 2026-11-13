@@ -48,7 +48,7 @@ public static partial class Suite
   var relic=(MemorySlough)ModelDb.Relic<MemorySlough>().ToMutable();player.AddRelicInternal(relic);
   var cards=new CardModel[]{combat.CreateCard<FrostStrike>(player),combat.CreateCard<FrostDefend>(player),combat.CreateCard<DeepCache>(player)};
   foreach(var card in cards)await CardPileCmd.Add(card,PileType.Draw);
-  var selector=new TestCardSelector();using var scope=CardSelectCmd.UseSelector(selector,localOnly:true);
+  var selector=new TestCardSelector();using var scope=UseTestCardSelector(run,selector,localOnly:true);
   try
   {
    var selected=selector.SetupForAsyncCardSelection();
@@ -137,6 +137,9 @@ public static partial class Suite
   public override Task SignalPlayerChoiceBegun(PlayerChoiceOptions options){Begun++;return Task.CompletedTask;}
 #else
   public override ulong? OwnerId=>1;
+#if STS2_BETA_113
+  public override GameActionType? GameActionType=>null;
+#endif
   public override Task SignalPlayerChoiceBegun(Player player,PlayerChoiceOptions options){Begun++;return Task.CompletedTask;}
 #endif
   public override Task SignalPlayerChoiceEnded(){Ended++;return Task.CompletedTask;}

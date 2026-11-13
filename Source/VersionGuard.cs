@@ -9,6 +9,8 @@ public static class FrostVersionGuard
 {
 #if STS2_STABLE_107
     public const string RequiredGameVersion = "0.107.1";
+#elif STS2_BETA_113
+    public const string RequiredGameVersion = "0.113.0";
 #else
     public const string RequiredGameVersion = "0.111.0";
 #endif

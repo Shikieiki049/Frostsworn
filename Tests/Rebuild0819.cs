@@ -35,7 +35,11 @@ public static partial class Suite
         Eclipse.Data.Set(run,new EclipseRunData {Level=5,GoldApplied=true});Eclipse.InitializeRun(run);
         Assert(Eclipse.Level(run)==5,"complete saved difficulty takes precedence over recovery cache");
         var net=DispatchProxy.Create<INetGameService,EclipseNetProxy085>();
+#if STS2_BETA_113
+        var lobby=new StartRunLobby(GameMode.Standard,false,net,new NCharacterSelectScreen(),2);
+#else
         var lobby=new StartRunLobby(GameMode.Standard,net,new NCharacterSelectScreen(),2);
+#endif
         ((EclipseNetProxy085)(object)net).Kind=NetGameType.Host;
         EclipseNetwork.Poll(lobby);EclipseNetwork.Accept(lobby,0);
         var fresh=RunState.CreateForTest([Player.CreateForNewRun<FrostswornCharacter>(UnlockState.all,1),Player.CreateForNewRun<FrostswornCharacter>(UnlockState.all,2)],seed:"REBUILD0819");

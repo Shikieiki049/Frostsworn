@@ -48,7 +48,11 @@ public static partial class Suite
         Assert(!Eclipse.Description(8).Contains("日食1：") && Eclipse.Description(0)=="无特殊效果。" && Eclipse.Description(8).StartsWith(Eclipse.Quote),"Eclipse tooltip contains effects only and preserves quotation");
         Assert(new LocString("characters",player.Character.Id.Entry+".banter.alive.endTurnPing").GetFormattedText()=="再给你一点时间。" && new LocString("characters",player.Character.Id.Entry+".banter.dead.endTurnPing").GetFormattedText()=="接下来就交给你们了。","alive and dead multiplayer ping are localized");
         var screen=new NCharacterSelectScreen();var net=DispatchProxy.Create<INetGameService,EclipseNetProxy085>();var proxy=(EclipseNetProxy085)(object)net;
+#if STS2_BETA_113
+        var lobby=new StartRunLobby(GameMode.Standard,false,net,screen,2);lobby.Players.Add(new StartRunLobbyPlayer{id=net.NetId,character=player.Character});
+#else
         var lobby=new StartRunLobby(GameMode.Standard,net,screen,2);lobby.Players.Add(new StartRunLobbyPlayer{id=net.NetId,character=player.Character});
+#endif
         proxy.Kind=NetGameType.Host;EclipseNetwork.Accept(lobby,8);EclipseNetwork.Publish(lobby);
         var writer=new PacketWriter();RitsuNetMessageTailExtensions.Write(writer,new LobbyBeginRunMessage());
         var outer=typeof(MegaCrit.Sts2.Core.Multiplayer.NetMessageBus).GetMethods().First(m=>m.Name=="SerializeMessage" && m.IsGenericMethodDefinition).MakeGenericMethod(typeof(LobbyBeginRunMessage));

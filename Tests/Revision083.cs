@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ public static partial class Suite
         var turn=TestTurn107();
         turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
         if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
-        var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
+        var context=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=UseTestCardSelector(run,selector);
         MegaCrit.Sts2.Core.Context.LocalContext.NetId=null;
         var own=player.Creature;var pcs=player.PlayerCombatState!;
         await CreatureCmd.SetMaxAndCurrentHp(enemy,1000);

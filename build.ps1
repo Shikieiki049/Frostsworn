@@ -19,7 +19,7 @@ foreach ($name in @('sts2.dll','GodotSharp.dll','0Harmony.dll')) {
 }
 $release = Get-Content -LiteralPath (Join-Path $GamePath 'release_info.json') -Raw | ConvertFrom-Json
 $apiVersion = $release.version.TrimStart('v')
-if ($apiVersion -notin @('0.107.1','0.111.0')) { throw "Unverified game API target: $apiVersion" }
+if ($apiVersion -notin @('0.107.1','0.111.0','0.113.0')) { throw "Unverified game API target: $apiVersion" }
 Write-Output "Game API target: $apiVersion"
 $framework = Join-Path $GamePath 'data_sts2_windows_x86_64'
 $output = Join-Path $projectRoot 'dist/Frostsworn'
@@ -40,6 +40,7 @@ $refs = Get-Item -LiteralPath $ReferencePath
 $arguments = [System.Collections.Generic.List[string]]::new()
 @('/nologo','/target:library','/langversion:preview','/nullable:enable','/deterministic+','/debug:portable','/optimize+','/nowarn:1701','/warnaserror+',('/out:' + (Join-Path $output 'Frostsworn.dll'))) | ForEach-Object { $arguments.Add($_) }
 if ($apiVersion -eq '0.107.1') { $arguments.Add('/define:STS2_STABLE_107') }
+if ($apiVersion -eq '0.113.0') { $arguments.Add('/define:STS2_BETA_113') }
 Get-ChildItem $refs.FullName -Filter *.dll | ForEach-Object { $arguments.Add('/reference:' + $_.FullName) }
 Get-ChildItem -LiteralPath $RitsuPath -Filter *.dll | ForEach-Object { $arguments.Add('/reference:' + $_.FullName) }
 @('sts2.dll','GodotSharp.dll','0Harmony.dll') | ForEach-Object { $arguments.Add('/reference:' + (Join-Path $framework $_)) }

@@ -7,6 +7,7 @@ $csc='C:/Program Files/dotnet/sdk/10.0.300/Roslyn/bincore/csc.dll'
 $refDir=Join-Path $root '../work/net9-reference/ref/net9.0'
 $common=@('/nologo','/target:library','/langversion:preview','/nullable:enable','/nowarn:1701')
 if ((Get-Content -LiteralPath (Join-Path (Split-Path $game) 'release_info.json') -Raw | ConvertFrom-Json).version -eq 'v0.107.1') { $common+='/define:STS2_STABLE_107' }
+if ((Get-Content -LiteralPath (Join-Path $GamePath 'release_info.json') -Raw | ConvertFrom-Json).version -eq 'v0.113.0') { $common+='/define:STS2_BETA_113' }
 $refs=Get-ChildItem $refDir -Filter *.dll | ForEach-Object { '/reference:'+$_.FullName }
 $refs+=@('sts2.dll','GodotSharp.dll','0Harmony.dll') | ForEach-Object { '/reference:'+(Join-Path $game $_) }
 $refs+=Get-ChildItem $ritsu -Filter *.dll | ForEach-Object { '/reference:'+$_.FullName }

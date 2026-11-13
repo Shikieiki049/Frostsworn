@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MegaCrit.Sts2.Core.Localization;
 using System.Linq;
 using System.Reflection;
@@ -54,7 +54,7 @@ public static partial class Suite
   var turn=TestTurn107();
   turn.GetType().GetProperty("IsInProgress")!.SetValue(turn,true);
   if(monster.MoveStateMachine==null)monster.SetUpForCombat();monster.RollMove(combat.PlayerCreatures);
-  var ctx=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=CardSelectCmd.UseSelector(selector);
+  var ctx=new ThrowingPlayerChoiceContext();var selector=new TestCardSelector();using var selection=UseTestCardSelector(run,selector);
   MegaCrit.Sts2.Core.Context.LocalContext.NetId=null;
   T Relic<T>() where T:RelicModel {var r=(T)ModelDb.Relic<T>().ToMutable();player.AddRelicInternal(r);return r;}
   void Turn(int n){typeof(PlayerCombatState).GetField("<TurnNumber>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic)!.SetValue(player.PlayerCombatState,n);}

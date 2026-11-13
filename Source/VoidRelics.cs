@@ -39,7 +39,11 @@ public abstract class VoidRelic:ModRelicTemplate
     public Type OriginalType=>VoidRelics.Originals[Array.IndexOf(VoidRelics.Types,GetType())];
     public override RelicRarity Rarity=>VoidRelics.Rarity;
     public override bool IsAllowedInShops=>false;
+#if STS2_BETA_113
+    protected override bool IsAllowedInternal(IRunState runState)=>false;
+#else
     public override bool IsAllowed(IRunState runState)=>false;
+#endif
     public override int MerchantCost=>999999999;
     public override string CustomIconPath=>$"res://Frostsworn/void/{GetType().Name}_small.png";
     public override string CustomBigIconPath=>$"res://Frostsworn/void/{GetType().Name}.png";
@@ -189,7 +193,12 @@ public abstract class VoidRelic:ModRelicTemplate
     {
         if(this is not LighthouseJelly || c!=Owner.Creature)return;Flash();
         decimal heal=Math.Max(1m,c.MaxHp*.15m);await CreatureCmd.Heal(c,heal);
-        await CreatureCmd.GainBlock(c,16,ValueProp.Unpowered,null);await CreatureCmd.LoseMaxHp(new ThrowingPlayerChoiceContext(),c,11,false);
+        await CreatureCmd.GainBlock(c,16,ValueProp.Unpowered,null);
+#if STS2_BETA_113
+        await CreatureCmd.LoseMaxHp(new ThrowingPlayerChoiceContext(),c,11,null);
+#else
+        await CreatureCmd.LoseMaxHp(new ThrowingPlayerChoiceContext(),c,11,false);
+#endif
     }
 }
 [RegisterRelic(typeof(SharedRelicPool))] public sealed class BloodlessCord:VoidRelic;

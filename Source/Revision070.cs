@@ -39,8 +39,24 @@ public sealed class PowerGainVar(bool armor):DynamicVar("EffectiveAmount",0)
         ?(_power.Owner.HasPower<BlessingWindPower>()?_power.Owner.GetPowerAmount<DexterityPower>():0)
         :(_power.Owner.HasPower<HeartInscriptionPower>()?_power.Owner.GetPowerAmount<StrengthPower>():0))):0;
     public override string ToString()=>Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+#if STS2_BETA_113
+    internal void RefreshPreview() => PreviewValue = Value;
+#else
     protected override decimal GetBaseValueForIConvertible()=>Value;
+#endif
 }
+
+#if STS2_BETA_113
+[HarmonyLib.HarmonyPatch(typeof(DynamicVarSet), nameof(DynamicVarSet.AddTo))]
+static class PowerGainPreviewPatch
+{
+    static void Prefix(DynamicVarSet __instance)
+    {
+        if (__instance.TryGetValue("EffectiveAmount", out var value) && value is PowerGainVar gain)
+            gain.RefreshPreview();
+    }
+}
+#endif
 
 [RegisterRelic(typeof(FrostRelicPool))]
 public sealed class WinterCrown:ModRelicTemplate

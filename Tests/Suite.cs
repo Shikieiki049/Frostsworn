@@ -40,7 +40,7 @@ public static partial class Suite
         GD.Print("TEST_BOOT: Godot + game + RitsuLib assemblies loaded");
         GD.Print("TEST_USER_DIR=" + OS.GetUserDataDir());
         SaveManager.Instance.InitSettingsDataForTest();
-        ProjectSettings.LoadResourcePack("C:/fz/steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.pck", false);
+        ProjectSettings.LoadResourcePack(System.Environment.GetEnvironmentVariable("FROSTSWORN_TEST_GAME_PCK") ?? "C:/fz/steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.pck", false);
         ProjectSettings.LoadResourcePack(ProjectSettings.GlobalizePath("res://../../dist/Frostsworn/Frostsworn.pck"), true);
         RitsuLibFramework.Initialize();
         Assert(RitsuLibFramework.IsActive,"RitsuLib framework initialization");
@@ -129,6 +129,19 @@ public static partial class Suite
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") == "085") await Check085();
         else if (System.Environment.GetEnvironmentVariable("FROSTSWORN_FOCUSED_TEST") is "076" or "077") await CheckArt076();
         else await CheckRevision();
+    }
+    static IDisposable UseTestCardSelector(RunState run, ICardSelector selector, bool localOnly = false)
+    {
+#if STS2_BETA_113
+        typeof(RunManager).GetProperty(nameof(RunManager.CardSelectorStack))!
+            .SetValue(RunManager.Instance, new MegaCrit.Sts2.Core.CardSelection.CardSelectorStack(run));
+        return localOnly ? RunManager.Instance.CardSelectorStack.UseLocalSelector(selector)
+            : MegaCrit.Sts2.Core.CardSelection.CardSelectorStack.SetTestSelector(selector);
+#elif STS2_STABLE_107
+        return CardSelectCmd.UseSelector(selector);
+#else
+        return CardSelectCmd.UseSelector(selector, localOnly);
+#endif
     }
     public static void Assert(bool condition,string message)
     {
