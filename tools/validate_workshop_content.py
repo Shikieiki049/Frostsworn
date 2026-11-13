@@ -7,7 +7,7 @@ def validate(root,branch):
     manifests=list(root.rglob("*.json"))
     assert len(manifests)==1 and manifests[0].name=="mod_manifest.json", "Game scans every JSON as a mod manifest; auxiliary JSON must stay outside content."
     manifest=json.loads(manifests[0].read_text(encoding="utf-8-sig"))
-    game={"public":"0.107.1","public-beta":"0.111.0"}[branch]
+    game={"public":"0.111.0","public-beta":"0.113.0"}[branch]
     assert manifest["id"]=="Frostsworn"
     assert (root/"build-target.txt").read_text(encoding="utf-8-sig").strip()==game, "Wrong binary build target for this branch"
     assert manifest["min_game_version"] in (game,"0.107.1"), "Unexpected startup compatibility floor"
