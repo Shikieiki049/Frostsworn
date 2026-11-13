@@ -21,7 +21,7 @@
   "publicChangelogVerified": true,
   "englishTitleVerifiedViaSteamApi": true,
   "requiredItem": "3747602295",
-  "note": "Both 0.9.15 branch-specific revisions and bilingual notes verified on Steam. Stable subscriber download has not been tested. Beta subscriber content verified: False",
+  "note": "Both 0.9.15 branch-specific revisions and bilingual notes verified on Steam. Beta subscriber download returned OK and all four hashes matched. Stable subscriber download has not been tested.",
   "recordedRangeRevisionCount": 17,
   "automaticBranchDownloadVerified": false,
   "nativeSupportPanelVerifiedAfterBetaRepublish": true,
@@ -41,7 +41,16 @@
     "version": "0.9.15",
     "stablePublicChangelog": "1794601232",
     "betaPublicChangelog": "1794601032",
-    "betaDownloadVerified": false,
+    "betaDownloadVerified": true,
     "stableDownloadVerified": false
+  },
+  "betaDownloadVerified": {
+    "branch": "public-beta",
+    "modVersion": "0.9.15",
+    "gameVersion": "0.113.0",
+    "steamDownloadResult": "OK",
+    "dllSha256": "b0bf7002ce25464f28f7c7d8791b9e86e23c115f3ec91af04d23d35ba364222c",
+    "allContentHashesMatchTestedPackage": true,
+    "verifiedDate": "2026-11-14"
   }
 }
