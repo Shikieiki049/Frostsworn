@@ -176,12 +176,28 @@ internal static class IceArmorHitReceipt
     public static bool FullyAbsorbed(DamageResult result) => Absorbed.TryGetValue(result, out _);
 }
 
+#if STS2_BETA_114
+[HarmonyPatch(typeof(CreatureCmd), "ApplyDamageResults")]
+internal static class IceArmorHitReceiptPatch
+{
+    static void Postfix(DamageResults results, ref Task __result)
+        => __result = CompleteAfterDamage(__result, results);
+
+    static async Task CompleteAfterDamage(Task damage, DamageResults results)
+    {
+        await damage;
+        foreach (var result in results.AllResults())
+            IceArmorHitReceipt.Complete(result.Receiver, result);
+    }
+}
+#else
 [HarmonyPatch(typeof(Creature), nameof(Creature.LoseHpInternal))]
 internal static class IceArmorHitReceiptPatch
 {
     public static void Postfix(Creature __instance, DamageResult __result)
         => IceArmorHitReceipt.Complete(__instance, __result);
 }
+#endif
 
 [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Powers.ImbalancedPower), nameof(PowerModel.AfterDamageGiven))]
 internal static class IceArmorImbalancedPatch

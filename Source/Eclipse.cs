@@ -186,8 +186,19 @@ public static class EclipseHealPatch {public static void Prefix(Creature creatur
 [HarmonyPatch(typeof(Creature),nameof(Creature.LoseHpInternal))]
 public static class EclipseDamagePatch
 {
+#if STS2_BETA_114
+    public static void Prefix(Creature __instance, ref decimal amount, bool dryRun)
+    {
+        if (!dryRun) amount = Eclipse.EventDamage(__instance, amount);
+    }
+    public static void Postfix(Creature __instance, HpLossResult __result, bool dryRun)
+    {
+        if (!dryRun) Eclipse.Scar(__instance, __result.hpLost);
+    }
+#else
     public static void Prefix(Creature __instance,ref decimal amount)=>amount=Eclipse.EventDamage(__instance,amount);
     public static void Postfix(Creature __instance,DamageResult __result)=>Eclipse.Scar(__instance,__result.UnblockedDamage);
+#endif
 }
 // Genuine max HP rewards/costs may occur after damage and before saving.
 // Keep the native HP fingerprint current without treating those changes as scars.

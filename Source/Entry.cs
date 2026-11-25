@@ -39,6 +39,7 @@ public static class Entry
         FrostErrorReports.Initialize();
         FrostPreviewCompatibility0913.Initialize();
         FrostGamblerPreviewCompatibility.Initialize();
+        FrostSkinSelectCompatibility.Initialize();
         new Harmony("Frostsworn.mechanics").PatchAll(Assembly.GetExecutingAssembly());
 #if !STS2_STABLE_107
         RitsuLibFramework.CreateLogger(ModId).Info($"Named RNG/relic snapshot protocol FSR1 enabled; all peers require Frostsworn {FrostVersion.Value} and a full restart.");

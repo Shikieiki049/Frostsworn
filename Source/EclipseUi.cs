@@ -102,11 +102,15 @@ public static class EclipseUi
         int boss=run.Map.BossMapPoint.coord.row;
         return point.coord.row>=boss-3 && point.coord.row<boss;
     }
+    public static string UnknownMapOutlinePath =>
+        ResourceLoader.Exists("res://images/atlases/compressed_atlas.sprites/map_unknown_outline.tres")
+            ? "res://images/atlases/compressed_atlas.sprites/map_unknown_outline.tres"
+            : "res://images/atlases/compressed.sprites/map/map_unknown_outline.tres";
     public static void HideMapType(NNormalMapPoint point,IRunState run)
     {
         if(!HiddenMapPoint(run,point.Point) || point.State==MapPointState.Traveled)return;
         point.GetNode<TextureRect>("%Icon").Texture=ResourceLoader.Load<Texture2D>("res://images/atlases/ui_atlas.sprites/map/icons/map_unknown.tres");
-        point.GetNode<TextureRect>("%Outline").Texture=ResourceLoader.Load<Texture2D>("res://images/atlases/compressed.sprites/map/map_unknown_outline.tres");
+        point.GetNode<TextureRect>("%Outline").Texture=ResourceLoader.Load<Texture2D>(UnknownMapOutlinePath);
         point.GetNode<Control>("%QuestIcon").Hide();
     }
 }

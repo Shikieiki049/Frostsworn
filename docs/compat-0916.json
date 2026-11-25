@@ -1,0 +1,83 @@
+{
+  "version": "0.9.16",
+  "date": "2026-11-25",
+  "validation": {
+    "stable": {
+      "game": "0.111.0",
+      "groups": [
+        {
+          "focus": "0916",
+          "assertions": 19
+        },
+        {
+          "focus": "0914",
+          "assertions": 27
+        },
+        {
+          "focus": "090",
+          "assertions": 103
+        },
+        {
+          "focus": "0913net",
+          "assertions": 21
+        },
+        {
+          "focus": "0911",
+          "assertions": 28
+        },
+        {
+          "focus": "0832",
+          "assertions": 50
+        }
+      ],
+      "hashes": {
+        "build-target.txt": "371a279fc35d2d124bbd9aa0d10773e7e7135906e7d73980d4b03fcd74c24c24",
+        "Frostsworn.dll": "9774cf9f7ec0cfca9449002d73bf8733a2189afaf3fe487f7303d49288e15710",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "a910b39324480ba105695759b8bbffd77d65c0da0e7da0e7703999e97f9b346a"
+      }
+    },
+    "beta": {
+      "game": "0.114.0",
+      "groups": [
+        {
+          "focus": "0916",
+          "assertions": 21
+        },
+        {
+          "focus": "0914",
+          "assertions": 27
+        },
+        {
+          "focus": "090",
+          "assertions": 103
+        },
+        {
+          "focus": "0913net",
+          "assertions": 21
+        },
+        {
+          "focus": "0911",
+          "assertions": 28
+        },
+        {
+          "focus": "0832",
+          "assertions": 50
+        }
+      ],
+      "hashes": {
+        "build-target.txt": "3aa1bac88a50d3d9dd1f22d347c0d9c97fe75a61a588042f46ca9497301fc3d6",
+        "Frostsworn.dll": "bd6e19924f9d94c54d27c436f3027d644517a0d1f929d9c8a7f9a45861604597",
+        "Frostsworn.pck": "636d008971adc0b6ca88a6e54c70da642743f4461f9b95d571868a08bf234124",
+        "mod_manifest.json": "abb3bba881f581b72df31928e373a705429e6a2a7244621b554e6a866a2fd9a2"
+      }
+    }
+  },
+  "reportReview": {
+    "new": 158,
+    "downloadErrors": 0,
+    "stateDivergenceBundles": 0,
+    "latestReportUtc": "2026-11-14T14:11:48.3783310+00:00"
+  },
+  "workshopPublished": false
+}

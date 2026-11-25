@@ -95,10 +95,10 @@ public static partial class Suite
         Assert(enemy.GetPowerAmount<StrengthPower>()==0 && enemy.GetPowerAmount<ArtifactPower>()==artifactBefore,"temporary strength expires without artifact loss");
         combat.RoundNumber=2;await Eclipse.TurnStart(combat,CombatSide.Player);await Eclipse.TurnStart(combat,CombatSide.Player);
         Assert(enemy.Block==3,"even turn block applies once for whole team");
-        int max=own.MaxHp;own.LoseHpInternal(1,ValueProp.Unpowered);
+        int max=own.MaxHp;own.LoseTestHp0916(1,ValueProp.Unpowered);
         Assert(own.MaxHp==max-1 && second.Creature.MaxHp==70,"actual damage records one max HP loss for its owner");
-        own.LoseHpInternal(0,ValueProp.Unpowered);Assert(own.MaxHp==max-1,"zero damage does not scar");
-        second.Creature.LoseHpInternal(1,ValueProp.Unpowered);
+        own.LoseTestHp0916(0,ValueProp.Unpowered);Assert(own.MaxHp==max-1,"zero damage does not scar");
+        second.Creature.LoseTestHp0916(1,ValueProp.Unpowered);
         var registry=typeof(RitsuLibFramework).Assembly.GetType("STS2RitsuLib.RunData.RunSavedDataRegistry")!;
         var payload=(string)registry.GetMethod("BuildPayload")!.Invoke(null,new object[]{run})!;
         Eclipse.Data.Remove(run);registry.GetMethod("ImportPayloadIntoRun")!.Invoke(null,new object[]{run,payload});
@@ -139,7 +139,7 @@ public static partial class Suite
         Assert(own.MaxHp==70 && own.CurrentHp==hp && second.Creature.MaxHp==70 && Eclipse.Data.Get(run).MaxHpLost.Count==0,"act transition restores all max HP without healing current HP");
         run.Map=new EclipseTestMap085();
         Assert(Enumerable.Range(0,17).Where(r=>EclipseUi.HiddenMapPoint(run,new MapPoint(0,r))).SequenceEqual(new[]{12,13,14}),"only three rows before first boss are masked");
-        Assert(ResourceLoader.Exists("res://images/atlases/ui_atlas.sprites/map/icons/map_unknown.tres") && ResourceLoader.Exists("res://images/atlases/compressed.sprites/map/map_unknown_outline.tres"),"native unknown map textures exist");
+        Assert(ResourceLoader.Exists("res://images/atlases/ui_atlas.sprites/map/icons/map_unknown.tres") && ResourceLoader.Exists(EclipseUi.UnknownMapOutlinePath),"native unknown map textures exist");
         typeof(Node).Assembly.GetType("Godot.Bridge.ScriptManagerBridge")!.GetMethod("LookupScriptsInAssembly",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic)!.Invoke(null,new object[]{typeof(NHealthBar).Assembly});
         var bg=new ColorRect {Color=new Color("202A38"),Size=new Vector2(1000,640)};tree.Root.AddChild(bg);
         var snapshot=new SerializableRun {StartTime=85,SerializableRng=run.Rng.ToSerializable(),Players=run.Players.Select(p=>new MegaCrit.Sts2.Core.Saves.Runs.SerializablePlayer {NetId=p.NetId,CharacterId=p.Character.Id}).ToList()};
